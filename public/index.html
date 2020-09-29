@@ -1,0 +1,21 @@
+<html>
+
+<head>
+  <title>Express</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h2>Products</h2>
+
+  <div *ngFor="let product of products">
+  
+    <h3>
+      <a [title]="product.name + ' details'">
+      </a>
+    </h3>
+  
+  </div>
+</body>
+
+</html>
