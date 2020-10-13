@@ -8,7 +8,7 @@ import { MainpageComponent } from './mainpage/mainpage.component';
 
 
 const routes: Routes = [
-  //{ path: '', redirectTo: '/home', pathMatch: 'full', },
+  { path: 'upload', component: UploadComponent},
   { path: '', component: MainpageComponent },   //upload
   { path: 'user', component: UserComponent }
 ];
