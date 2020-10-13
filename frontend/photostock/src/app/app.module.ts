@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { UploadComponent } from './upload/upload.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserComponent } from './user/user.component';
+import { MainpageComponent } from './mainpage/mainpage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
-    UserComponent
+    UserComponent,
+    MainpageComponent
   ],
   imports: [
     BrowserModule,
