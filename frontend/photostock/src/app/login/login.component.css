@@ -1,0 +1,35 @@
+#header {
+    text-align: center;
+}
+.login-form {
+    position: relative;
+    padding-top: 5%;
+    max-width: 50%;
+    margin: auto;
+    height: 50px;
+}
+
+form {
+    position: relative;
+    margin: auto;
+    text-align: center;
+}
+
+form button {
+    background-color: #0349fc;
+    border: none;
+    width: 200px;
+    height: 50px;
+    animation: loginbutton 3s linear 1s infinite alternate;
+    box-shadow: 0 10px 15px rgba(145, 92, 182, .3);
+}
+
+@keyframes loginbutton {
+
+    0%, 100% {
+        background-color: #0349fc;
+    }
+    50% {
+        background-color: #668df2;
+    }
+}

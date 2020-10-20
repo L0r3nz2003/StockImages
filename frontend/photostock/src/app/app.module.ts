@@ -7,13 +7,15 @@ import { UploadComponent } from './upload/upload.component';
 import { AppRoutingModule } from './app-routing.module';
 import { UserComponent } from './user/user.component';
 import { MainpageComponent } from './mainpage/mainpage.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UploadComponent,
     UserComponent,
-    MainpageComponent
+    MainpageComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

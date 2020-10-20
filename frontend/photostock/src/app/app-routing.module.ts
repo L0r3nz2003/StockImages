@@ -5,12 +5,14 @@ import { UploadComponent } from './upload/upload.component';
 import { AppComponent } from './app.component';
 import { UserComponent } from './user/user.component'; 
 import { MainpageComponent } from './mainpage/mainpage.component';
+import { LoginComponent } from './login/login.component';
 
 
 const routes: Routes = [
   { path: 'upload', component: UploadComponent},
   { path: '', component: MainpageComponent },   //upload
-  { path: 'user', component: UserComponent }
+  { path: 'user', component: UserComponent },
+  { path: 'user/login', component: LoginComponent }
 ];
 
 
