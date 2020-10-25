@@ -10,12 +10,12 @@ router.get("/", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-  /*db.query(
-    "insert into users(name) values ('" + req.body.name + "')",
+  db.query(
+    "insert into PsUser(UserName,Password,AnzahlBilder) values ('testadsf','test','1')",
     (err) => {
       if (err) throw err;
     }
-  );*/
+  );
   res.send("Added name into db");
 });
 
@@ -29,10 +29,10 @@ router.put("/update/:id", (req, res) => {
   res.send("Updated db");
 });
 
-router.delete("/delete/:id", (req, res) => {
-  /*db.query("delete from users where id=" + req.params.id, (err) => {
+router.get("/delete/:id", (req, res) => {
+  db.query("delete from PsUser where UserId=" + req.params.id, (err) => {
     if (err) throw err;
-  });*/
+  });
   res.send("Deleted");
 });
 
