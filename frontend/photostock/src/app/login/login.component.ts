@@ -15,18 +15,21 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    var username: string = document.getElementById('inputusername').innerHTML;
-    var password: string = document.getElementById('inputPassword').innerHTML;
+    var username: HTMLElement = document.getElementById('inputusername');
+    var password: HTMLElement = document.getElementById('inputPassword');
 
-    if(isNullOrUndefined(username) || username.length == 0) {
-      //TODO: output message;
+    if(isNullOrUndefined(username.innerHTML.length) || username.innerHTML.length == 0) {
+        	username.style.borderColor = "red";
         return;
     }
 
-    if(isNullOrUndefined(password) || password.length == 0) {
-      //TODO: output message;
+    if(isNullOrUndefined(password.innerHTML.length) || password.innerHTML.length == 0) {
+          username.style.borderColor = "red";
         return;
     }
+
+    //TODO Backend login
+
 
 
   }
