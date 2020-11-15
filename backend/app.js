@@ -13,19 +13,10 @@ app.use(logger('dev'));
 app.use(express.json());                             // for parsing application/json
 app.use(express.urlencoded({ extended: true }));     // for parsing application/x-www-form-urlencoded
 
-//app.use("/",        require("./routes/index"));
-//app.use("/users",   require("./routes/users"));
-app.get('*', (req, res)=>{
-    res.sendFile(path.join(__dirname, '../frontend/photostock/src/app/app.component.html'))
-});
+app.use("/",        require("./routes/index"));
+app.use("/users",   require("./routes/users"));
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
 
-//COMPLETE => finished api for .... in the case of ...
-
-//TODO => ...
-
-//FIXME => ...
-
-//HELP => ...

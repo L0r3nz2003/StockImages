@@ -1,62 +1,36 @@
 const express = require("express");
 const router  = express.Router();
-const db      = require("../mysql");
-const _app_folder = 'public/';
+const userManager = require("../controllers/user_manager.js");
 
-// test seite zum testen
-router.get("/test", function(req, res, next) {
-  res.sendFile(`test.html`, {root: 'public/'});
-
+router.get("/show", async (req, res) => {
+  const result = await userManager.getAllUsers();
+  res.send(result);
 });
 
-// Aller user werden zurückgegeben
-router.get("/", (req, res) => {
-  db.query("select * from PsUser ", (err, rows) => {
-    if (err) throw err;
-    res.json(rows);
-  });
+router.get("/show/:id", async (req, res) => {
+  const result = await userManager.getSingleUser(req.params.id);
+  res.send(result);
 });
 
-
-
-// User bei Id zurückgeben
-/*router.get('/:id', (req, res) => {
-  db.query('select * from PsUser where UserId =?',[req.params.id], (err, rows) => {
-    if (err) throw err;
-    res.json(rows);
-  });
-  console.log("ID: ", req.params.id);
-});
-*/
-
-// neuer User
-router.get("/create", (req, res) => {
-  db.query(
-    "insert into PsUser(UserName,Password,AnzahlBilder) values ('testadsfasd','test','1')",
-    (err) => {
-      if (err) throw err;
-    }
-  );
-  res.send("Added name into db");
+router.get("/showbyname/:name", async (req, res) => {
+  const result = await userManager.getUserByName(req.params.name);
+  res.send(result);
 });
 
-router.put("/update/:id", (req, res) => {
-  /*db.query(
-    "update users set name = '" + req.body.name + "' where id=" + req.params.id,
-    (err) => {
-      if (err) throw err;
-    }
-  );*/
-  res.send("Updated db");
+router.get("/create", async (req, res) => {
+  const result = await userManager.createUser(req.body);
+  res.send(result);
 });
 
-// User löschen
-router.get('/delete/:id', (req, res) => {
-  db.query('delete PsUser where UserId =?', [req.params.id], (err) => {
-    if (err) throw err;
-  });
-  res.send("Deleted");
-  console.log("ID löschen: ", req.params.id);
+router.get("/update/:id", async (req, res) => {
+  const result = await userManager.updateUser(req.params.id, req.body);
+  res.send(result);
+});
+
+router.get("/delete/:id", async (req, res) => {
+  console.log("test");
+  const result = await userManager.deleteUser(req.params.id);
+  res.send(result);
 });
 
 
