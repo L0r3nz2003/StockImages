@@ -1,0 +1,45 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Check-If-You-Lost
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+defaults:
+  run:
+    working-directory: ./frontend/photostock
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  Backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./backend
+      - name: Build
+        run: npm build
+        working-directory: ./backend
+  Frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./frontend/photostock
+      - name: Angular Problem Matchers
+        uses: EdricChan03/angular-problem-matchers-action@v0.0.0
