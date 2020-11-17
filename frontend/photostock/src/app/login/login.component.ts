@@ -3,6 +3,7 @@ import { isNullOrUndefined } from 'util';
 
 import { User } from '../interfaces/user';
 import { UserService } from '../user.service';
+import { cwd } from 'process';
 
 @Component({
   selector: 'app-login',
@@ -18,33 +19,28 @@ export class LoginComponent implements OnInit {
 
   }
 
-  login() {
-    var username: HTMLElement = document.getElementById('inputusername');
-    var password: HTMLElement = document.getElementById('inputPassword');
+  login(name: any, password: any) {
 
-    if(isNullOrUndefined(username.innerHTML.length) || username.innerHTML.length == 0) {
-        	username.style.borderColor = "red";
+    name.style.borderColor = "";
+    password.style.borderColor = "";
+
+    if(isNullOrUndefined(name.value) || !name.validity.valid) {
+        name.style.borderColor = "red";
+        console.log("non valid username!");
         return;
     }
 
-    if(isNullOrUndefined(password.innerHTML.length) || password.innerHTML.length == 0) {
-          username.style.borderColor = "red";
+    if(isNullOrUndefined(password.value) || !password.validity.valid) {
+          password.style.borderColor = "red";
+          console.log("non valid password!");
         return;
     }
 
-    //TODO Backend login
-
-
-
-  }
-  login(name: string):void {
-    alert(name);
-    /*if(!name){return;}
-    this.userService.getUserByName(name)
-    .subscribe(user => {
-      this.users.push(user)
-    })*/;
-
+    let user = this.userService.getUserByName(name.value);
+    
+    console.log(user.name);
+    console.log(user.password);
   }
 
+  
 }
