@@ -9,29 +9,31 @@ class UserService{
 
     getUserByName = async (name) => {
         console.log("querry");
-        const rows = await this.runQuery("select * from PsUser where UserName like '%"+name+"%'");
+        const rows = await this.runQuery("select * from PsUser where UserName = ?", [name]);
         return rows
     }
 
     getSingleUser = async (id) => {
-        const row = await this.runQuery("select * from PsUser where UserId = '"+id+ "'");
+        const row = await this.runQuery("select * from PsUser where UserId = ?", id);
         return row;
     }
 
     createUser = async (user) => {
         await this.runQuery("insert into PsUser (UserName, Password, AnzahlBilder) values"+
-        "('"+user.name+"', '"+user.password+"', "+user.anzbilder+")");
+        "(?, ?, ?)",
+        [user.name,user.password,user.anzbilder]);
         return "INSERT Successfull";
     }
 
     updateUser = async (id, user) => {
         await this.runQuery("update PsUser set "+
-        "UserName = '"+user.name+"' WHERE UserId = "+id);
+        "UserName = ? WHERE UserId = ?",
+        [user.name, id]);
         return "UPDATE Successfull";
     }
 
     deleteUser = async (id) => {
-        await this.runQuery("delete from PsUser where UserId = "+id);
+        await this.runQuery("delete from PsUser where UserId = ?",[id]);
         return "DELETE Successfull";
     }
 
