@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
 
   }
-
-  login(): void {
+  
+  login() {
     var username: HTMLElement = document.getElementById('inputusername');
     var password: HTMLElement = document.getElementById('inputPassword');
 
@@ -38,6 +38,6 @@ export class LoginComponent implements OnInit {
     .subscribe(user => {
       this.userService.push(user)
     });
+    
   }
-
 }

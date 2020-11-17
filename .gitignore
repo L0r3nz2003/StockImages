@@ -6,6 +6,8 @@ build
 npm-debug.log
 .env
 .DS_Store
+.idea
+.github
 
 # NodeJS specific #
 .nyc_output/
