@@ -1,4 +1,5 @@
 const db = require("../database/mysql.js");
+const userManager = require("../controllers/user_manager.js");
 
 class UserService{
 
@@ -19,6 +20,7 @@ class UserService{
     }
 
     getUserByNameAndPassword = async (name, password) => {
+        password = passwordHash.generate(password);
         const row = await this.runQuery("select * from PsUser where UserName = ? and Password = ?", [name, password]);
         return row;
     }
@@ -26,7 +28,7 @@ class UserService{
     createUser = async (user) => {
         await this.runQuery("insert into PsUser (UserName, Password, AnzahlBilder) values"+
         "(?, ?, ?)",
-        [user.name,user.password,user.anzbilder]);
+        [user.name,passwordHash.generate(user.password),user.anzbilder]);
         return "INSERT Successfull";
     }
 

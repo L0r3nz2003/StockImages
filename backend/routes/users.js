@@ -1,6 +1,8 @@
 const express = require("express");
 const router  = express.Router();
-const userManager = require("../controllers/user_manager.js");
+
+
+const passwordHash = require('password-hash');
 
 router.get("/show", async (req, res) => {
   const result = await userManager.getAllUsers();
