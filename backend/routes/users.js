@@ -19,16 +19,17 @@ router.get("/showbyname/:name", async (req, res) => {
 
 router.get("/exists/:name/:password", async (req, res) => {
   const result = await userManager.checkIfUserExists(req.params.name, req.params.password);
-  if(result.lenght == 0) {
+  console.log(Object.keys(result).length);
+  if(Object.keys(result).length == 0) {
     res.status(404).send('Not found');
     return;
-}
+  }
   res.send(result);
+  
+  
 })
 
 router.post("/create", async (req, res) => {
-  //return res.send({"MEssage" : "CREATE"});
-
   const result = await userManager.createUser(req.body);
   res.send(result);
 });
