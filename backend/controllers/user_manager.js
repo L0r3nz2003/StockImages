@@ -16,6 +16,11 @@ class UserManagement{
         return user;
     }
 
+    checkIfUserExists = async (name, password) => {
+        const user = await userService.getUserByNameAndPassword(name, password);
+        return user;
+    }
+
     createUser = async (user) => {
         const meldung = await userService.createUser(user);
         return meldung;

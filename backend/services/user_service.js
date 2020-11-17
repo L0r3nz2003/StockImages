@@ -18,6 +18,11 @@ class UserService{
         return row;
     }
 
+    getUserByNameAndPassword = async (name, password) => {
+        const row = await this.runQuery("select * from PsUser where UserName = ? and Password = ?", [name, password]);
+        return row;
+    }
+
     createUser = async (user) => {
         await this.runQuery("insert into PsUser (UserName, Password, AnzahlBilder) values"+
         "(?, ?, ?)",
