@@ -17,18 +17,20 @@ router.get("/showbyname/:name", async (req, res) => {
   res.send(result);
 });
 
-router.get("/create", async (req, res) => {
+router.post("/create", async (req, res) => {
+  //return res.send({"MEssage" : "CREATE"});
+
   const result = await userManager.createUser(req.body);
   res.send(result);
 });
 
-router.get("/update/:id", async (req, res) => {
+router.put("/update/:id", async (req, res) => {
   const result = await userManager.updateUser(req.params.id, req.body);
   res.send(result);
 });
 
-router.get("/delete/:id", async (req, res) => {
-  console.log("test");
+router.delete("/delete/:id", async (req, res) => {
+  //return res.send({"massage": "works"});
   const result = await userManager.deleteUser(req.params.id);
   res.send(result);
 });
