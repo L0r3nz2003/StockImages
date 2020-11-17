@@ -1,0 +1,37 @@
+DELETE http://localhost:3000/users/delete/16
+content-type: application/json
+
+
+### Zweiter Befehl
+
+POST http://localhost:3000/users/create
+content-type: application/json
+
+{
+    "name": "sample",
+    "password": "xxxxxx",
+    "anzbilder": "2"
+}
+
+###  
+GET http://localhost:3000/users/show
+content-type: application/json
+
+###
+
+GET http://localhost:3000/users/show/14
+content-type: application/json
+
+###
+
+GET http://localhost:3000/users/showbyname/test
+content-type: application/json
+
+### 
+
+PUT http://localhost:3000/users/update/17
+content-type: application/json
+
+{
+    "name": "XXsampleXX"
+}
