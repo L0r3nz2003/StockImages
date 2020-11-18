@@ -1,6 +1,7 @@
+const e = require("express");
 const express = require("express");
 const router  = express.Router();
-
+const userManager = require("../controllers/user_manager");
 
 const passwordHash = require('password-hash');
 
@@ -38,6 +39,11 @@ router.post("/create", async (req, res) => {
 
 router.put("/update/:id", async (req, res) => {
   const result = await userManager.updateUser(req.params.id, req.body);
+  res.send(result);
+});
+
+router.put("/updatePassword/:name/:password", async (req, res) => {
+  const result = await userManager.updatePassword(req.params.name, req.params.password);
   res.send(result);
 });
 

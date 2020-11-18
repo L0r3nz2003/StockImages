@@ -1,6 +1,8 @@
 const db = require("../database/mysql.js");
 const userManager = require("../controllers/user_manager.js");
 
+const passwordHash = require("password-hash");
+
 class UserService{
 
     getAllUsers = async () => {
@@ -37,6 +39,12 @@ class UserService{
         "UserName = ? WHERE UserId = ?",
         [user.name, id]);
         return "UPDATE Successfull";
+    }
+
+    updatePassword = async (name, password) => {
+        await this.runQuery("update PsUser set Password = ? where UserName = ?", 
+        [passwordHash.generate(password), name]);
+        return "Password Update Successfull";
     }
 
     deleteUser = async (id) => {

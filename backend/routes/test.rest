@@ -41,3 +41,8 @@ content-type: application/json
 {
     "name": "XXsampleXX"
 }
+
+###
+
+PUT http://localhost:3000/users/updatePassword/test/test
+content-type: application/json
