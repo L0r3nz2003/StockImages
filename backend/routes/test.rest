@@ -27,6 +27,12 @@ content-type: application/json
 GET http://localhost:3000/users/showbyname/test
 content-type: application/json
 
+###
+
+GET http://localhost:3000/users/exists/test1/test
+content-type: application/json
+
+
 ### 
 
 PUT http://localhost:3000/users/update/17
@@ -35,3 +41,8 @@ content-type: application/json
 {
     "name": "XXsampleXX"
 }
+
+###
+
+PUT http://localhost:3000/users/updatePassword/test/test
+content-type: application/json

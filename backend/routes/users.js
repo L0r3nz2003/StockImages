@@ -1,6 +1,9 @@
+const e = require("express");
 const express = require("express");
 const router  = express.Router();
-const userManager = require("../controllers/user_manager.js");
+const userManager = require("../controllers/user_manager");
+
+const passwordHash = require('password-hash');
 
 router.get("/show", async (req, res) => {
   const result = await userManager.getAllUsers();
@@ -17,15 +20,30 @@ router.get("/showbyname/:name", async (req, res) => {
   res.send(result);
 });
 
-router.post("/create", async (req, res) => {
-  //return res.send({"MEssage" : "CREATE"});
+router.get("/exists/:name/:password", async (req, res) => {
+  const result = await userManager.checkIfUserExists(req.params.name, req.params.password);
+  console.log(Object.keys(result).length);
+  if(Object.keys(result).length == 0) {
+    res.status(404).send('Not found');
+    return;
+  }
+  res.send(result);
+  
+  
+})
 
+router.post("/create", async (req, res) => {
   const result = await userManager.createUser(req.body);
   res.send(result);
 });
 
 router.put("/update/:id", async (req, res) => {
   const result = await userManager.updateUser(req.params.id, req.body);
+  res.send(result);
+});
+
+router.put("/updatePassword/:name/:password", async (req, res) => {
+  const result = await userManager.updatePassword(req.params.name, req.params.password);
   res.send(result);
 });
 
