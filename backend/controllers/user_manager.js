@@ -16,9 +16,9 @@ class UserManagement{
         return user;
     }
 
-    checkIfUserExists = async (name, password) => {
-        const user = await userService.getUserByNameAndPassword(name, password);
-        return user;
+    checkIfUserExists = async (name) => {
+        const password = await userService.getUserByNameAndPassword(name);
+        return password;
     }
 
     createUser = async (user) => {
