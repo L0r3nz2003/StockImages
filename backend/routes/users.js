@@ -3,7 +3,8 @@ const express = require("express");
 const router  = express.Router();
 const userManager = require("../controllers/user_manager");
 
-const passwordHash = require('password-hash');
+const passwordHash = require("bcrypt");
+const saltRounds = 10;
 
 router.get("/show", async (req, res) => {
   const result = await userManager.getAllUsers();
@@ -21,15 +22,14 @@ router.get("/showbyname/:name", async (req, res) => {
 });
 
 router.get("/exists/:name/:password", async (req, res) => {
-  const result = await userManager.checkIfUserExists(req.params.name, req.params.password);
-  console.log(Object.keys(result).length);
-  if(Object.keys(result).length == 0) {
+  const password = await userManager.checkIfUserExists(req.params.name);
+  const match = await passwordHash.compare(String(req.params.password), String(password[0].Password));
+  if(!match) {
     res.status(404).send('Not found');
     return;
   }
+  const result = await userManager.getUserByName(req.params.name);
   res.send(result);
-  
-  
 })
 
 router.post("/create", async (req, res) => {
@@ -43,7 +43,8 @@ router.put("/update/:id", async (req, res) => {
 });
 
 router.put("/updatePassword/:name/:password", async (req, res) => {
-  const result = await userManager.updatePassword(req.params.name, req.params.password);
+  const password = await passwordHash.hash(req.params.password, saltRounds);
+  const result = await userManager.updatePassword(req.params.name, password);
   res.send(result);
 });
 

@@ -27,9 +27,9 @@ content-type: application/json
 GET http://localhost:3000/users/showbyname/test
 content-type: application/json
 
-###
+### 
 
-GET http://localhost:3000/users/exists/test1/test
+GET http://localhost:3000/users/exists/test/test
 content-type: application/json
 
 

@@ -1,7 +1,7 @@
 const db = require("../database/mysql.js");
 const userManager = require("../controllers/user_manager.js");
 
-const passwordHash = require("password-hash");
+
 
 class UserService{
 
@@ -21,16 +21,15 @@ class UserService{
         return row;
     }
 
-    getUserByNameAndPassword = async (name, password) => {
-        password = passwordHash.generate(password);
-        const row = await this.runQuery("select * from PsUser where UserName = ? and Password = ?", [name, password]);
-        return row;
+    getUserByNameAndPassword = async (name) => {
+        const pw = await this.runQuery("select Password from PsUser where UserName = ?", [name]);
+        return pw;
     }
 
     createUser = async (user) => {
         await this.runQuery("insert into PsUser (UserName, Password, AnzahlBilder) values"+
         "(?, ?, ?)",
-        [user.name,passwordHash.generate(user.password),user.anzbilder]);
+        [user.name,user.password,user.anzbilder]);
         return "INSERT Successfull";
     }
 
@@ -43,7 +42,7 @@ class UserService{
 
     updatePassword = async (name, password) => {
         await this.runQuery("update PsUser set Password = ? where UserName = ?", 
-        [passwordHash.generate(password), name]);
+        [password, name]);
         return "Password Update Successfull";
     }
 
