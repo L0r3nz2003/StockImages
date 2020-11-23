@@ -1,8 +1,24 @@
-DELETE http://localhost:3000/users/delete/21
+
+###  Get all users
+GET http://localhost:3000/users/show
 content-type: application/json
 
+### Get user by id
 
-### Zweiter Befehl
+GET http://localhost:3000/users/show/2
+content-type: application/json
+
+### Get user by name
+
+GET http://localhost:3000/users/showbyname/test
+content-type: application/json
+
+### Get user if exists    /username/password
+
+GET http://localhost:3000/users/exists/test/test
+content-type: application/json
+
+### Create new user
 
 POST http://localhost:3000/users/create
 content-type: application/json
@@ -13,27 +29,7 @@ content-type: application/json
     "anzbilder": "2"
 }
 
-###  
-GET http://localhost:3000/users/show
-content-type: application/json
-
-###
-
-GET http://localhost:3000/users/show/2
-content-type: application/json
-
-###
-
-GET http://localhost:3000/users/showbyname/test
-content-type: application/json
-
-### 
-
-GET http://localhost:3000/users/exists/test/test
-content-type: application/json
-
-
-### 
+### Update user compete
 
 PUT http://localhost:3000/users/update/17
 content-type: application/json
@@ -42,7 +38,25 @@ content-type: application/json
     "name": "XXsampleXX"
 }
 
-###
+### Update username   /oldname/newname
+
+PUT http://localhost:3000/users/updateName/testadsfasd/test1234
+content-type: application/json
+
+### Update user password /username/newpassword
 
 PUT http://localhost:3000/users/updatePassword/test/test
+content-type: application/json
+
+### Update user anzahlBilder /username/newanzahlBilder
+
+PUT http://localhost:3000/users/updatebilder/sample/12
+content-type: application/json
+
+### user delete by id
+DELETE http://localhost:3000/users/deletebyid/22
+content-type: application/json
+
+### user delete by username
+DELETE http://localhost:3000/users/deletebyname/1 == 1
 content-type: application/json

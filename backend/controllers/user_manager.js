@@ -36,8 +36,23 @@ class UserManagement{
         return meldung;
     }
 
-    deleteUser = async (id) => {
-        const meldung = await userService.deleteUser(id);
+    updateName = async (oldname, newname) => {
+        const meldung = await userService.updateName(oldname, newname);
+        return meldung;
+    }
+
+    updateAnzBild = async (name, newAnz) => {
+        const meldung = await userService.updateAnzBilder(name, newAnz);
+        return meldung;
+    }
+
+    deleteUserById = async (id) => {
+        const meldung = await userService.deleteUserById(id);
+        return meldung;
+    }
+
+    deleteUserByName = async (name) => {
+        const meldung = await userService.deleteUserByName(name);
         return meldung;
     }
 
