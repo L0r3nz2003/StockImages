@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { isNullOrUndefined } from 'util';
+import {Component, OnInit} from '@angular/core';
+import {isNullOrUndefined} from 'util';
 
-import { User } from '../interfaces/user';
-import { UserService } from '../user.service';
+import {User} from '../interfaces/user';
+import {UserService} from '../user.service';
+import {cwd} from 'process';
 
 @Component({
   selector: 'app-login',
@@ -12,39 +13,41 @@ import { UserService } from '../user.service';
 export class LoginComponent implements OnInit {
   //users: User[];
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {
+  }
 
   ngOnInit(): void {
 
   }
 
-  login() {
-    var username: HTMLElement = document.getElementById('inputusername');
-    var password: HTMLElement = document.getElementById('inputPassword');
+  async login(name: any, password: any) {
 
-    if(isNullOrUndefined(username.innerHTML.length) || username.innerHTML.length == 0) {
-        	username.style.borderColor = "red";
-        return;
+    name.style.borderColor = "";
+    password.style.borderColor = "";
+
+    if (isNullOrUndefined(name.value) || !name.validity.valid) {
+      name.style.borderColor = "red";
+      document.getElementById("error_username").innerHTML = "Gebe einen gültigen Namen an!";
+      return;
     }
 
-    if(isNullOrUndefined(password.innerHTML.length) || password.innerHTML.length == 0) {
-          username.style.borderColor = "red";
-        return;
+    if (isNullOrUndefined(password.value) || !password.validity.valid) {
+      password.style.borderColor = "red";
+      document.getElementById("error_password").innerHTML = "Gebe ein 8 Stelliges Passwort ein!";
+      return;
     }
 
-    //TODO Backend login
 
-
-
-  }
-  login(name: string):void {
-    alert(name);
-    /*if(!name){return;}
-    this.userService.getUserByName(name)
-    .subscribe(user => {
-      this.users.push(user)
-    })*/;
+    if (await this.userService.isMatch(name.value, password.value)) {
+      alert("Du wurdest angemeldet. //TODO");
+    } else {
+      name.style.borderColor = "red";
+      document.getElementById("error_username").innerHTML = "Benutzername/Passwort falsch!";
+      document.getElementById("error_password").innerHTML = "Benutzername/Passwort falsch!";
+      password.style.borderColor = "red";
+    }
 
   }
+
 
 }
