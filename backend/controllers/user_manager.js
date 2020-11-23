@@ -26,7 +26,7 @@ class UserManagement{
         return meldung;
     }
 
-     updateUser = async (id, user) => {
+    updateUser = async (id, user) => {
         const meldung = await userService.updateUser(id, user);
         return meldung;
     }
