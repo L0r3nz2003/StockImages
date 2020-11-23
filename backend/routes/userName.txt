@@ -1,6 +1,6 @@
 UserName         |   Password
 -----------------|---------------
-test             |   test
+test             |   testtest
 Hans             |   Hans1234
 lorenz           |   Lorenz1234
 LorenzTestUser   |   TestUser

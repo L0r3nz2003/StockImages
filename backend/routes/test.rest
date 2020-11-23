@@ -45,7 +45,7 @@ content-type: application/json
 
 ### Update user password /username/newpassword
 
-PUT http://localhost:3000/users/updatePassword/Hans/Hans1234
+PUT http://localhost:3000/users/updatePassword/test/testtest
 content-type: application/json
 
 ### Update user anzahlBilder /username/newanzahlBilder
