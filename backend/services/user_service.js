@@ -46,8 +46,25 @@ class UserService{
         return "Password Update Successfull";
     }
 
-    deleteUser = async (id) => {
+    updateName = async (oldname, newname) => {
+        await this.runQuery("update PsUser set Username = ? where UserName = ?", 
+        [newname, oldname]);
+        return "UserName Update Successfull";
+    }
+
+    updateAnzBilder = async (name, newAnz) => {
+        await this.runQuery("update PsUser set AnzahlBilder = ? where UserName = ?", 
+        [newAnz, name]);
+        return "AnzBilder Update Successfull";
+    }
+
+    deleteUserById = async (id) => {
         await this.runQuery("delete from PsUser where UserId = ?",[id]);
+        return "DELETE Successfull";
+    }
+
+    deleteUserByName = async (Name) => {
+        await this.runQuery("delete from PsUser where UserName = ?",[Name]);
         return "DELETE Successfull";
     }
 
