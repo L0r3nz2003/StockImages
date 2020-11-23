@@ -1,7 +1,8 @@
 const db = require("../database/mysql.js");
 const userManager = require("../controllers/user_manager.js");
 
-
+const passwordHash = require("bcrypt");
+const saltRounds = 10;
 
 class UserService{
 
@@ -29,7 +30,8 @@ class UserService{
     createUser = async (user) => {
         await this.runQuery("insert into PsUser (UserName, Password, AnzahlBilder) values"+
         "(?, ?, ?)",
-        [user.name,user.password,user.anzbilder]);
+        [user.name,await passwordHash.hash(user.password, saltRounds),user.anzbilder]);
+        
         return "INSERT Successfull";
     }
 

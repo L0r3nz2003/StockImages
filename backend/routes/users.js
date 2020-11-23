@@ -8,6 +8,10 @@ const saltRounds = 10;
 
 router.get("/show", async (req, res) => {
   const result = await userManager.getAllUsers();
+  if(Object.keys(result).length == 0){
+    res.status(404).send('Not found');
+    return;
+  }
   res.send(result);
 });
 

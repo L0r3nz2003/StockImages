@@ -10,7 +10,7 @@ content-type: application/json
 
 ### Get user by name
 
-GET http://localhost:3000/users/showbyname/test
+GET http://localhost:3000/users/showbyname/LorenzTestUser
 content-type: application/json
 
 ### Get user if exists    /username/password
@@ -24,9 +24,9 @@ POST http://localhost:3000/users/create
 content-type: application/json
 
 {
-    "name": "xx",
-    "password": "xxxxxx",
-    "anzbilder": "2"
+    "name": "DasIstEinTestUser",
+    "password": "DasIstEinTest",
+    "anzbilder": "0"
 }
 
 ### Update user compete
@@ -40,12 +40,12 @@ content-type: application/json
 
 ### Update username   /oldname/newname
 
-PUT http://localhost:3000/users/updateName/testadsfasd/test1234
+PUT http://localhost:3000/users/updateName/test/test12
 content-type: application/json
 
 ### Update user password /username/newpassword
 
-PUT http://localhost:3000/users/updatePassword/test/test
+PUT http://localhost:3000/users/updatePassword/Hans/Hans1234
 content-type: application/json
 
 ### Update user anzahlBilder /username/newanzahlBilder
@@ -54,9 +54,9 @@ PUT http://localhost:3000/users/updatebilder/sample/12
 content-type: application/json
 
 ### user delete by id
-DELETE http://localhost:3000/users/deletebyid/22
+DELETE http://localhost:3000/users/deletebyid/
 content-type: application/json
 
 ### user delete by username
-DELETE http://localhost:3000/users/deletebyname/1 == 1
+DELETE http://localhost:3000/users/deletebyname/Hans1
 content-type: application/json
