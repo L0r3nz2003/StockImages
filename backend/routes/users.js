@@ -40,6 +40,11 @@ router.get("/exists/:name/:password", async (req, res) => {
 })
 
 router.post("/create", async (req, res) => {
+  const person = await userManager.getUserByName(req.body.name);
+  if(Object.keys(person).length == 1){
+    res.send("User exestiert bereits");
+    return;
+  }
   const result = await userManager.createUser(req.body);
   res.send(result);
 });

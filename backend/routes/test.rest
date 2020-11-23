@@ -1,4 +1,4 @@
-DELETE http://localhost:3000/users/delete/16
+DELETE http://localhost:3000/users/delete/21
 content-type: application/json
 
 
@@ -8,7 +8,7 @@ POST http://localhost:3000/users/create
 content-type: application/json
 
 {
-    "name": "sample",
+    "name": "xx",
     "password": "xxxxxx",
     "anzbilder": "2"
 }
@@ -29,7 +29,7 @@ content-type: application/json
 
 ### 
 
-GET http://localhost:3000/users/exists/test1/test
+GET http://localhost:3000/users/exists/test/test
 content-type: application/json
 
 
