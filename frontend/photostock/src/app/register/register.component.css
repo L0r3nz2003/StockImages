@@ -1,0 +1,67 @@
+#header {
+  text-align: center;
+}
+.login-form {
+  position: relative;
+  padding-top: 5%;
+  text-align: center;
+  max-width: 50%;
+  margin: auto;
+  height: 50px;
+}
+
+form {
+  position: relative;
+  margin: auto;
+  position: absolute;
+  left: 25%;
+  width: 75%;
+  text-align: center;
+}
+
+#inputusername {
+  position: absolute;
+  left: 50%;
+  transform: translate(0,5px);
+}
+#inputPassword {
+  position: absolute;
+  left: 50%;
+  transform: translate(0,8px);
+}
+
+#inputPasswordrepeat {
+  position: absolute;
+  left: 50%;
+  transform: translate(0,11px);
+}
+
+.error {
+  text-align: left;
+  font-size: 12px;
+  color:red;
+  width: 100%;
+  position: absolute;
+  transform: translate(150px,40px);
+}
+
+
+form button {
+  background-color: #00fa05;
+  border: none;
+  width: 200px;
+  height: 50px;
+  animation: loginbutton 3s linear 1s infinite alternate;
+  transform: translate(0,50px);
+  box-shadow: 0 10px 15px rgba(145, 92, 182, .3);
+}
+
+@keyframes loginbutton {
+
+  0%, 100% {
+    background-color: #00fa05;
+  }
+  50% {
+    background-color: #0fa413;
+  }
+}

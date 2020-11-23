@@ -16,13 +16,15 @@
         <form>
             <div class="form-group row">
                 <label for="inputusername" class="col-sm-2 col-form-label">Username</label>
-                <div class="c">
+                <div class="col-sm-4">
+                  <div class="error" id="error_username"></div>
                   <input #userName type="text" class="form-control" id="inputusername" required minlength="8" maxlength="30">
                 </div>
               </div>
               <div class="form-group row" style="size: 30px;">
-                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                <div class="col-sm-10">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-4">
+                  <div class="error" id="error_password"></div>
                   <input #pass type="password" class="form-control" id="inputPassword" minlength="8" maxlength="30" required>
                 </div>
               </div>

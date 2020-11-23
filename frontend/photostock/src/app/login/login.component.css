@@ -4,6 +4,7 @@
 .login-form {
     position: relative;
     padding-top: 5%;
+    text-align: center;
     max-width: 50%;
     margin: auto;
     height: 50px;
@@ -12,8 +13,32 @@
 form {
     position: relative;
     margin: auto;
+    position: absolute;
+    left: 25%;
+    width: 75%;
     text-align: center;
 }
+
+#inputusername {
+  position: absolute;
+  left: 50%;
+  transform: translate(0,5px);
+}
+#inputPassword {
+  position: absolute;
+  left: 50%;
+  transform: translate(0,8px);
+}
+
+.error {
+  text-align: left;
+  font-size: 12px;
+  color:red;
+  width: 100%;
+  position: absolute;
+  transform: translate(110px,40px);
+}
+
 
 form button {
     background-color: #0349fc;
@@ -21,6 +46,7 @@ form button {
     width: 200px;
     height: 50px;
     animation: loginbutton 3s linear 1s infinite alternate;
+   transform: translate(0,50px);
     box-shadow: 0 10px 15px rgba(145, 92, 182, .3);
 }
 
