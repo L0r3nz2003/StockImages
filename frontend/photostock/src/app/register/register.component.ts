@@ -23,10 +23,20 @@ export class RegisterComponent implements OnInit {
     document.getElementById("error_username").innerHTML = "";
     document.getElementById("error_password").innerHTML = "";
 
+    name.style.borderColor = "";
+    password.style.borderColor = "";
+    password_repeat.style.borderColor = "";
+
 
     if (!name.validity.valid) {
       name.style.borderColor = "red";
       document.getElementById("error_username").innerHTML = "Gebe einen gültigen Namen an!";
+      return;
+    }
+
+    if(name.value.indexOf(' ') >= 0) {
+      name.style.borderColor = "red";
+      document.getElementById("error_username").innerHTML = "Der Name enthält ungültige Zeichen!";
       return;
     }
 
@@ -45,6 +55,7 @@ export class RegisterComponent implements OnInit {
     if(password_repeat.value !== password.value) {
       password_repeat.style.borderColor = "red";
       document.getElementById("error_password_repeat").innerHTML = "Das Passwort stimmt nicht überein!";
+      return;
     }
 
     if(this.userService.isNameInUse(name.value)) {
@@ -55,9 +66,7 @@ export class RegisterComponent implements OnInit {
 
     const user: User = {name: name.value, password: password.value, anzBilder: 0};
     this.userService.addUser(user).subscribe(user => alert(user.password));
-
-
-
+    document.getElementById('id01').style.display="block";
   }
 
 }

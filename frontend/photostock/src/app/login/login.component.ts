@@ -24,10 +24,18 @@ export class LoginComponent implements OnInit {
 
     name.style.borderColor = "";
     password.style.borderColor = "";
+    document.getElementById("error_username").innerHTML = "";
+    document.getElementById("error_password").innerHTML = "";
 
     if (isNullOrUndefined(name.value) || !name.validity.valid) {
       name.style.borderColor = "red";
       document.getElementById("error_username").innerHTML = "Gebe einen gültigen Namen an!";
+      return;
+    }
+
+    if(name.value.indexOf(' ') >= 0) {
+      name.style.borderColor = "red";
+      document.getElementById("error_username").innerHTML = "Der Name enthält ungültige Zeichen!";
       return;
     }
 
@@ -39,7 +47,7 @@ export class LoginComponent implements OnInit {
 
 
     if (await this.userService.isMatch(name.value, password.value)) {
-      alert("Du wurdest angemeldet. //TODO");
+      document.getElementById('id01').style.display="block";
     } else {
       name.style.borderColor = "red";
       document.getElementById("error_username").innerHTML = "Benutzername/Passwort falsch!";
