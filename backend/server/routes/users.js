@@ -55,6 +55,7 @@ router.get("/exists/:name/:password", async (req, res) => {
 // erfordert ganzes user objekt
 // wenn user schon vorhanden
 // => Fehler 404 User already exists
+
 router.post("/create", async (req, res) => {
   const person = await userManager.getUserByName(req.body.name);
   if(Object.keys(person).length == 1){
