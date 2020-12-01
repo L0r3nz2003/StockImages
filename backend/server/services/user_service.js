@@ -28,9 +28,9 @@ class UserService{
     }
 
     createUser = async (user) => {
-        await this.runQuery("insert into PsUser (UserName, Password, AnzahlBilder) values"+
+        await this.runQuery("insert into PsUser (UserName, Password, Pics) values"+
         "(?, ?, ?)",
-        [user.name,await passwordHash.hash(user.password, saltRounds),user.anzBilder]);
+        [user.name,await passwordHash.hash(user.password, saltRounds),user.pics]);
 
         return "INSERT Successfull";
     }
@@ -55,7 +55,7 @@ class UserService{
     }
 
     updateAnzBilder = async (name, newAnz) => {
-        await this.runQuery("update PsUser set AnzahlBilder = ? where UserName = ?",
+        await this.runQuery("update PsUser set Pics = ? where UserName = ?",
         [newAnz, name]);
         return "AnzBilder Update Successfull";
     }

@@ -70,12 +70,9 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_ID   : String [1] 
+    SUCH_ID   
 ```
-```javaScript
-    [1] Values:
-        - "id"              : "Genau der User mit dieser id"  
-```
+
 ### Rückgabe
 ### Erfolg
 
@@ -122,12 +119,9 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_NAME   : String [1] 
+    SUCH_NAME   
 ```
-```javaScript
-    [1] Values:
-        - "name"              : "Genau der User mit diesem Name"  
-```
+
 ### Rückgabe
 ### Erfolg
 
@@ -173,15 +167,10 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_NAME       : String [1]
-    SUCH_PASSWORT   : String [2]
+    SUCH_NAME       
+    SUCH_PASSWORT   
 ```
-```javaScript
-    [1] Values:
-        - "name"              : "Name des Users"  
-    [2] Values:
-        - "passwort"          : "Passwort des Users"
-```
+
 ### Rückgabe
 ### Erfolg
 
