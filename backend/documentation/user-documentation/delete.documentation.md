@@ -17,12 +17,9 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_ID       : String [1]
+    SUCH_ID       
 ```
-```javaScript
-    [1] Values:
-        - "id"                  : "Genau der User mit dieser id"  
-```
+
 ### Rückgabe
 ### Erfolg
 
@@ -49,12 +46,9 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_NAME       : String [1]
+    SUCH_NAME       
 ```
-```javaScript
-    [1] Values:
-        - "name"                  : "Genau der User mit diesem Namen"  
-```
+
 ### Rückgabe
 ### Erfolg
 

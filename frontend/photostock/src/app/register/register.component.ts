@@ -67,7 +67,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    const user: User = {name: name.value, password: password.value, anzBilder: 0};
+    const user: User = {name: name.value, password: password.value, pics: 0};
     this.userService.addUser(user).subscribe(user => alert(user.password));
     document.getElementById('id01').style.display="block";
   }

@@ -17,12 +17,9 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_ID   : String [1] 
+    SUCH_ID   
 ```
-```javaScript
-    [1] Values:
-        - "id"              : "Genau der User mit dieser id"  
-```
+
 ### Rückgabe
 ### Erfolg
 
@@ -50,15 +47,10 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_NAME       : String [1] 
-    NEUES_PASSWORT  : String [2] 
+    SUCH_NAME        
+    NEUES_PASSWORT  
 ```
-```javaScript
-    [1] Values:
-        - "name"                  : "Genau der User mit diesem name"  
-    [2] Values:
-        - "passwort"              : "das neue Passwort"  
-```
+
 ### Rückgabe
 ### Erfolg
 ```javascript
@@ -85,15 +77,10 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_OLDNAME       : String [1] 
-    SUCH_NEWNAME       : String [2] 
+    SUCH_OLDNAME       
+    SUCH_NEWNAME        
 ```
-```javaScript
-    [1] Values:
-        - "oldname"                  : "Genau der User mit diesem name"  
-    [2] Values:
-        - "newname"                  : "der neue Username des Users"  
-```
+
 ### Rückgabe
 ### Erfolg
 ```javascript
@@ -120,14 +107,8 @@
 ```
 ### Parameter
 ```javaScript
-    SUCH_NAME            : String [1] 
-    SUCH_ANZBILDER       : String [2] 
-```
-```javaScript
-    [1] Values:
-        - "name"                          : "Genau der User mit diesem name"  
-    [2] Values:
-        - "neue anzahl Bilder"            : "die neue anzahl der Bilder des betsimmten Users"  
+    SUCH_NAME            
+    SUCH_ANZBILDER        
 ```
 ### Rückgabe
 ### Erfolg
