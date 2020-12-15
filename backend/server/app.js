@@ -23,6 +23,7 @@ app.use(function(req,res, next) {
  // routen
 app.use("/",        require("./routes/index"));
 app.use("/users",   require("./routes/users"));
+app.use("/img",   require("./routes/image"));
 
 
 const PORT = process.env.PORT || 3000;

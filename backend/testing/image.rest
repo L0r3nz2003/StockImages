@@ -1,0 +1,7 @@
+POST http://localhost:3000/img/upload
+content-type: application/json
+
+###
+POST http://localhost:3000/img/download
+content-type: application/json
+
