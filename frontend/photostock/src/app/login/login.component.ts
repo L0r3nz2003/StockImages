@@ -13,7 +13,10 @@ import {cwd} from 'process';
 export class LoginComponent implements OnInit {
   //users: User[];
 
+  name;
+
   constructor(private userService: UserService) {
+
   }
 
   ngOnInit(): void {
@@ -47,6 +50,7 @@ export class LoginComponent implements OnInit {
 
 
     if (await this.userService.isMatch(name.value, password.value)) {
+      this.name = name.value;
       document.getElementById('id01').style.display="block";
     } else {
       name.style.borderColor = "red";

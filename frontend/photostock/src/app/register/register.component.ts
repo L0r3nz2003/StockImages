@@ -13,6 +13,8 @@ export class RegisterComponent implements OnInit {
   err_message_username: string = "";
   err_message_password: string = "";
   err_message_password_repeat: string = "";
+  name: string;
+  hide: boolean = true;
 
   constructor(private userService: UserService) {
    }
@@ -69,7 +71,8 @@ export class RegisterComponent implements OnInit {
 
     const user: User = {name: name.value, password: password.value, pics: 0};
     this.userService.addUser(user).subscribe(user => alert(user.password));
-    document.getElementById('id01').style.display="block";
+    this.name = name;
+    this.hide = false;
   }
 
 }

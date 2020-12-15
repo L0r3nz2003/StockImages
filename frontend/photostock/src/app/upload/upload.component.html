@@ -10,40 +10,20 @@
   <h2>Lade deine unvergesslichen Momente hoch</h2>
 </div>
 
-<div class="file button">
-    <input type="file" name="file" value="Upload" /><p style="padding: 0; margin: 0; display: table-cell;">Hochladen</p>
+<div class="select">
+  <input
+    style="display: none"
+    type="file" (change)="onFileChanged($event)"
+    #fileInput>
+  <button (click)="fileInput.click()">Select File</button>
+</div>
+
+<div id="upload">
+  <p style="color: gray; opacity: 0.5">{{file_name}}</p>
+  <button (click)="onUpload()" class="btn btn-primary btn-lg">Upload!</button>
 </div>
 
 
 
-<!--FIXME funktionockelt noch nicht-->
-<div>
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img class="d-block w-100 img" src="https://cdn.pixabay.com/photo/2013/10/02/23/03/dawn-190055_960_720.jpg" alt="First slide">
-      </div>
-      <div class="carousel-item">
-        <img class="d-block w-100 img" src="https://cdn.pixabay.com/photo/2016/08/09/21/54/yellowstone-national-park-1581879_960_720.jpg" alt="Second slide">
-      </div>
-      <div class="carousel-item">
-        <img class="d-block w-100 img" src="https://cdn.pixabay.com/photo/2013/10/02/23/03/dawn-190055_960_720.jpg" alt="Third slide">
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-</div>
 
 </body>

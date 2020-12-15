@@ -2,25 +2,29 @@
     text-align: center;
 }
 
-div {
-    position: relative;
-    overflow: hidden;
-  }
+.select {
+  position: relative;
+  padding-top: 100px;
+  width: 100%;
+  height: 200px;
+}
+
+#upload {
+  position: relative;
+  padding-top: 100px;
+  width: 100%;
+  height: 200px;
+}
+
+
+.select, input {
+  text-align: center;
+}
+
+#upload, button {
+  text-align: center;
+}
+
   input {
     opacity: 0;
-  }
-
-  .button {
-    text-align: center;
-    justify-content: center;
-    margin-left: auto;
-    margin-right: auto;
-    display: table;
-  }
-  
-.img {
-  position: relative;
-    width: 20%;
-    height: 0;
-    padding-bottom: 20%;
   }

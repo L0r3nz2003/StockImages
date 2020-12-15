@@ -9,7 +9,21 @@ import { Router } from '@angular/router';
 })
 
 export class UploadComponent {
+  selectedFile: File;
+  file_name: string;
 
-  constructor(private router: Router) {}
-  name = 'LUL';
+  constructor(private router: Router) {
+    this.file_name = 'No File selected!';
+  }
+
+
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
+    this.file_name = this.selectedFile.name;
+  }
+
+  onUpload() {
+
+
+  }
 }
