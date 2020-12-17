@@ -1,5 +1,10 @@
 POST http://localhost:3000/img/upload
-content-type: application/json
+content-type: image/jpg
+{
+    "name":"hans.jpg"
+}
+
+
 
 ###
 POST http://localhost:3000/img/download
