@@ -1,9 +1,11 @@
 const e = require("express");
-const express = require("express-fileupload");
+const express = require("express");
 const router  = express.Router();
 const imageManager = require("../controllers/image_manager");
 
+const fileUpload = require("express-fileupload");
 
+router.use(fileUpload());
 
 //upload
 router.post("/upload", async (req, res) => {
