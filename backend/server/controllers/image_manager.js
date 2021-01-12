@@ -1,4 +1,4 @@
-var fs = require('file-system');
+const fs = require('file-system');
 const dropboxV2Api = require('dropbox-v2-api');
 
 const dropbox = dropboxV2Api.authenticate({

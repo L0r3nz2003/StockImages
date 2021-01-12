@@ -12,7 +12,6 @@ class UserService{
     }
 
     getUserByName = async (name) => {
-        console.log("querry");
         const rows = await this.runQuery("select * from PsUser where UserName = ?", [name]);
         return rows
     }

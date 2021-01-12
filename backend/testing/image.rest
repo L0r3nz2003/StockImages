@@ -1,12 +1,1 @@
-POST http://localhost:3000/img/upload
-content-type: image/jpg
-{
-    "name":"hans.jpg"
-}
-
-
-
-###
-POST http://localhost:3000/img/download
-content-type: application/json
 
