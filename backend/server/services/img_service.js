@@ -33,11 +33,27 @@ class ImgService {
     }
 
 
+    deleteImgById = async (id) => {
+        await this.runQuery("delete from PsImage where id = ?", [id]);
+        return "Delete Successfull";
+    }
+
+    deleteImgByUserId = async (userId) => {
+        await this.runQuery("delete from PsImage where userId = ?", [userId]);
+        return "Delete Successfull";
+    }
+
+    runQuery = async (str, replacements) => {
+        return new Promise(resolve => {
+            db.query(str, replacements, (err, rows) => {
+                if (err) rejects(err.toString())
+                resolve(rows);
+            })
+        });
+    }
 
 
 }
-
-
 
 
 module.exports = new ImageService();
