@@ -9,10 +9,9 @@ router.use(fileUpload());
 
 //upload
 router.post("/upload", async (req, res) => {
-    const file = req.files;
-    console.log("-- Testen ---")
-    console.log(file);
-    res.send("upload")
+    if(req.files){
+        console.log("Filename: " + req.files.file.name);
+    }
 
 });
 
