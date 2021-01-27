@@ -10,8 +10,10 @@ router.use(fileUpload());
 //upload
 router.post("/upload", async (req, res) => {
     if(req.files){
-        console.log("Filename: " + req.files.file.name);
+        const file = req.files.file;
+        imageManager.uploadImage(file, "Das ist ein Test", 31);
     }
+    res.send("Upload");
 
 });
 

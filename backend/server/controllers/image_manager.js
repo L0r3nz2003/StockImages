@@ -1,35 +1,50 @@
 const fs = require('file-system');
-const dropboxV2Api = require('dropbox-v2-api');
+const Dropbox = require("dropbox").Dropbox
+const imgService = require("../services/img_service");
 
-const dropbox = dropboxV2Api.authenticate({
-    token: 'Lu3ZPqppFmkAAAAAAAAAAWQDruKwvjzUamxFx1tycMP6gNSQ2ehhhh__ml8UKMcU'
-});
+
+
+const dbx = new Dropbox({
+    accessToken:
+        'Lu3ZPqppFmkAAAAAAAAAAWQDruKwvjzUamxFx1tycMP6gNSQ2ehhhh__ml8UKMcU'
+  });
+
 
 
 class ImageManagement{
+    
 
-    uploadImage = async (localpathName, cloudpath) => {
-        dropbox({
-            resource: 'files/upload',
-            parameters: {
-                path: cloudpath
-            },
-            readStream: fs.createReadStream(localpathName)
-        }, (err, result, response) => {
-            //upload completed
-        });
+    uploadImage = async (image, beschreibung, userId) => {
+        const oldFilename = image.name;
+        const uploadTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        console.log(uploadTime);
+        //uploadTime = uploadTime.this.toYMD();
+        
+
+        await imgService.createImg(oldFilename, uploadTime, beschreibung, userId);
+
+        const newImgName = await imgService.getImgId(oldFilename, userId, uploadTime);
+        image.name = newImgName[0].id+'.jpg';
+
+        console.log("upload start....");
+        dbx.filesUpload({
+            path: `/dropbox/${image.name}`,
+            contents: image.data
+        })
+        .then(response => {
+            //console.log(response);
+          })
+          .catch(err => {
+            //console.log(err);
+          });
+        console.log("upload ende");
+        
     }
 
     downloadImage = async (localpathName, cloudpath) => {
-        dropbox({
-            resource: 'files/download',
-            parameters: {
-                path: cloudpath
-            }
-        }, (err, result, response) => {
-            //download completed
-        })
-        .pipe(fs.createWriteStream(localpathName));
+        console.log("download start....");
+        // TODO 
+        console.log("download ende");
     }
 
 
