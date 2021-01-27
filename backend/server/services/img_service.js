@@ -17,17 +17,22 @@ class ImgService {
         const row = await this.runQuery("select * from PsImage where userId = ?", userid);
         return row;
     }
+    getImgId = async (fileName, userId, timestamp) => {
+        const row = await this.runQuery("select id from PsImage where FileName = ? and userId = ? and uploadTime = ?",
+        [fileName, userId, timestamp]);
+        return row;
+    }
 
-    createImg = async (img) => {
-        await this.runQuery("insert into PsImage (uplaodTime, beschreibung, userId) values"+
-        "(?, ?, ?)",
-        [img.time, img.beschreibung, img.userid]);
+    createImg = async (fileName, uploadTime, beschreibung, userId) => {
+        await this.runQuery("insert into PsImage (FileName, uploadTime, beschreibung, userId) values"+
+        "(?, ?, ?, ?)",
+        [fileName, uploadTime, beschreibung, userId]);
         return "INSERT Successfull";
     }
 
     updateImg = async (id, img) => {
-        await this.runQuery("update  PsImage set uplaodTime = ?, beschreibung = ?, userId = ?  where id = ?"+
-        "(?, ?, ?)",
+        await this.runQuery("update  PsImage set FileName = ?, uplaodTime = ?, beschreibung = ?, userId = ?  where id = ?"+
+        "(?, ?, ?, ?)",
         [img.time, img.beschreibung, img.userid, id]);
         return "UPDATE Successfull";
     }
@@ -56,4 +61,4 @@ class ImgService {
 }
 
 
-module.exports = new ImageService();
+module.exports = new ImgService();
