@@ -1,3 +1,4 @@
+const { response } = require('express');
 const fs = require('file-system');
 const Dropbox = require("dropbox").Dropbox
 const imgService = require("../services/img_service");
@@ -41,13 +42,30 @@ class ImageManagement{
         
     }
 
-    downloadImage = async (localpathName, cloudpath) => {
-        console.log("download start....");
-        // TODO 
-        console.log("download ende");
+    downloadImage = async () => {
+        const id = 16;
+        var file = "";
+
+        await dbx.filesDownload({path: `/dropbox/${id+ ".jpg"}`})
+                .then(function(response) {
+            file = response.result;
+        })
+        .catch(function(error) {
+            console.error(error);
+        });
+        return file;
     }
 
+    deleteImage = async () => {
+        const id = 15;
+        dbx.filesDelete({path: `/dropbox/${id+ ".jpg"}`})
+        .catch(function(error) {
+            console.error(error);
+        });
 
+        console.log("deleted");
+
+    }
 
 
 }

@@ -17,10 +17,25 @@ router.post("/upload", async (req, res) => {
 
 });
 
-router.post("/download", async (req, res) => {
+// download
+router.get("/download", async (req, res) => {
+    console.log(req.query.id);
+    const file = await imageManager.downloadImage(16);
     
+    res.set('Content-Type', 'image/jpg');
+    //res.contentType('image/jpg');
+    res.send(file);
+    console.log("Downloaded");
+    
+    res.send("Hallo");
+    
+});
 
-    res.send("download");
+// delete
+router.post("/delete", async (req, res) => {
+    
+    imageManager.deleteImage();
+    res.send("deleted");
 
 });
 
