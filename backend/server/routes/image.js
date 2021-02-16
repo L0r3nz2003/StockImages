@@ -2,41 +2,45 @@ const e = require("express");
 const express = require("express");
 const router  = express.Router();
 const imageManager = require("../controllers/image_manager");
-const fs = require('file-system');
+const fs = require('fs');
 const fileUpload = require("express-fileupload");
+const https = require('https');
+const Stream = require('stream').Transform;
+const request = require('request');
 
 router.use(fileUpload());
 
 //upload
 router.post("/upload", async (req, res) => {
-    if(req.files){
-        const file = req.files.file;
-        imageManager.uploadImage(file, "Das ist ein Test", 31);
+    if(!req.files){
+        res.status(500).send({ error: "no image provided" });
+        return;
     }
-    res.send("Upload");
-
+    const file = req.files.file;
+    const beschreibung = req.query.beschreibung;
+    const uid = req.query.uid;
+    const succsess = await imageManager.uploadImage(file, beschreibung, uid);
+    if(succsess){
+      res.status(200).send("OK");
+    }else{
+      res.status(500).send("upload error");
+    }  
 });
 
 // download
 router.get("/download", async (req, res) => {
-    console.log(req.query.id);
-    const file = await imageManager.downloadImage(16);
-    
-    res.set('Content-Type', 'image/jpg');
-    //res.contentType('image/jpg');
-    res.send(file);
-    console.log("Downloaded");
-    
-    res.send("Hallo");
-    
+    const id = req.query.id;
+    const data = await imageManager.downloadImage(id);
+    res.setHeader('content-type', 'image/jpeg');
+    res.write(data, 'binary');
+    res.end();
 });
 
 // delete
-router.post("/delete", async (req, res) => {
-    
-    imageManager.deleteImage();
+router.delete("/delete", async (req, res) => {
+    const id = req.query.id;
+    imageManager.deleteImage(id);
     res.send("deleted");
-
 });
 
 

@@ -1,5 +1,5 @@
 const { response } = require('express');
-const fs = require('file-system');
+const fs = require('fs');
 const Dropbox = require("dropbox").Dropbox
 const imgService = require("../services/img_service");
 
@@ -16,10 +16,10 @@ class ImageManagement{
     
 
     uploadImage = async (image, beschreibung, userId) => {
+        let success = "";
+
         const oldFilename = image.name;
         const uploadTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        console.log(uploadTime);
-        //uploadTime = uploadTime.this.toYMD();
         
 
         await imgService.createImg(oldFilename, uploadTime, beschreibung, userId);
@@ -27,44 +27,52 @@ class ImageManagement{
         const newImgName = await imgService.getImgId(oldFilename, userId, uploadTime);
         image.name = newImgName[0].id+'.jpg';
 
-        console.log("upload start....");
-        dbx.filesUpload({
+        await dbx.filesUpload({
             path: `/dropbox/${image.name}`,
             contents: image.data
         })
-        .then(response => {
-            //console.log(response);
+        .then(function(){
+            success = true;
           })
-          .catch(err => {
-            //console.log(err);
+          .catch(function(){
+            success = false;
           });
-        console.log("upload ende");
+        return success;
+    }
+
+    downloadImage = async (id) => {
+      let binary = "";
+      let sharedLink = "";
+
+      await dbx.sharingCreateSharedLink({ path : `/dropbox/${id+ ".jpg"}` }).then(function(response){
         
-    }
+        sharedLink = response.result.url;
+      });
 
-    downloadImage = async () => {
-        const id = 16;
-        var file = "";
-
-        await dbx.filesDownload({path: `/dropbox/${id+ ".jpg"}`})
-                .then(function(response) {
-            file = response.result;
-        })
-        .catch(function(error) {
+      await dbx.sharingGetSharedLinkFile({url: String(sharedLink)})
+          .then(function(data){
+            binary = data.result.fileBinary;
+          })  
+          .catch(function (error) {
             console.error(error);
         });
-        return file;
+      return binary;
+      
+      // ......raw=1
     }
 
-    deleteImage = async () => {
-        const id = 15;
-        dbx.filesDelete({path: `/dropbox/${id+ ".jpg"}`})
-        .catch(function(error) {
+    deleteImage = async (id) => {
+        try{
+          dbx.filesDelete({path: `/dropbox/${id+ ".jpg"}`})
+          .catch(function(error) {
             console.error(error);
-        });
+          });
 
-        console.log("deleted");
-
+          imgService.deleteImgById(id);
+          console.log("deleted");
+        }catch{
+          console.log("ERROR")
+        }
     }
 
 
