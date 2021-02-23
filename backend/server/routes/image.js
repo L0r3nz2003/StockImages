@@ -9,6 +9,7 @@ router.use(fileUpload());
 
 //upload
 router.post("/upload", async (req, res) => {
+  console.log(req);
     if(req.files){
         console.log("Filename: " + req.files.file.name);
     }
@@ -16,7 +17,7 @@ router.post("/upload", async (req, res) => {
 });
 
 router.post("/download", async (req, res) => {
-    
+
 
     res.send("download");
 

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
+    "install": "npm install",
     "dev": "nodemon app.js"
   },
   "dependencies": {

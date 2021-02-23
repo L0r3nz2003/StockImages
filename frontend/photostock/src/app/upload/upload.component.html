@@ -10,20 +10,67 @@
   <h2>Lade deine unvergesslichen Momente hoch</h2>
 </div>
 
+<div id="settings">
+  <div id="id01" class="modal">
+    <div class="modal-content animate">
+      <div class="container">
+        <h4 id="user" style="padding-bottom: 5px;">Einstellungen</h4>
+        <div class="form-group">
+          <label for="imgtitle"><b>Titel</b></label>
+          <input type="text" class="form-control" id="imgtitle" placeholder="Mein Hund...., Mein Zuhause...">
+          <small class="form-text text-muted">Da der Titel für jeden einsehbar ist, sollte dieser Aussagekräftig sein
+            und keine anstößigen Wörter beinhalten.</small>
+        </div>
+
+        <div class="container">
+          <label for="tagscontainer"><b>Tags</b></label>
+          <!-- https://angular.io/api/common/NgForOf -->
+          <div id="tagscontainer">
+            <div *ngFor="let tag of tags; index as i; last as isLast">
+              <span class="tag">{{tag}} <button><i class="fi-interface-delete"></i></button></span>
+            </div>
+
+            <span class="tag add" formControlName="inputTag" (mouseover)="showTextField=true" (mouseleave)="showTextField=false"><b>+</b>
+              <input type="text" #inputTag *ngIf="showTextField" (mouseover)="showTextField=true">
+              <input type="submit" class="btn btn-primary btn-sm" style="color: #11698e" value="Hinzufügen" (click)="addTag()">
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <input type="checkbox" id="privacy">
+        <label for="privacy">Ich bestäige dass ich die<span><a
+          href="http://www.pngmart.com/files/11/Trollface-Meme-PNG-Picture.png" target="_blank">Datenschutzrichtlinien</a> und die <a
+          href="http://www.pngmart.com/files/11/Trollface-Meme-PNG-Picture.png" target="_blank">AGBs</a></span> gelesen und
+          einverstanden bin.</label>
+      </div>
+
+      <div class="container">
+        <button type="button" class="btn btn-primary mb-2"
+                onclick="document.getElementById('id01').style.display='none'">Hochladen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+</div>
+
 <div class="select">
   <input
     style="display: none"
     type="file" (change)="onFileChanged($event)"
     #fileInput>
-  <button (click)="fileInput.click()">Select File</button>
+  <button (click)="fileInput.click()" class="btn btn-primary btn-lg">Auswählen oder per Drag & Drop hinziehen!</button>
 </div>
 
 <div id="upload">
   <p style="color: gray; opacity: 0.5">{{file_name}}</p>
-  <button (click)="onUpload()" class="btn btn-primary btn-lg">Upload!</button>
+
+
+  <button (click)="onUpload()" [disabled]="uploadDisabled" class="btn btn-primary btn-lg" >Upload!</button>
 </div>
-
-
 
 
 </body>

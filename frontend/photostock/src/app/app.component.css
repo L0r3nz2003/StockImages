@@ -1,0 +1,13 @@
+html, body {
+  overflow: visible;
+  min-height: 100%;
+  background-color: #19456b;
+}
+
+body {
+  height: 100vh;
+}
+
+svg {
+  position: absolute;
+}
