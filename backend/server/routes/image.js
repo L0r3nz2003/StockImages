@@ -91,6 +91,7 @@ router.get("/urls", async (req, res) => {
     } else if (all) {
         imgLinks = await imageManager.getAllImages();
     }
+    imgLinks = JSON.stringify(imgLinks);
 
     res.status(200).send(imgLinks);
 
