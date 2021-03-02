@@ -1,25 +1,98 @@
 const e = require("express");
 const express = require("express");
-const router  = express.Router();
+const router = express.Router();
 const imageManager = require("../controllers/image_manager");
-const fs = require('file-system');
+const fs = require('fs');
 const fileUpload = require("express-fileupload");
+const https = require('https');
+const Stream = require('stream').Transform;
+const request = require('request');
 
 router.use(fileUpload());
 
 //upload
 router.post("/upload", async (req, res) => {
-  console.log(req);
-    if(req.files){
-        console.log("Filename: " + req.files.file.name);
+    if (!req.files) {
+        res.status(500).send({ error: "no image provided" });
+        return;
+    }
+    const file = req.files.file;
+    const beschreibung = req.query.beschreibung;
+    const uid = req.query.uid;
+    if (beschreibung == null || uid == null) {
+        res.status(500).send({ error: "no text or userId provided" });
+        return;
+    }
+    const succsess = await imageManager.uploadImage(file, beschreibung, uid);
+    if (succsess) {
+        res.status(200).send("OK");
+    } else {
+        res.status(500).send("upload error");
+    }
+});
+
+// download
+router.get("/download", async (req, res) => {
+    const id = req.query.id;
+    if (id == null) {
+        res.status(500).send({ error: "no id provided" });
+        return;
+    }
+    const data = await imageManager.downloadImage(id);
+    if (data == "") {
+        res.status(500).send("download error");
+        return;
+    } else {
+        const ending = await imageManager.getFileEnding(id);
+        switch (ending) {
+            case "jpg":
+                res.setHeader('content-type', 'image/jpeg');
+                break;
+            case "png":
+                res.setHeader('content-type', 'image/png');
+                break;
+        }
+        res.write(data, 'binary');
+        res.end();
     }
 
 });
 
-router.post("/download", async (req, res) => {
+// delete
+router.delete("/delete", async (req, res) => {
+    const id = req.query.id;
+    if (id == null) {
+        res.status(500).send({ error: "no id provided" });
+        return;
+    }
+    const succsess = await imageManager.deleteImage(id);
+    if (succsess) {
+        res.status(500).send("delete error");
+        return;
+    }
+    res.status(200);
+});
+
+//getUrls
+router.get("/urls", async (req, res) => {
+    const userName = req.query.userName;
+    const all = req.query.all;
+
+    if (userName == null && all == null) {
+        res.status(500).send({ error: "no parameter provided" });
+        return;
+    }
 
 
-    res.send("download");
+    let imgLinks = "";
+    if (userName != null) {
+        imgLinks = await imageManager.getImageUrlByName(userName);
+
+    } else if (all) {
+        imgLinks = await imageManager.getAllImages();
+    }
+
+    res.status(200).send(imgLinks);
 
 });
 

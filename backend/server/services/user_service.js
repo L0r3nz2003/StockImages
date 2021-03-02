@@ -4,7 +4,7 @@ const userManager = require("../controllers/user_manager.js");
 const passwordHash = require("bcrypt");
 const saltRounds = 10;
 
-class UserService{
+class UserService {
 
     getAllUsers = async () => {
         const rows = await this.runQuery("select * from PsUser");
@@ -27,45 +27,45 @@ class UserService{
     }
 
     createUser = async (user) => {
-        await this.runQuery("insert into PsUser (UserName, Password, Pics) values"+
-        "(?, ?, ?)",
-        [user.name,await passwordHash.hash(user.password, saltRounds),user.pics]);
+        await this.runQuery("insert into PsUser (UserName, Password, Pics) values" +
+            "(?, ?, ?)",
+            [user.name, await passwordHash.hash(user.password, saltRounds), user.pics]);
 
         return "INSERT Successfull";
     }
 
     updateUser = async (id, user) => {
-        await this.runQuery("update PsUser set "+
-        "UserName = ? WHERE UserId = ?",
-        [user.name, id]);
+        await this.runQuery("update PsUser set " +
+            "UserName = ? WHERE UserId = ?",
+            [user.name, id]);
         return "UPDATE Successfull";
     }
 
     updatePassword = async (name, password) => {
         await this.runQuery("update PsUser set Password = ? where UserName = ?",
-        [password, name]);
+            [password, name]);
         return "Password Update Successfull";
     }
 
     updateName = async (oldname, newname) => {
         await this.runQuery("update PsUser set Username = ? where UserName = ?",
-        [newname, oldname]);
+            [newname, oldname]);
         return "UserName Update Successfull";
     }
 
     updateAnzBilder = async (name, newAnz) => {
         await this.runQuery("update PsUser set Pics = ? where UserName = ?",
-        [newAnz, name]);
+            [newAnz, name]);
         return "AnzBilder Update Successfull";
     }
 
     deleteUserById = async (id) => {
-        await this.runQuery("delete from PsUser where UserId = ?",[id]);
+        await this.runQuery("delete from PsUser where UserId = ?", [id]);
         return "DELETE Successfull";
     }
 
     deleteUserByName = async (Name) => {
-        await this.runQuery("delete from PsUser where UserName = ?",[Name]);
+        await this.runQuery("delete from PsUser where UserName = ?", [Name]);
         return "DELETE Successfull";
     }
 

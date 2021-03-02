@@ -12,6 +12,7 @@
     "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dropbox": "^8.2.0",
     "dropbox-v2-api": "^2.4.32",
     "express": "^4.16.4",
     "express-fileupload": "^1.2.0",
