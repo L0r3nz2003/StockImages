@@ -23,16 +23,20 @@
         </div>
 
         <div class="container">
-          <label for="tagscontainer"><b>Tags</b></label>
+          <label for="tagscontainer">
+            <b>Tags</b><br>
+            <small class="form-text text-muted">Mit Tags kannst du kurz beschreiben, was auf deinen Bild zu sehen ist. Andere User die speziell nach <b>ähnlichen oder gleichen Themen</b> suchen, werden deine Bilder vorgeschlagen!<span style="color: red">Der Missbrauch führt unwiederuflich zur Löschung des Kontos.</span></small>
+          </label>
           <!-- https://angular.io/api/common/NgForOf -->
           <div id="tagscontainer">
-            <div *ngFor="let tag of tags; index as i; last as isLast">
-              <span class="tag">{{tag}} <button><i class="fi-interface-delete"></i></button></span>
+            <div *ngFor="let tag of tags; index as i;">
+              <span class="tag">{{tag}} <span style="background-color: crimson; padding: 0 5px 0 5px; color: #ffffff; border-radius: 20px; cursor: pointer" (click)="removeTag(i)">Entfernen</span></span>
             </div>
 
-            <span class="tag add" formControlName="inputTag" (mouseover)="showTextField=true" (mouseleave)="showTextField=false"><b>+</b>
-              <input type="text" #inputTag *ngIf="showTextField" (mouseover)="showTextField=true">
-              <input type="submit" class="btn btn-primary btn-sm" style="color: #11698e" value="Hinzufügen" (click)="addTag()">
+            <span class="tag add" [hidden]="currentTags >= maxTags">
+              <input type="text" #inputTag size="{{textBoxSize}}" (input)="resize($any($event.target).value)"  maxlength="10" >
+              <input type="submit" class="btn btn-primary btn-sm" style="color: #00aeff" value="Hinzufügen" (click)="addTag()">
+              <p style="float: left; text-align: center; color: #00aeff">Noch {{maxTags-currentTags}}.</p>
             </span>
           </div>
         </div>
