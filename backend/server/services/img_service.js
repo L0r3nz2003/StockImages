@@ -28,6 +28,12 @@ class ImgService {
         return row;
     }
 
+    getImgByTag = async (tag) => {
+        const row = await this.runQuery("select * from PsImage where Tags like ?",
+            '%' + tag + '%');
+        return row;
+    }
+
     createImg = async (fileName, uploadTime, beschreibung, userId, tags) => {
         await this.runQuery("insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags) values" +
             "(?, ?, ?, ?, ?)",
