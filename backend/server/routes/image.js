@@ -19,7 +19,7 @@ router.post("/upload", async (req, res) => {
     const file = req.files.file;
     const beschreibung = req.query.beschreibung;
     const uid = req.query.uid;
-    const tags = req.query.tags;
+    const tags = req.query.tags.toUpperCase();
     if (beschreibung == null || uid == null || tags == null) {
         res.status(500).send({ error: "no text or userId or tags provided" });
         return;
@@ -78,8 +78,9 @@ router.delete("/delete", async (req, res) => {
 router.get("/urls", async (req, res) => {
     const userName = req.query.userName;
     const all = req.query.all;
+    const tag = req.query.tag.toUpperCase();
 
-    if (userName == null && all == null) {
+    if (userName == null && all == null && tag == null) {
         res.status(500).send({ error: "no parameter provided" });
         return;
     }
@@ -91,6 +92,8 @@ router.get("/urls", async (req, res) => {
 
     } else if (all) {
         imgLinks = await imageManager.getAllImages();
+    } else if (tag != null) {
+        imgLinks = await imageManager.getImageByTag(tag);
     }
     imgLinks = JSON.stringify(imgLinks);
 

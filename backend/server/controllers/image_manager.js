@@ -92,25 +92,22 @@ class ImageManagement {
     return await this.getLinksToImage(allImages);
   }
 
+  // get all Images by a given Tag
+  getImageByTag = async (tag) => {
+    const images = await imgService.getImgByTag(tag);
+    return await this.getLinksToImage(images);
+  }
+
   // Get links to image from sharedlink
   getLinksToImage = async (elements) => {
     let linkArr = [];
 
-    async function asyncForEach(array, callback) {
-      for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
-      }
-    }
-
-    await asyncForEach(elements, async (element) => {
-
-      const sharedlink = await this.getShardLink(element.id);
+    await Promise.all(elements.map(async (elem) => {
+      const sharedlink = await this.getShardLink(elem.id);
       const link = sharedlink.replace('dl=0', 'raw=1');
 
       linkArr.push(link);
-      console.log(link);
-    });
-
+    }));
 
     return linkArr;
   }
