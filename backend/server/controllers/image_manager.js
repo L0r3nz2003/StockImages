@@ -2,6 +2,7 @@ const { response } = require('express');
 const fs = require('fs');
 const { resolve } = require('path');
 const { finished } = require('stream');
+const { all } = require('../routes/image');
 const Dropbox = require("dropbox").Dropbox
 const imgService = require("../services/img_service");
 const userService = require("../services/user_service.js");
@@ -17,17 +18,17 @@ const dbx = new Dropbox({
 class ImageManagement {
 
   // upload image to dropbox and insert given things to dtabase
-  uploadImage = async (image, beschreibung, userId) => {
+  uploadImage = async (image, beschreibung, userId, tags) => {
     let success = "";
 
     const oldFilename = image.name;
     const uploadTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    await imgService.createImg(oldFilename, uploadTime, beschreibung, userId);
+    await imgService.createImg(oldFilename, uploadTime, beschreibung, userId, tags);
 
     const id = await imgService.getImgId(oldFilename, userId, uploadTime);
 
-    const newEnding = await this.getFileEnding(id);
+    const newEnding = await this.getFileEnding(id[0].id);
 
     image.name = id[0].id + '.' + newEnding;
 
@@ -102,11 +103,14 @@ class ImageManagement {
     }
 
     await asyncForEach(elements, async (element) => {
+
       const sharedlink = await this.getShardLink(element.id);
       const link = sharedlink.replace('dl=0', 'raw=1');
 
       linkArr.push(link);
+      console.log(link);
     });
+
 
     return linkArr;
   }

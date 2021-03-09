@@ -28,10 +28,10 @@ class ImgService {
         return row;
     }
 
-    createImg = async (fileName, uploadTime, beschreibung, userId) => {
-        await this.runQuery("insert into PsImage (FileName, uploadTime, beschreibung, userId) values" +
-            "(?, ?, ?, ?)",
-            [fileName, uploadTime, beschreibung, userId]);
+    createImg = async (fileName, uploadTime, beschreibung, userId, tags) => {
+        await this.runQuery("insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags) values" +
+            "(?, ?, ?, ?, ?)",
+            [fileName, uploadTime, beschreibung, userId, tags]);
         return "INSERT Successfull";
     }
 
