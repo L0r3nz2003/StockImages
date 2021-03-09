@@ -19,11 +19,12 @@ router.post("/upload", async (req, res) => {
     const file = req.files.file;
     const beschreibung = req.query.beschreibung;
     const uid = req.query.uid;
-    if (beschreibung == null || uid == null) {
-        res.status(500).send({ error: "no text or userId provided" });
+    const tags = req.query.tags;
+    if (beschreibung == null || uid == null || tags == null) {
+        res.status(500).send({ error: "no text or userId or tags provided" });
         return;
     }
-    const succsess = await imageManager.uploadImage(file, beschreibung, uid);
+    const succsess = await imageManager.uploadImage(file, beschreibung, uid, tags);
     if (succsess) {
         res.status(200).send("OK");
     } else {
