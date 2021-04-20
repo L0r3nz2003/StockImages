@@ -8,10 +8,12 @@ const https = require('https');
 const Stream = require('stream').Transform;
 const request = require('request');
 
+const jwtmanager = require("../controllers/jwt_manager");
+
 router.use(fileUpload());
 
 //upload
-router.post("/upload", async (req, res) => {
+router.post("/upload", jwtmanager.verifyToken, async (req, res) => {
     if (!req.files) {
         res.status(500).send({ error: "no image provided" });
         return;
@@ -33,7 +35,7 @@ router.post("/upload", async (req, res) => {
 });
 
 // download
-router.get("/download", async (req, res) => {
+router.get("/download", jwtmanager.verifyToken, async (req, res) => {
     const id = req.query.id;
     if (id == null) {
         res.status(500).send({ error: "no id provided" });
@@ -60,7 +62,7 @@ router.get("/download", async (req, res) => {
 });
 
 // delete
-router.delete("/delete", async (req, res) => {
+router.delete("/delete", jwtmanager.verifyToken, async (req, res) => {
     const id = req.query.id;
     if (id == null) {
         res.status(500).send({ error: "no id provided" });
@@ -75,7 +77,7 @@ router.delete("/delete", async (req, res) => {
 });
 
 //getUrls
-router.get("/urls", async (req, res) => {
+router.get("/urls", jwtmanager.verifyToken, async (req, res) => {
     const userName = req.query.userName;
     const all = req.query.all;
     const tag = req.query.tag.toUpperCase();
