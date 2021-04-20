@@ -1,6 +1,6 @@
 const userService = require("../services/user_service.js");
 
-class UserManagement{
+class UserManagement {
     getAllUsers = async () => {
         const user = await userService.getAllUsers();
         return user;
@@ -14,6 +14,10 @@ class UserManagement{
     getUserByName = async (name) => {
         const user = await userService.getUserByName(name);
         return user;
+    }
+
+    getUserByEmail = async (email) => {
+        return await userService.getUserByEmail(email);
     }
 
     checkIfUserExists = async (name) => {
@@ -44,6 +48,10 @@ class UserManagement{
     updateAnzBild = async (name, newAnz) => {
         const meldung = await userService.updateAnzBilder(name, newAnz);
         return meldung;
+    }
+
+    updateEmail = async (name, email) => {
+        return await userService.updateEmail(name, email);
     }
 
     deleteUserById = async (id) => {

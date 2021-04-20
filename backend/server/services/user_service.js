@@ -21,15 +21,19 @@ class UserService {
         return row;
     }
 
+    getUserByEmail = async (email) => {
+        return await this.runQuery("select * from PsUser where email = ?", email);
+    }
+
     getUserByNameAndPassword = async (name) => {
         const pw = await this.runQuery("select Password from PsUser where UserName = ?", [name]);
         return pw;
     }
 
     createUser = async (user) => {
-        await this.runQuery("insert into PsUser (UserName, Password, Pics) values" +
-            "(?, ?, ?)",
-            [user.name, await passwordHash.hash(user.password, saltRounds), user.pics]);
+        await this.runQuery("insert into PsUser (UserName, email, Password, Pics) values" +
+            "(?, ?, ?, ?)",
+            [user.name, user.email, await passwordHash.hash(user.password, saltRounds), user.pics]);
 
         return "INSERT Successfull";
     }
@@ -57,6 +61,12 @@ class UserService {
         await this.runQuery("update PsUser set Pics = ? where UserName = ?",
             [newAnz, name]);
         return "AnzBilder Update Successfull";
+    }
+
+    updateEmail = async (name, email) => {
+        await this.runQuery("update PsUser set = ? email where UserName = ?",
+            [email, name]);
+        return "Email Update Successfull";
     }
 
     deleteUserById = async (id) => {
