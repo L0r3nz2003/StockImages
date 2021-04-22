@@ -1,3 +1,4 @@
 UserName         |   Password
 -----------------|---------------
 LorenzTestUser   |   TestUser
+Jonathan1234     |   TestUser123

@@ -11,7 +11,7 @@ const saltRounds = 10;
 
 // Return User with this ID | IF ID is null => return all user
 // if Error: http status 404 Not found
-router.get("/show", jwtmanager.verifyToken, async (req, res) => {
+router.get("/show"/*, jwtmanager.verifyToken*/, async (req, res) => {
   let result = "";
   if (req.query.id == null) {
     result = await userManager.getAllUsers();
@@ -39,7 +39,7 @@ router.get("/showbyname", jwtmanager.verifyToken, async (req, res) => {
 
 // Return User with this name if the password id correct
 // if Error: http status 404 Not found
-router.get("/exists", jwtmanager.verifyToken, async (req, res) => {
+router.get("/exists", async (req, res) => {
   console.log("Start....");
   const password = await userManager.checkIfUserExists(req.query.name);
   if (password.length == 0 || !await passwordHash.compare(String(req.query.password), String(password[0].Password))) {
