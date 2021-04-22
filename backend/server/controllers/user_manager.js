@@ -40,6 +40,11 @@ class UserManagement {
         return meldung;
     }
 
+    updatePasswordById = async (id, password) => {
+        const meldung = await userService.updatePasswordById(id, password);
+        return meldung;
+    }
+
     updateName = async (oldname, newname) => {
         const meldung = await userService.updateName(oldname, newname);
         return meldung;

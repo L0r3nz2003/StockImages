@@ -51,6 +51,12 @@ class UserService {
         return "Password Update Successfull";
     }
 
+    updatePasswordById = async (id, password) => {
+        await this.runQuery("update PsUser set Password = ? where UserId = ?",
+            [password, id]);
+        return "Password Update Successfull";
+    }
+
     updateName = async (oldname, newname) => {
         await this.runQuery("update PsUser set Username = ? where UserName = ?",
             [newname, oldname]);
