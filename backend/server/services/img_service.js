@@ -34,10 +34,18 @@ class ImgService {
         return row;
     }
 
-    createImg = async (fileName, uploadTime, beschreibung, userId, tags) => {
-        await this.runQuery("insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags) values" +
-            "(?, ?, ?, ?, ?)",
-            [fileName, uploadTime, beschreibung, userId, tags]);
+    //-----------------------
+    // PHASH VERGLEICH
+    //-----------------------
+    getImgByPhash = async (phash) => {
+        return await this.runQuery("select *, hamdist(p_hash, ?) as hamdist from PsImage having hamdist < 3", [phash]);
+    }
+
+
+    createImg = async (fileName, uploadTime, beschreibung, userId, tags, phash) => {
+        await this.runQuery("insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags, p_hash) values" +
+            "(?, ?, ?, ?, ?, ?)",
+            [fileName, uploadTime, beschreibung, userId, tags, phash]);
         return "INSERT Successfull";
     }
 
@@ -58,6 +66,11 @@ class ImgService {
         await this.runQuery("delete from PsImage where userId = ?", [userId]);
         return "Delete Successfull";
     }
+
+
+
+
+
 
     runQuery = async (str, replacements) => {
         return new Promise(resolve => {
