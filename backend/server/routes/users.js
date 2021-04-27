@@ -40,7 +40,6 @@ router.get("/showbyname", jwtmanager.verifyToken, async (req, res) => {
 // Return User with this name if the password id correct
 // if Error: http status 404 Not found
 router.get("/exists", async (req, res) => {
-  console.log("Start....");
   const password = await userManager.checkIfUserExists(req.query.name);
   if (password.length == 0 || !await passwordHash.compare(String(req.query.password), String(password[0].Password))) {
     res.status(404).send('Not found');
@@ -54,7 +53,6 @@ router.get("/exists", async (req, res) => {
     username: result[0].UserName
   }
 
-  console.log("Token angefragt...");
 
   const token = await jwtmanager.singToken(user);
 
@@ -63,7 +61,6 @@ router.get("/exists", async (req, res) => {
     pics: result[0].Pics,
     token: token
   });
-  console.log("....Ende");
 })
 
 // Create new User, id is Autoincrement

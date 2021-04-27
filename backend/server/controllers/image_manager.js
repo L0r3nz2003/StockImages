@@ -18,13 +18,13 @@ const dbx = new Dropbox({
 class ImageManagement {
 
   // upload image to dropbox and insert given things to dtabase
-  uploadImage = async (image, beschreibung, userId, tags) => {
+  uploadImage = async (image, beschreibung, userId, tags, phash) => {
     let success = "";
 
     const oldFilename = image.name;
     const uploadTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    await imgService.createImg(oldFilename, uploadTime, beschreibung, userId, tags);
+    await imgService.createImg(oldFilename, uploadTime, beschreibung, userId, tags, phash);
 
     const id = await imgService.getImgId(oldFilename, userId, uploadTime);
 
@@ -128,6 +128,10 @@ class ImageManagement {
     return filename[0].FileName.split(".")[filename[0].FileName.split(".").length - 1];
   }
 
+  // get images in range of phash hamming distance
+  getImageByPhash = async (phash) => {
+    return await imgService.getImgByPhash(phash);
+  }
 
 }
 
