@@ -10,30 +10,10 @@ const userManager = require("../controllers/user_manager");
 const secretKey = 'topSecret';
 
 class JwtManager {
-    // Create Torken
+    // Create normal Torken
     singToken = async (user) => {
         return jwt.sign({ user: user }, secretKey);
     }
-
-    signTokenMail = async (user, keyextension) => {
-        return jwt.sign({ user }, secretKey + keyextension, { expiresIn: '15m' });
-    }
-
-    verifyTokenMail = async (req, res, next) => {
-        const user = await userManager.getSingleUser(req.query.id);
-        const keyextension = user[0].Password;
-        jwt.verify(req.query.token, secretKey + keyextension, (err, autoData) => {
-            if (err) {
-                res.sendStatus(403);
-            }
-        });
-        next();
-    }
-
-
-
-
-
 
     // verify token
     verifyToken = async (req, res, next) => {
@@ -44,17 +24,28 @@ class JwtManager {
             const bearerToken = bearerHeader.split(' ')[1];
             req.token = bearerToken;
             jwt.verify(req.token, secretKey, (err, autoData) => {
-                if (err) {
-                    res.sendStatus(403);
-                }
+                if (err) res.sendStatus(403);
             });
             next();
         } else {
             // forbidden
             res.sendStatus(403);
         }
+    }
 
+    // Create token for mail-Passwordreset
+    signTokenMail = async (user, keyextension) => {
+        return jwt.sign({ user }, secretKey + keyextension, { expiresIn: '15m' });
+    }
 
+    // verify token for mail-Passwordreset
+    verifyTokenMail = async (req, res, next) => {
+        const user = await userManager.getSingleUser(req.query.id);
+        const keyextension = user[0].Password;
+        jwt.verify(req.query.token, secretKey + keyextension, (err, autoData) => {
+            if (err) res.sendStatus(403);
+        });
+        next();
     }
 
 }

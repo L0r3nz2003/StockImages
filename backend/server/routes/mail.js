@@ -1,96 +1,63 @@
-const e = require("express");
 const express = require("express");
 const router = express.Router();
-
-const userManager = require("../controllers/user_manager");
-
 const nodemailer = require("nodemailer");
+const ejs = require("ejs");
+const passwordHash = require("bcrypt");
 
 const jwtmanager = require("../controllers/jwt_manager");
-const ejs = require("ejs");
+const userManager = require("../controllers/user_manager");
 
-const passwordHash = require("bcrypt");
 const saltRounds = 10;
 
 
-
+// send a Mail, its a test Method
 router.post("/send", async (req, res) => {
-
+    // send mail
     sendMail('j.komma@pfelling.de', 'default test', 'TEST');
-
-    res.json({
-        message: 'Mail Page'
-    });
-
+    res.json({ message: 'Mail Page' });
 });
 
-
-
-router.get("/passwort-vergessen", async (req, res) => {
-    res.send('forgot-password');
-});
-
+// Route for password reset
 router.post("/passwort-vergessen", async (req, res) => {
-    const user = await userManager.getUserByName(req.query.username);
-    // token erzeugen
-    const token = await jwtmanager.signTokenMail(user, user[0].Password);
-    // link erzeugen
+    // 0 - create token
+    const user = await userManager.getUserByEmail(req.query.email);
+    const tokenExtencion = user[0].UserId + user[0].Password;
+    const token = await jwtmanager.signTokenMail(user, tokenExtencion);
+    // 1 - create link 
     const link = `http://localhost:3000/mail/reset-password?id=${user[0].UserId}&token=${token}`;
-    //email senden
-
-    sendMail(user[0].username, user[0].email, 'Password-Reset', '', link);
-
-
-
-    res.json({
-        message: "Link sended",
-        //link: link
-    });
-
+    // 2 - send mail 
+    sendMail(user[0].UserName, user[0].email, 'Password-Reset', '', link);
+    res.json({ message: "Link sended" });
 });
 
+// Render password reset page
 router.get("/reset-password", jwtmanager.verifyTokenMail, async (req, res) => {
     res.render('reset-password', { username: 'TestUserXX' });
 });
 
+// reset password
 router.post("/reset-password", jwtmanager.verifyTokenMail, async (req, res) => {
     const { password, password2 } = req.body;
-
-    if (password == password2) {
-
-        const hashedPassword = await passwordHash.hash(password, saltRounds)
-        console.log(req.query.id);
-        const result = await userManager.updatePasswordById(req.query.id, hashedPassword);
-        console.log(hashedPassword);
-        console.log(result);
-
-        res.json({
-            message: result
-        });
-    } else {
+    // 0 - Compare passwords
+    if (password.trim() !== password2.trim()) {
         res.sendStatus(403);
     }
+    // 1 - Create Hash and Update Password
+    const hashedPassword = await passwordHash.hash(password, saltRounds);
+    const result = await userManager.updatePasswordById(req.query.id, hashedPassword);
 
-
+    res.json({ message: result });
 });
-
-
-router.get("/preview", async (req, res) => {
-    res.render('reset-mail', { username: 'DaKomma', link: 'https://www.google.de' });
-});
-
-
-
 
 
 async function sendMail(username, to, subject, text, link) {
-
+    // 0 - give File to render and variables [username, link]
     ejs.renderFile('views/reset-mail.ejs', { username: username, link: link }, async function (err, data) {
         if (err) {
             console.log(err);
             return;
         }
-
+        // 1 - Create Transporter
         const transporter = nodemailer.createTransport({
             host: "send.one.com",
             port: 587,
@@ -100,7 +67,7 @@ async function sendMail(username, to, subject, text, link) {
                 pass: "StockImages123456"
             },
         });
-
+        // provide transporter with information and send mail
         const info = await transporter.sendMail({
             from: "stock-images@saigon-bikes.com",
             to: to,
@@ -108,16 +75,9 @@ async function sendMail(username, to, subject, text, link) {
             text: text,
             html: data
         });
-
-        console.log("Message sent: %s", info.messageId);
-
     });
 
 }
-
-
-
-
 
 
 

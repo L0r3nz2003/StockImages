@@ -33,7 +33,7 @@ class UserService {
     createUser = async (user) => {
         await this.runQuery("insert into PsUser (UserName, email, Password, Pics) values" +
             "(?, ?, ?, ?)",
-            [user.name, user.email, await passwordHash.hash(user.password, saltRounds), user.pics]);
+            [user.name, user.email, await passwordHash.hash(user.password.trim(), saltRounds), user.pics]);
 
         return "INSERT Successfull";
     }
