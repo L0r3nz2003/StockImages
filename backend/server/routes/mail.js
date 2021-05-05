@@ -18,7 +18,7 @@ router.post("/send", async (req, res) => {
 });
 
 // Route for password reset
-router.post("/passwort-vergessen", async (req, res) => {
+router.post("/forgot-password", async (req, res) => {
     // 0 - create token
     const user = await userManager.getUserByEmail(req.query.email);
     const tokenExtencion = user[0].UserId + user[0].Password;
