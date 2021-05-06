@@ -83,7 +83,7 @@ router.delete("/delete", jwtmanager.verifyToken, async (req, res) => {
 });
 
 //getUrls
-router.get("/urls", jwtmanager.verifyToken, async (req, res) => {
+router.get("/urls", async (req, res) => {
     // 0 - Check if all data is provided
     const userName = req.query.userName;
     const all = req.query.all;
