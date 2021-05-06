@@ -24,7 +24,7 @@ router.post("/forgot-password", async (req, res) => {
     const tokenExtencion = user[0].UserId + user[0].Password;
     const token = await jwtmanager.signTokenMail(user, tokenExtencion);
     // 1 - create link 
-    const link = `http://localhost:3000/mail/reset-password?id=${user[0].UserId}&token=${token}`;
+    const link = `http://localhost:4200/user/password-restore?id=${user[0].UserId}&token=${token}`;
     // 2 - send mail 
     sendMail(user[0].UserName, user[0].email, 'Password-Reset', '', link);
     res.json({ message: "Link sended" });
