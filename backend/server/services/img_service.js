@@ -2,87 +2,100 @@ const db = require("../database/mysql.js");
 const imageManager = require("../controllers/image_manager.js");
 
 class ImgService {
+  getAllImg = async () => {
+    const rows = await this.runQuery("select * from PsImage");
+    return rows;
+  };
 
-    getAllImg = async () => {
-        const rows = await this.runQuery("select * from PsImage");
-        return rows;
-    }
+  getSingleImg = async (id) => {
+    const row = await this.runQuery("select * from PsImage where id = ?", id);
+    return row;
+  };
 
-    getSingleImg = async (id) => {
-        const row = await this.runQuery("select * from PsImage where id = ?", id);
-        return row;
-    }
+  getImgName = async (id) => {
+    const row = await this.runQuery(
+      "select FileName from PsImage where id = ?",
+      id
+    );
+    return row;
+  };
 
-    getImgName = async (id) => {
-        const row = await this.runQuery("select FileName from PsImage where id = ?", id);
-        return row;
-    }
+  getUserImg = async (userid) => {
+    const row = await this.runQuery(
+      "select * from PsImage where userId = ?",
+      userid
+    );
+    return row;
+  };
+  getImgId = async (fileName, userId, timestamp) => {
+    const row = await this.runQuery(
+      "select id from PsImage where FileName = ? and userId = ? and uploadTime = ?",
+      [fileName, userId, timestamp]
+    );
+    return row;
+  };
 
-    getUserImg = async (userid) => {
-        const row = await this.runQuery("select * from PsImage where userId = ?", userid);
-        return row;
-    }
-    getImgId = async (fileName, userId, timestamp) => {
-        const row = await this.runQuery("select id from PsImage where FileName = ? and userId = ? and uploadTime = ?",
-            [fileName, userId, timestamp]);
-        return row;
-    }
+  getImgByTag = async (tag) => {
+    const row = await this.runQuery(
+      "select * from PsImage where Tags like ?",
+      "%" + tag + "%"
+    );
+    return row;
+  };
 
-    getImgByTag = async (tag) => {
-        const row = await this.runQuery("select * from PsImage where Tags like ?",
-            '%' + tag + '%');
-        return row;
-    }
+  //-----------------------
+  // PHASH VERGLEICH
+  //-----------------------
+  getImgByPhash = async (phash) => {
+    return await this.runQuery(
+      "select *, hamdist(p_hash, ?) as hamdist from PsImage having hamdist < 4",
+      [phash]
+    );
+  };
 
-    //-----------------------
-    // PHASH VERGLEICH
-    //-----------------------
-    getImgByPhash = async (phash) => {
-        return await this.runQuery("select *, hamdist(p_hash, ?) as hamdist from PsImage having hamdist < 3", [phash]);
-    }
+  createImg = async (
+    fileName,
+    uploadTime,
+    beschreibung,
+    userId,
+    tags,
+    phash
+  ) => {
+    await this.runQuery(
+      "insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags, p_hash) values" +
+        "(?, ?, ?, ?, ?, ?)",
+      [fileName, uploadTime, beschreibung, userId, tags, phash]
+    );
+    return "INSERT Successfull";
+  };
 
+  updateImg = async (id, img) => {
+    await this.runQuery(
+      "update  PsImage set FileName = ?, uplaodTime = ?, beschreibung = ?, userId = ?  where id = ?" +
+        "(?, ?, ?, ?)",
+      [img.time, img.beschreibung, img.userid, id]
+    );
+    return "UPDATE Successfull";
+  };
 
-    createImg = async (fileName, uploadTime, beschreibung, userId, tags, phash) => {
-        await this.runQuery("insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags, p_hash) values" +
-            "(?, ?, ?, ?, ?, ?)",
-            [fileName, uploadTime, beschreibung, userId, tags, phash]);
-        return "INSERT Successfull";
-    }
+  deleteImgById = async (id) => {
+    await this.runQuery("delete from PsImage where id = ?", [id]);
+    return "Delete Successfull";
+  };
 
-    updateImg = async (id, img) => {
-        await this.runQuery("update  PsImage set FileName = ?, uplaodTime = ?, beschreibung = ?, userId = ?  where id = ?" +
-            "(?, ?, ?, ?)",
-            [img.time, img.beschreibung, img.userid, id]);
-        return "UPDATE Successfull";
-    }
+  deleteImgByUserId = async (userId) => {
+    await this.runQuery("delete from PsImage where userId = ?", [userId]);
+    return "Delete Successfull";
+  };
 
-
-    deleteImgById = async (id) => {
-        await this.runQuery("delete from PsImage where id = ?", [id]);
-        return "Delete Successfull";
-    }
-
-    deleteImgByUserId = async (userId) => {
-        await this.runQuery("delete from PsImage where userId = ?", [userId]);
-        return "Delete Successfull";
-    }
-
-
-
-
-
-
-    runQuery = async (str, replacements) => {
-        return new Promise(resolve => {
-            db.query(str, replacements, (err, rows) => {
-                if (err) rejects(err.toString())
-                resolve(rows);
-            })
-        });
-    }
-
-
+  runQuery = async (str, replacements) => {
+    return new Promise((resolve) => {
+      db.query(str, replacements, (err, rows) => {
+        if (err) rejects(err.toString());
+        resolve(rows);
+      });
+    });
+  };
 }
-
 
 module.exports = new ImgService();
