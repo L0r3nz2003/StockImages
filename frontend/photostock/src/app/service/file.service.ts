@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {MessageService} from "./message.service";
-import {User} from "./interfaces/user";
+import {MessageService} from "../message.service";
+import {User} from "../interfaces/user";
 import {Observable} from "rxjs";
 
 @Injectable({

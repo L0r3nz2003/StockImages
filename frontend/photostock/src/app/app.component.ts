@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import {UserService} from "./user.service";
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'photostock';
-  constructor(private router: Router) {}
+  title = 'StockImages';
+  constructor(private router: Router, public userService: UserService) {
+  }
 }

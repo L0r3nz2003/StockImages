@@ -7,24 +7,35 @@
 <body>
 <div id="header" style="margin-top: 5%;">
   <h1>Bild hochladen</h1>
-  <h2>Lade deine unvergesslichen Momente hoch</h2>
+  <h2>{{userService.getUser().name}}! Lade deine unvergesslichen Momente hoch</h2>
 </div>
 
-<div id="settings">
+
+<modal #errorModal>
+  <p style="color: red">{{modalErrorText}}</p>
+</modal>
+
+<div id="settings" [hidden]="!modal_show">
   <div id="id01" class="modal">
     <div class="modal-content animate">
       <div class="container">
         <h4 id="user" style="padding-bottom: 5px;">Einstellungen</h4>
         <div class="form-group">
-          <label for="imgtitle"><b>Titel</b></label>
+          <label for="imgtitle"><b>Titel<span style="color: red ">*</span></b></label>
           <input type="text" class="form-control" id="imgtitle" placeholder="Mein Hund...., Mein Zuhause...">
           <small class="form-text text-muted">Da der Titel für jeden einsehbar ist, sollte dieser Aussagekräftig sein
             und keine anstößigen Wörter beinhalten.</small>
         </div>
 
+        <div class="form-group">
+          <label for="imgtitle"><b>Beschreibung</b></label>
+          <textarea class="form-control" id="imgdesc" style="resize: none" rows="5"></textarea>
+          <small class="form-text text-muted">Mit der Beschreibung kannst du dein Bild optional noch besser beschreiben!</small>
+        </div>
+
         <div class="container">
           <label for="tagscontainer">
-            <b>Tags</b><br>
+            <b>Tags<span style="color: red ">*</span></b><br>
             <small class="form-text text-muted">Mit Tags kannst du kurz beschreiben, was auf deinen Bild zu sehen ist. Andere User die speziell nach <b>ähnlichen oder gleichen Themen</b> suchen, werden deine Bilder vorgeschlagen!<span style="color: red">Der Missbrauch führt unwiederuflich zur Löschung des Kontos.</span></small>
           </label>
           <!-- https://angular.io/api/common/NgForOf -->
@@ -50,21 +61,23 @@
           einverstanden bin.</label>
       </div>
 
+      <div>
+        <span style="color: red ">*</span> Pflichtfelder
+      </div>
+
       <div class="container">
         <button type="button" class="btn btn-primary mb-2"
-                onclick="document.getElementById('id01').style.display='none'">Hochladen
+                onclick="">Hochladen
         </button>
       </div>
     </div>
   </div>
 </div>
-<div>
-</div>
 
-<div class="select">
+<div class="select"  (drag)="onFileDrop($event, errorModal)" style="background-color: red;">
   <input
     style="display: none"
-    type="file" (change)="onFileChanged($event)"
+    type="file" (change)="onFileChanged($event, errorModal)"
     #fileInput>
   <button (click)="fileInput.click()" class="btn btn-primary btn-lg">Auswählen oder per Drag & Drop hinziehen!</button>
 </div>

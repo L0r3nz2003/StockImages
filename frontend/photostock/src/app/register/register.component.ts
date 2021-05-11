@@ -3,6 +3,8 @@ import {isNullOrUndefined} from "util";
 import {UserService} from "../user.service";
 import {User} from "../interfaces/user";
 import {Observable} from "rxjs";
+import {ModalComponent} from "../modal/modal.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-register',
@@ -15,17 +17,19 @@ export class RegisterComponent implements OnInit {
   err_message_password_repeat: string = "";
   name: string;
   hide: boolean = true;
+  err_message_mail: string = "";
 
-  constructor(private userService: UserService) {
+  constructor(public userService: UserService, public router: Router) {
    }
 
   ngOnInit(): void {
   }
 
-  register(name: any, password: any, password_repeat: any) {
+  register(name: any, email: any, password: any, password_repeat: any, modal: ModalComponent) {
 
     name.style.borderColor = "";
     password.style.borderColor = "";
+    email.style.borderColor = "";
     password_repeat.style.borderColor = "";
 
     this.err_message_username = "";
@@ -36,6 +40,12 @@ export class RegisterComponent implements OnInit {
     if (!name.validity.valid) {
       name.style.borderColor = "red";
       this.err_message_username = "Der Name muss 8 Zeichen oder länger sein!";
+      return;
+    }
+
+    if (!email.validity.valid) {
+      name.style.borderColor = "red";
+      this.err_message_mail = "Gebe eine gültige E-Mail Adresse an!"
       return;
     }
 
@@ -63,16 +73,26 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    if(this.userService.isNameInUse(name.value)) {
-      name.style.borderColor = "red";
-      this.err_message_username = "Der Name ist bereits belegt!";
-      return;
-    }
+    this.userService.isUnique(name.value, email.value).subscribe(r => {
 
-    const user: User = {name: name.value, password: password.value, pics: 0};
-    this.userService.addUser(user).subscribe(user => alert(user.password));
-    this.name = name;
-    this.hide = false;
+      if(!r) {
+        name.style.borderColor = "red";
+        email.style.borderColor = "red";
+        this.err_message_username = "Der Name/Email ist bereits belegt!";
+        this.err_message_mail = "Der Name/Email ist bereits belegt!";
+      } else {
+        const user: User = {
+          name: name.value,
+          email: email.value,
+          password: password.value,
+          pics: 0
+        };
+        this.userService.addUser(user).subscribe(result => {
+          console.log(result + "a");
+          this.userService.setUser(result);
+          modal.currentHidden = false;
+        });
+      }
+    });
   }
-
 }

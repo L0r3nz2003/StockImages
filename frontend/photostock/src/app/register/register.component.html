@@ -12,18 +12,14 @@
 </div>
 <hr>
 
-<div id="id01" class="modal" [hidden]="!hide">
-  <div class="modal-content animate">
-    <div class="container">
-      <h2 id="user">Willkommen {{name}}</h2>
-      <h3>Dein Account wurde erfolgreich gespeichert!</h3>
-    </div>
-
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="button" (click)="hide = true" class="cancelbtn">Okay</button>
+<modal #modal (closeAction)="router.navigate(['/']);">
+  <div>
+    <div>
+      <h2 id="user">Willkommen {{userService.isLoggedIn() ? userService.getUser().name : "N/A"}}</h2>
+      <h3>Du bist jetzt Teil der Community! <a href="upload.html"><b>Lade doch dein ersten Bild hoch</b></a></h3>
     </div>
   </div>
-</div>
+</modal>
 
 
 <div class="login-form">
@@ -33,6 +29,13 @@
       <div class="col-sm-4">
         <input #userName type="text" class="form-control" id="inputusername" required minlength="8" maxlength="30">
         <div class="error" id="error_username">{{err_message_username}}</div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="imputmail" class="col-sm-2 col-form-label">E-Mail</label>
+      <div class="col-sm-4">
+        <input #email type="email" class="form-control" id="imputmail" required minlength="8" maxlength="30">
+        <div class="error" id="error_email">{{err_message_mail}}</div>
       </div>
     </div>
     <div class="form-group row" style="size: 30px;">
@@ -50,7 +53,7 @@
                required>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-lg" style="margin-right: 3%" (click)="register(userName,pass, passrepeat)">Jetzt Registrieren</button>
+    <button type="submit" class="btn btn-primary btn-lg" style="margin-right: 3%" (click)="register(userName,email, pass, passrepeat, modal)">Jetzt Registrieren</button>
   </form>
 </div>
 

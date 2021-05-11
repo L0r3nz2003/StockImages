@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "install": "npm install",
+    "install": "npm install --",
     "dev": "nodemon app.js"
   },
   "dependencies": {
@@ -18,7 +18,7 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.2.1",
     "file-system": "^2.2.2",
-    "i": "^0.3.6",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
     "mysql": "^2.18.1",
     "nodemailer": "^6.5.0",

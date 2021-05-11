@@ -116,6 +116,10 @@ form {
     }
   }
 
+#pwd_button {
+
+}
+
 
 form button {
     background-color: #0349fc;
@@ -127,7 +131,7 @@ form button {
     box-shadow: 0 10px 15px rgba(145, 92, 182, .3);
 }
 
-@keyframes loginbutton {
+@keyframes pwd_button {
 
     0%, 100% {
         background-color: #0349fc;

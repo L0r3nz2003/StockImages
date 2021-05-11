@@ -1,8 +1,9 @@
-import {Component, ElementRef, NgModule, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, NgModule, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {FileService} from "../file.service";
+import {FileService} from "../service/file.service";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
+import {UserService} from "../user.service";
+import {ModalComponent} from "../modal/modal.component";
 
 @Component({
   selector: 'app-upload',
@@ -22,25 +23,38 @@ export class UploadComponent {
   maxTags: number = 10;
   currentTags: number = 0;
 
+  static MAX_IMAGE_SIZE = 10000000;
+
 
   @ViewChild('UploadFileInput', {static: false}) uploadFileInput: ElementRef;
   fileUploadForm: FormGroup;
   fileInputLabel: string;
   uploadDisabled: boolean;
+
+  modal_show: boolean;
+
   showTextField: boolean;
   textBoxSize: number;
+  modalErrorText: string;
 
 
-  constructor(private fileService: FileService, private formBuilder: FormBuilder) {
+  constructor(private fileService: FileService, private formBuilder: FormBuilder, private router: Router, public userService: UserService) {
     this.file_name = 'No File selected!';
     this.addText = "<b>+</b>";
     this.uploadDisabled = true;
     this.tags = new Array<string>();
     this.showTextField = false;
     this.textBoxSize = 1;
+    this.modal_show = false;
   }
 
-  onFileChanged(event) {
+  ngOnInit(): void {
+    if(!this.userService.isLoggedIn()) {
+      this.router.navigate(['/']);
+    }
+  }
+
+  onFileChanged(event, errorModal: ModalComponent) {
     this.fileInputLabel = event.target.files[0];
     //this.fileUploadForm.get('uploadedImage').setValue(event.target.files[0]);
     this.file_name = event.target.files[0].name;
@@ -61,11 +75,10 @@ export class UploadComponent {
 
   onUpload() {
 
+    this.modal_show = true;
     const formData = new FormData();
     //formData.append('uploadedImage', this.fileUploadForm.get('uploadedImage').value);
     // formData.append('agentId', '007');
-
-    document.getElementById('id01').style.display = "block";
   }
 
   removeTag(tag: number) {
@@ -75,5 +88,22 @@ export class UploadComponent {
 
   resize(value: any) {
     this.textBoxSize = value.length > 8 ? 8 : value.length;
+  }
+
+  checkFile(file: File, errorModal: ModalComponent) {
+    if(file.size >= 1) {
+      this.modalErrorText = "Das Bild überschreitet das Uploadlimit von " + UploadComponent.MAX_IMAGE_SIZE / 1000 + "MB!";
+      errorModal.currentHidden = false;
+    }
+  }
+
+  onFileDrop($event: DragEvent, errorModal: ModalComponent) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    console.log("Moin");
+
+    let file = $event.dataTransfer.files.item(0);
+    this.checkFile(file, errorModal);
+
   }
 }

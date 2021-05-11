@@ -10,6 +10,9 @@ import { MainpageComponent } from './mainpage/mainpage.component';
 import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './register/register.component';
+import { PasswordRestoreComponent } from './password-restore/password-restore.component';
+import { ModalComponent } from './modal/modal.component';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,11 @@ import { RegisterComponent } from './register/register.component';
     UserComponent,
     MainpageComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PasswordRestoreComponent,
+    ModalComponent,
+    TestComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

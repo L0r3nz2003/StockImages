@@ -7,6 +7,8 @@ import { UserComponent } from './user/user.component';
 import { MainpageComponent } from './mainpage/mainpage.component';
 import { LoginComponent } from './login/login.component';
 import {RegisterComponent} from "./register/register.component";
+import {PasswordRestoreComponent} from "./password-restore/password-restore.component";
+import {TestComponent} from "./test/test.component";
 
 
 const routes: Routes = [
@@ -14,7 +16,9 @@ const routes: Routes = [
   { path: '', component: MainpageComponent },   //upload
   { path: 'user', component: UserComponent },
   { path: 'user/login', component: LoginComponent },
-  { path: 'user/register', component: RegisterComponent }
+  { path: 'user/register', component: RegisterComponent },
+  { path: 'internal/test', component: TestComponent },
+  {path: 'user/password-restore', component: PasswordRestoreComponent }
 ];
 
 

@@ -1,9 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 
-import {User} from '../interfaces/user';
 import {UserService} from '../user.service';
-import {cwd} from 'process';
+import {environment} from "../../environments/environment";
+import {AppComponent} from "../app.component";
+import {PasswordRestoreService} from "../service/password-restore.service";
+import {User} from "../interfaces/user";
+import {ModalComponent} from "../modal/modal.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -14,31 +18,44 @@ export class LoginComponent implements OnInit {
   //users: User[];
 
   name;
+  user;
 
-  constructor(private userService: UserService) {
+  modalShow = false;
 
+  constructor(public userService: UserService, private passwordRestoreService: PasswordRestoreService, public router: Router) {
   }
 
   ngOnInit(): void {
 
   }
 
-  async login(name: any, password: any) {
+  async forgotPassword(email: any) {
 
-    name.style.borderColor = "";
+    if (isNullOrUndefined(email.value) || !email.validity.valid) {
+      email.style.borderColor = "red";
+      document.getElementById("error_username").innerHTML = "Gebe einen gültige E-Mail Adresse an!";
+      return;
+    }
+
+    this.passwordRestoreService.restore(email.value);
+  }
+
+  login(email: HTMLInputElement, password: HTMLInputElement, modal: ModalComponent) {
+
+    email.style.borderColor = "";
     password.style.borderColor = "";
     document.getElementById("error_username").innerHTML = "";
     document.getElementById("error_password").innerHTML = "";
 
-    if (isNullOrUndefined(name.value) || !name.validity.valid) {
-      name.style.borderColor = "red";
-      document.getElementById("error_username").innerHTML = "Gebe einen gültigen Namen an!";
+    if (isNullOrUndefined(email.value) || !email.validity.valid) {
+      email.style.borderColor = "red";
+      document.getElementById("error_username").innerHTML = "Gebe einen gültige E-Mail Adresse an!";
       return;
     }
 
-    if(name.value.indexOf(' ') >= 0) {
-      name.style.borderColor = "red";
-      document.getElementById("error_username").innerHTML = "Der Name enthält ungültige Zeichen!";
+    if(email.value.indexOf(' ') >= 0) {
+      email.style.borderColor = "red";
+      document.getElementById("error_username").innerHTML = "Deine E-Mail enthält ungültige Zeichen!";
       return;
     }
 
@@ -49,16 +66,16 @@ export class LoginComponent implements OnInit {
     }
 
 
-    if (await this.userService.isMatch(name.value, password.value)) {
-      this.name = name.value;
-      document.getElementById('id01').style.display="block";
-    } else {
-      name.style.borderColor = "red";
-      document.getElementById("error_username").innerHTML = "Benutzername/Passwort falsch!";
-      document.getElementById("error_password").innerHTML = "Benutzername/Passwort falsch!";
-      password.style.borderColor = "red";
-    }
-
+    this.userService.isMatch(email.value, password.value).subscribe(exist  => {
+      if(exist) {
+        modal.currentHidden = false;
+      } else {
+        email.style.borderColor = "red";
+        document.getElementById("error_username").innerHTML = "E-Mail/Passwort falsch!";
+        document.getElementById("error_password").innerHTML = "E-Mail/Passwort falsch!";
+        password.style.borderColor = "red";
+      }
+    });
   }
 
 

@@ -24,15 +24,17 @@ router.get("/show" /*, jwtmanager.verifyToken*/, async (req, res) => {
   res.send(result);
 });
 
-// Return User with this name
-// if Error: http status 404 Not found
-router.get("/showbyname", jwtmanager.verifyToken, async (req, res) => {
-  const result = await userManager.getUserByName(req.query.name);
-  if (Object.keys(result).length == 0) {
-    res.status(404).send("Not found");
+// Return User with this name and email
+// if not unique: 409 (Conflict)
+router.get("/checkunique"/*, jwtmanager.verifyToken*/, async (req, res) => {
+  const name = await userManager.getUserByName(req.query.name);
+  const mail = await userManager.getUserByEmail(req.query.email);
+
+  if (name[0] == undefined && mail[0] == undefined) {
+    res.sendStatus(200);
     return;
   }
-  res.send(result);
+  res.sendStatus(409);
 });
 
 // Return User with this name if the password id correct
@@ -44,34 +46,39 @@ router.get("/exists", async (req, res) => {
     return;
   }
 
-  const result = await userManager.getUserByName(req.query.name);
+  const result = await userManager.getUserByEmail(req.query.email);
+
+  let tokenData = {
+    id: result[0].UserName,
+    username: result[0].UserId
+  }
+  let verifyToken = await jwtmanager.singToken(tokenData);
+
 
   const user = {
-    id: result[0].UserId,
-    username: result[0].UserName,
+    name: result[0].UserName,
+    email: req.query.email,
+    password: req.query.password,
+    pics: 0,
+    token: verifyToken
   };
 
-  const token = await jwtmanager.singToken(user);
-
-  res.json({
-    message: "loged in",
-    pics: result[0].Pics,
-    token: token,
-  });
+  res.json(user);
 });
 
 // Create new User, id is Autoincrement
 // Needs a complete User object
 // If User already exists
 // => Error 404 User already exists
-router.post("/create", jwtmanager.verifyToken, async (req, res) => {
+router.post("/create" /*, jwtmanager.verifyToken*/, async (req, res) => {
   const person = await userManager.getUserByName(req.body.name);
   if (Object.keys(person).length == 1) {
     res.status(404).send("User already exists");
     return;
   }
   const result = await userManager.createUser(req.body);
-  res.send(result);
+
+  res.json(result);
 });
 
 // Change the User with this ID
