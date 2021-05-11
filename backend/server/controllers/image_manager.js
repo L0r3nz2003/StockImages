@@ -52,13 +52,21 @@ class ImageManagement {
     const sharedLink = await this.getShardLink(id);
 
     await dbx.sharingGetSharedLinkFile({ url: String(sharedLink) })
-      .then(function (data) {
+      .then((data) => {
         binary = data.result.fileBinary;
       })
       .catch(function (error) {
         console.error(error);
       });
     return binary;
+
+    /*
+    let binary = await dbx.sharingGetSharedLinkFile({ url: String(sharedLink) });
+    if(!binary){
+
+    }
+  return binary;
+*/
 
   }
 

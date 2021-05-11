@@ -12,6 +12,7 @@
     "bcrypt": "^5.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dotenv": "^9.0.2",
     "dropbox": "^8.3.0",
     "dropbox-v2-api": "^2.4.38",
     "ejs": "^3.1.6",

@@ -8,78 +8,31 @@ const jwtmanager = require("../controllers/jwt_manager");
 const passwordHash = require("bcrypt");
 const saltRounds = 10;
 
-// Return User with this ID | IF ID is null => return all user
-// if Error: http status 404 Not found
-router.get("/show" /*, jwtmanager.verifyToken*/, async (req, res) => {
-  let result = "";
-  if (req.query.id == null) {
-    result = await userManager.getAllUsers();
-  } else {
-    result = await userManager.getSingleUser(req.query.id);
-  }
-  if (Object.keys(result).length == 0) {
-    res.status(404).send("Not found");
-    return;
-  }
-  res.send(result);
-});
+/**Return User with this ID | IF ID is null => return all user
+ * if Error: http status 404 Not found
+ * rep.query.id
+ */
+router.get("/show", userManager.showUsers);
 
-// Return User with this name and email
-// if not unique: 409 (Conflict)
-router.get("/checkunique"/*, jwtmanager.verifyToken*/, async (req, res) => {
-  const name = await userManager.getUserByName(req.query.name);
-  const mail = await userManager.getUserByEmail(req.query.email);
+/**Return User with this name and email
+ * if not unique: 409 (Conflict)
+ * rep.query.iname / rep.query.email
+ */
+router.get("/checkunique", userManager.checkUserUniqe);
 
-  if (name[0] == undefined && mail[0] == undefined) {
-    res.sendStatus(200);
-    return;
-  }
-  res.sendStatus(409);
-});
+/**Return User with this email if the password id correct
+ * if Error: http status 404 Not found
+ * rep.query.email / req.query.password
+ */
+router.get("/exists", userManager.checkIfUserExists);
 
-// Return User with this name if the password id correct
-// if Error: http status 404 Not found
-router.get("/exists", async (req, res) => {
-  const password = await userManager.checkIfUserExists(req.query.email);
-  if (password.length == 0 || !(await passwordHash.compare(String(req.query.password), String(password[0].Password)))) {
-    res.status(404).send("Not found");
-    return;
-  }
-
-  const result = await userManager.getUserByEmail(req.query.email);
-
-  let tokenData = {
-    id: result[0].UserName,
-    username: result[0].UserId
-  }
-  let verifyToken = await jwtmanager.singToken(tokenData);
-
-
-  const user = {
-    name: result[0].UserName,
-    email: req.query.email,
-    password: req.query.password,
-    pics: 0,
-    token: verifyToken
-  };
-
-  res.json(user);
-});
-
-// Create new User, id is Autoincrement
-// Needs a complete User object
-// If User already exists
-// => Error 404 User already exists
-router.post("/create" /*, jwtmanager.verifyToken*/, async (req, res) => {
-  const person = await userManager.getUserByName(req.body.name);
-  if (Object.keys(person).length == 1) {
-    res.status(404).send("User already exists");
-    return;
-  }
-  const result = await userManager.createUser(req.body);
-
-  res.json(result);
-});
+/**Create new User, id is Autoincrement
+ * Needs a complete User object
+ * If User already exists
+ * => Error 404 User already exists
+ * req.body
+ */
+router.post("/create" /*, jwtmanager.verifyToken*/,);
 
 // Change the User with this ID
 // Needs a complete User object
@@ -165,5 +118,9 @@ router.delete("/deletebyname", jwtmanager.verifyToken, async (req, res) => {
   const result = await userManager.deleteUserByName(req.query.name);
   res.send(result);
 });
+
+
+
+
 
 module.exports = router;

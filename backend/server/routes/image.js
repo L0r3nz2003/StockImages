@@ -67,6 +67,8 @@ router.get("/download", jwtmanager.verifyToken, async (req, res) => {
     case "png":
       res.setHeader("content-type", "image/png");
       break;
+    default:
+    // res.sendStatus();
   }
   res.write(data, "binary").end();
 });
