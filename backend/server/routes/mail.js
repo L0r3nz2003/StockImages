@@ -12,7 +12,7 @@ const saltRounds = 10;
 // send a Mail, its a test Method
 router.post("/send", async (req, res) => {
   // send mail
-  sendMail("j.komma@pfelling.de", "default test", "TEST");
+  sendMail("Komma", "j.komma@pfelling.de", "default test", "TEST", "www.google.de");
   res.json({ message: "Mail Page" });
 });
 
@@ -23,11 +23,18 @@ router.post("/forgot-password", async (req, res) => {
   const tokenExtencion = user[0].UserId + user[0].Password;
   const token = await jwtmanager.signTokenMail(user, tokenExtencion);
   // 1 - create link
-  const link = `http://localhost:4200/user/password-restore?id=${user[0].UserId}&token=${token}`;
+  const link = process.env.URL + `/user/password-restore?id=${user[0].UserId}&token=${token}`;
   // 2 - send mail
   sendMail(user[0].UserName, user[0].email, "Password-Reset", "", link);
   res.json({ message: "Link sended" });
 });
+
+/**
+ * envirement
+ * routes
+ * interfaces
+ */
+
 
 // reset password
 router.post("/reset-password", jwtmanager.verifyTokenMail, async (req, res) => {
@@ -52,17 +59,17 @@ async function sendMail(username, to, subject, text, link) {
     }
     // 1 - Create Transporter
     const transporter = nodemailer.createTransport({
-      host: "send.one.com",
-      port: 587,
+      host: process.env.MAIL_HOST,
+      port: process.env.PORT,
       secure: false,
       auth: {
-        user: "stock-images@saigon-bikes.com",
-        pass: "StockImages123456",
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASSWORD,
       },
     });
     // provide transporter with information and send mail
     const info = await transporter.sendMail({
-      from: "stock-images@saigon-bikes.com",
+      from: process.env.MAIL_USER,
       to: to,
       subject: subject,
       text: text,
