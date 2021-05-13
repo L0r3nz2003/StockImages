@@ -9,72 +9,39 @@ const jwtmanager = require("../controllers/jwt_manager");
 
 router.use(fileUpload());
 
-//upload
-router.post("/upload", jwtmanager.verifyToken, async (req, res) => {
-  // 0 - Check if files are provided
-  if (!req.files) {
-    res.status(500).send({ error: "no image provided" });
-    return;
-  }
-  // 1 - generate pHash and look for dublicates
-  const file = req.files.file;
-  const hashValue = await phash(file.data);
-  const rowsInDatabase = await imageManager.getImageByPhash(hashValue);
-  if (rowsInDatabase.length != 0) {
-    res.status(500).send({ error: "Duplicates are not allowed" });
-    return;
-  }
-  // 2 - Check if all data is provided
-  const beschreibung = req.query.beschreibung;
-  const uid = req.query.uid;
-  const tags = req.query.tags.toUpperCase();
-  if (beschreibung == null || uid == null || tags == null) {
-    res.status(500).send({ error: "no text or userId or tags provided" });
-    return;
-  }
-  // 3 - upload image
-  const succsess = await imageManager.uploadImage(
-    file,
-    beschreibung,
-    uid,
-    tags,
-    hashValue
-  );
-  if (!succsess) res.status(500).send("upload error");
-  res.status(200).send("OK");
-});
 
-// download
-router.get("/download", jwtmanager.verifyToken, async (req, res) => {
-  // 0 - Check if id is provided
-  const id = req.query.id;
-  if (id == null) {
-    res.status(500).send({ error: "no id provided" });
-    return;
-  }
-  // 1 - Check if image is storred
-  const data = await imageManager.downloadImage(id);
-  if (data == "") {
-    res.status(500).send("download error");
-    return;
-  }
-  // 2 - download / send image to user
-  const ending = await imageManager.getFileEnding(id);
-  switch (ending) {
-    case "jpg":
-      res.setHeader("content-type", "image/jpeg");
-      break;
-    case "png":
-      res.setHeader("content-type", "image/png");
-      break;
-    default:
-    // res.sendStatus();
-  }
-  res.write(data, "binary").end();
-});
+
+
+/**upload
+ * req.files.file
+ * req.query.beschreibung
+ * req.query.uid
+ * req.query.tags
+ */
+router.post("/upload", /*jwtmanager.verifyToken,*/  imageManager.uploadImage);
+
+
+
+/**download
+ * req.query.id
+ */
+router.get("/download"/*, jwtmanager.verifyToken*/, imageManager.downloadImage);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // delete
-router.delete("/delete", jwtmanager.verifyToken, async (req, res) => {
+router.delete("/delete", /*jwtmanager.verifyToken,*/ async (req, res) => {
   // 0 - Check if id is provided
   const id = req.query.id;
   if (id == null) {
@@ -83,11 +50,11 @@ router.delete("/delete", jwtmanager.verifyToken, async (req, res) => {
   }
   // 1 - Delete image
   const succsess = await imageManager.deleteImage(id);
-  if (!succsess) {
+  if (succsess) {
     res.status(500).send("delete error");
     return;
   }
-  res.status(200);
+  res.sendStatus(200);
 });
 
 //getUrls

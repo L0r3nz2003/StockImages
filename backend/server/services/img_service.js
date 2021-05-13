@@ -53,17 +53,10 @@ class ImgService {
     );
   };
 
-  createImg = async (
-    fileName,
-    uploadTime,
-    beschreibung,
-    userId,
-    tags,
-    phash
-  ) => {
+  createImg = async (fileName, uploadTime, beschreibung, userId, tags, phash) => {
     await this.runQuery(
       "insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags, p_hash) values" +
-        "(?, ?, ?, ?, ?, ?)",
+      "(?, ?, ?, ?, ?, ?)",
       [fileName, uploadTime, beschreibung, userId, tags, phash]
     );
     return "INSERT Successfull";
@@ -72,7 +65,7 @@ class ImgService {
   updateImg = async (id, img) => {
     await this.runQuery(
       "update  PsImage set FileName = ?, uplaodTime = ?, beschreibung = ?, userId = ?  where id = ?" +
-        "(?, ?, ?, ?)",
+      "(?, ?, ?, ?)",
       [img.time, img.beschreibung, img.userid, id]
     );
     return "UPDATE Successfull";
