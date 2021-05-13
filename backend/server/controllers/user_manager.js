@@ -74,52 +74,46 @@ class UserManagement {
     res.json(result);
   };
 
-
-
-
-
-
-
-
-
-  updateUser = async (id, user) => {
-    const meldung = await userService.updateUser(id, user);
-    return meldung;
+  // Change complete user with this id
+  changeUser = async (req, res) => {
+    // 0 - check if user exist
+    const user = await userService.getSingleUser(req.query.id);
+    if (Object.keys(user).length == 0) {
+      res.status(404).send("Not found");
+      return;
+    }
+    // 1 - change user
+    const result = await userService.updateUser(req.query.id, req.body);
+    res.send(result);
   };
 
-  updatePassword = async (name, password) => {
-    const meldung = await userService.updatePassword(name, password);
-    return meldung;
+  // Change Username
+  changeUserName = async (req, res) => {
+    // 0 - Check if user exist and Check if new name is available
+    const olduser = await userService.getUserByName(req.query.oldname);
+    const newuser = await userService.getUserByName(req.query.newname);
+    if (Object.keys(olduser).length == 0 || Object.keys(newuser).length == 1) {
+      res.status(404).send("Not found");
+      return;
+    }
+    // 1 - Change Username
+    const result = await userService.updateName(req.query.oldname, req.query.newname);
+    res.send(result);
   };
 
-  updatePasswordById = async (id, password) => {
-    const meldung = await userService.updatePasswordById(id, password);
-    return meldung;
+  // Delete User
+  deleteUser = async (req, res) => {
+    // 0 - Check if user exist
+    const user = await userService.getSingleUser(req.query.id);
+    if (Object.keys(user).length == 0) {
+      res.status(404).send("Not found");
+      return;
+    }
+    // 1 - Delete User
+    const result = await userService.deleteUserById(req.query.id);
+    res.send(result);
   };
 
-  updateName = async (oldname, newname) => {
-    const meldung = await userService.updateName(oldname, newname);
-    return meldung;
-  };
-
-  updateAnzBild = async (name, newAnz) => {
-    const meldung = await userService.updateAnzBilder(name, newAnz);
-    return meldung;
-  };
-
-  updateEmail = async (name, email) => {
-    return await userService.updateEmail(name, email);
-  };
-
-  deleteUserById = async (id) => {
-    const meldung = await userService.deleteUserById(id);
-    return meldung;
-  };
-
-  deleteUserByName = async (name) => {
-    const meldung = await userService.deleteUserByName(name);
-    return meldung;
-  };
 }
 
 module.exports = new UserManagement();
