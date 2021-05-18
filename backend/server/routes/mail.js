@@ -17,16 +17,5 @@ router.post("/reset-password", jwtmanager.verifyTokenMail, mail_manager.resetPas
 module.exports = router;
 
 
-/**
- * envirement : DONE
- * routes : PROGRESS
- * interfaces : TODO
- *
- * phash : TODO
- *
- *
- *
- * WEBTOKEN : TODO
- *
- */
+
 
