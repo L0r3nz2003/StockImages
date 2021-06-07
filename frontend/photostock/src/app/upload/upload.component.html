@@ -67,27 +67,30 @@
 
       <div class="container">
         <button type="button" class="btn btn-primary mb-2"
-                onclick="">Hochladen
+                (click)="onUpload(uploadModal); modal_show = false">Hochladen
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="select"  (drag)="onFileDrop($event, errorModal)" style="background-color: red;">
+  <modal #uploadModal [button]="false" [message]="true" [messageLevel]="3">
+    Dein Bild wird hochgeladen...
+  </modal>
+
+
+<div class="select">
   <input
     style="display: none"
-    type="file" (change)="onFileChanged($event, errorModal)"
+    type="file" (change)="onFileChanged(fileInput.files)"
     #fileInput>
-  <button (click)="fileInput.click()" class="btn btn-primary btn-lg">Auswählen oder per Drag & Drop hinziehen!</button>
+  <button (click)="fileInput.click()" class="btn btn-primary btn-lg">File auswählen!</button>
 </div>
 
 <div id="upload">
   <p style="color: gray; opacity: 0.5">{{file_name}}</p>
 
 
-  <button (click)="onUpload()" [disabled]="uploadDisabled" class="btn btn-primary btn-lg" >Upload!</button>
+  <button (click)="openSettings()" [disabled]="uploadDisabled" class="btn btn-primary btn-lg" >Upload!</button>
 </div>
-
-
 </body>

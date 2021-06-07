@@ -34,9 +34,13 @@ export class ModalComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
+  //Set the current Icon
+  setImageSource(messageLevel: number) {
+    this.updateImageSource(messageLevel);
+  }
 
-    switch (this.messageLevel) {
+  private updateImageSource(messageLevel: number) {
+    switch (messageLevel) {
       case 1:
         this.imageSource = MessageLevel.CHECK;
         break;
@@ -52,6 +56,10 @@ export class ModalComponent implements OnInit {
       default:
         this.imageSource = MessageLevel.NONE;
     }
+  }
+
+  ngOnInit(): void {
+      this.updateImageSource(this.messageLevel);
   }
 }
   export enum MessageLevel {

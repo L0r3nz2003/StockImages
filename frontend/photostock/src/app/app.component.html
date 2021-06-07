@@ -23,6 +23,8 @@
         <li class="nav-item active">
           <a class="nav-link" href="#">Home</a>
         </li>
+
+        <!-- check if user loggedIn -->
         <li class="nav-item" *ngIf="!userService.isLoggedIn()">
           <a class="nav-link" routerLink="/user" href="#">Anmelden</a>
         </li>

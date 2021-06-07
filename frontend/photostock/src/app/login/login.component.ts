@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 
-import {UserService} from '../user.service';
+import {UserService} from '../service/user.service';
 import {environment} from "../../environments/environment";
 import {AppComponent} from "../app.component";
 import {PasswordRestoreService} from "../service/password-restore.service";
@@ -15,22 +15,18 @@ import {Router} from "@angular/router";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  //users: User[];
-
   name;
   user;
 
-  modalShow = false;
-
-  constructor(public userService: UserService, private passwordRestoreService: PasswordRestoreService, public router: Router) {
-  }
+  constructor(public userService: UserService, private passwordRestoreService: PasswordRestoreService, public router: Router) {}
 
   ngOnInit(): void {
 
   }
 
-  async forgotPassword(email: any) {
+  async forgotPassword(email: any, passwordReset: ModalComponent) {
 
+    //forgot password?
     if (isNullOrUndefined(email.value) || !email.validity.valid) {
       email.style.borderColor = "red";
       document.getElementById("error_username").innerHTML = "Gebe einen gültige E-Mail Adresse an!";
@@ -38,6 +34,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.passwordRestoreService.restore(email.value);
+    passwordReset.currentHidden = false;
   }
 
   login(email: HTMLInputElement, password: HTMLInputElement, modal: ModalComponent) {
@@ -47,18 +44,21 @@ export class LoginComponent implements OnInit {
     document.getElementById("error_username").innerHTML = "";
     document.getElementById("error_password").innerHTML = "";
 
+    //is email valid?
     if (isNullOrUndefined(email.value) || !email.validity.valid) {
       email.style.borderColor = "red";
       document.getElementById("error_username").innerHTML = "Gebe einen gültige E-Mail Adresse an!";
       return;
     }
 
+    //if contains spaces
     if(email.value.indexOf(' ') >= 0) {
       email.style.borderColor = "red";
       document.getElementById("error_username").innerHTML = "Deine E-Mail enthält ungültige Zeichen!";
       return;
     }
 
+    //is password valid
     if (isNullOrUndefined(password.value) || !password.validity.valid) {
       password.style.borderColor = "red";
       document.getElementById("error_password").innerHTML = "Gebe ein 8 Stelliges Passwort ein!";
@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
     }
 
 
+    //match the email with password?
     this.userService.isMatch(email.value, password.value).subscribe(exist  => {
       if(exist) {
         modal.currentHidden = false;

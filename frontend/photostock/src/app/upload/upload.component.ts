@@ -2,7 +2,7 @@ import {Component, ElementRef, HostListener, NgModule, OnInit, ViewChild} from '
 import {Router} from '@angular/router';
 import {FileService} from "../service/file.service";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {UserService} from "../user.service";
+import {UserService} from "../service/user.service";
 import {ModalComponent} from "../modal/modal.component";
 
 @Component({
@@ -27,8 +27,8 @@ export class UploadComponent {
 
 
   @ViewChild('UploadFileInput', {static: false}) uploadFileInput: ElementRef;
-  fileUploadForm: FormGroup;
-  fileInputLabel: string;
+
+  file: File;
   uploadDisabled: boolean;
 
   modal_show: boolean;
@@ -36,6 +36,7 @@ export class UploadComponent {
   showTextField: boolean;
   textBoxSize: number;
   modalErrorText: string;
+  uploadForm: FormGroup;
 
 
   constructor(private fileService: FileService, private formBuilder: FormBuilder, private router: Router, public userService: UserService) {
@@ -51,13 +52,17 @@ export class UploadComponent {
   ngOnInit(): void {
     if(!this.userService.isLoggedIn()) {
       this.router.navigate(['/']);
+    } else {
+      this.uploadForm = this.formBuilder.group({
+        profile: ['']
+      });
     }
+
   }
 
-  onFileChanged(event, errorModal: ModalComponent) {
-    this.fileInputLabel = event.target.files[0];
-    //this.fileUploadForm.get('uploadedImage').setValue(event.target.files[0]);
-    this.file_name = event.target.files[0].name;
+  onFileChanged(files: FileList) {
+    this.file = files.item(0);
+    this.file_name = files.item(0).name;
     this.uploadDisabled = false;
   }
 
@@ -73,12 +78,20 @@ export class UploadComponent {
     this.textBoxSize = 1;
   }
 
-  onUpload() {
-
+  openSettings() {
     this.modal_show = true;
-    const formData = new FormData();
-    //formData.append('uploadedImage', this.fileUploadForm.get('uploadedImage').value);
-    // formData.append('agentId', '007');
+  }
+
+  async onUpload(uploadModal: ModalComponent) {
+    //upload image
+    uploadModal.currentHidden = false;
+    this.modal_show = true;
+    this.uploadForm.get('profile').setValue(this.file);
+    this.fileService.upload(this.uploadForm);
+
+    uploadModal.setImageSource(1);
+    await this.delay(1000);
+    uploadModal.currentHidden = true;
   }
 
   removeTag(tag: number) {
@@ -97,13 +110,7 @@ export class UploadComponent {
     }
   }
 
-  onFileDrop($event: DragEvent, errorModal: ModalComponent) {
-    $event.preventDefault();
-    $event.stopPropagation();
-    console.log("Moin");
-
-    let file = $event.dataTransfer.files.item(0);
-    this.checkFile(file, errorModal);
-
+  private delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
   }
 }

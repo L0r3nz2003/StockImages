@@ -1,6 +1,6 @@
 import {Optional} from "@angular/core";
 
-export interface User{
+export interface User {
     name: string;
     email: string;
     password: string;

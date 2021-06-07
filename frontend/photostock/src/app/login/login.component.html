@@ -20,6 +20,13 @@
         </div>
     </modal>
 
+    <modal #resetPassword message="true" (closeAction)="router.navigate(['/'])">
+      <div>
+        Sollte deine E-Mail Adresse zu einem Konto gehören, wurde dir eine E-Mail geschickt.
+      </div>
+
+    </modal>
+
     <div class="login-form">
         <form>
             <div class="form-group row">
@@ -37,7 +44,7 @@
                 </div>
               </div>
               <button type="submit" style="margin-right: 3%" (click)="login(eMail, pass, modal)">Jetzt Anmelden</button>
-          <button type="submit" (click)="forgotPassword(eMail)">Passwort vergessen?</button>
+          <button type="submit" (click)="forgotPassword(eMail, resetPassword)">Passwort vergessen?</button>
         </form>
     </div>
 

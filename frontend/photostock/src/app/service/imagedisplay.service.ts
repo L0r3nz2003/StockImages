@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {MessageService} from "../message.service";
+import {MessageService} from "./message.service";
 import {User} from "../interfaces/user";
 import {Observable} from "rxjs";
 
@@ -19,6 +19,7 @@ export class ImagedisplayService {
     private http: HttpClient) {
   }
 
+  //get all images to display on the front page
   async getImages() {
     let http = new XMLHttpRequest();
 
