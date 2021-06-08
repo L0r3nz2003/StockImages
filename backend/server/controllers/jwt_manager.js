@@ -38,7 +38,7 @@ class JwtManager {
 
     // Create token for mail-Passwordreset
     signTokenMail = async (user, keyextension) => {
-        return jwt.sign({ user }, process.env.PRIVATE_KEY + keyextension, { expiresIn: '15m' }, singOptions);
+        return jwt.sign({ user }, process.env.PRIVATE_KEY + keyextension, { expiresIn: '15m' });
     }
 
     // verify token for mail-Passwordreset
