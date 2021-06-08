@@ -4,6 +4,7 @@ const passwordHash = require("bcrypt");
 
 const jwtmanager = require("./jwt_manager");
 const userManager = require("./user_manager");
+const userService = require("../services/user_service.js");
 
 const saltRounds = 10;
 
@@ -13,7 +14,7 @@ class MailManager {
     forgotPassword = async (req, res, next) => {
         try {
             // 0 - create token
-            const user = await userManager.getUserByEmail(req.query.email);
+            const user = await userService.getUserByEmail(req.query.email);
             const tokenExtencion = user[0].UserId + user[0].Password;
             const token = await jwtmanager.signTokenMail(user, tokenExtencion);
             // 1 - create link
