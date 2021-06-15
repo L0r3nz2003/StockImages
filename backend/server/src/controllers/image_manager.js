@@ -1,8 +1,3 @@
-const { response } = require('express');
-const fs = require('fs');
-const { resolve } = require('path');
-const { finished } = require('stream');
-const { all } = require('../routes/image');
 const Dropbox = require("dropbox").Dropbox
 const phash = require("sharp-phash");
 const dist = require("sharp-phash/distance");
@@ -13,7 +8,7 @@ const Image = require("../classes/image.js");
 
 
 const dbx = new Dropbox({
-  accessToken: 'Lu3ZPqppFmkAAAAAAAAAAWQDruKwvjzUamxFx1tycMP6gNSQ2ehhhh__ml8UKMcU'
+  accessToken: process.env.DROPBOX_ACCESSTOKEN
 });
 
 
@@ -41,6 +36,7 @@ class ImageManagement {
       const beschreibung = req.query.beschreibung;
       const uid = req.query.uid;
       const tags = req.query.tags.toUpperCase();
+      console.log("TESTTTT");
       if (beschreibung == null || uid == null || tags == null) {
         res.status(500).send({ error: "no text or userId or tags provided" });
         return;
@@ -52,8 +48,6 @@ class ImageManagement {
       // 4 - create image object in database
       console.log("BEFORE");
       const image = new Image(oldFilename, uploadTime, beschreibung, uid, tags, hashValue);
-      console.log("new Image");
-      console.log(image);
       await imgService.createImg(image);
       // 5 - build new filename
       const id = await imgService.getImgId(oldFilename, uid, uploadTime);

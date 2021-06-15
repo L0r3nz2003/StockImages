@@ -1,5 +1,4 @@
 const db = require("../database/mysql.js");
-const userManager = require("../controllers/user_manager.js");
 
 const passwordHash = require("bcrypt");
 const saltRounds = 10;

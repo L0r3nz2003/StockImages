@@ -26,16 +26,14 @@ app.use(function (req, res, next) {
 });
 
 // routen
-app.use("/", require("./routes/index"));
-app.use("/users", require("./routes/users"));
-app.use("/img", require("./routes/image"));
-app.use("/mail", require("./routes/mail"));
+app.use("/", require("./src/routes/index"));
+app.use("/users", require("./src/routes/users"));
+app.use("/img", require("./src/routes/image"));
+app.use("/mail", require("./src/routes/mail"));
 
 
 
 app.use((req, res, next) => {
-  /*const error = new Error('Not Found');
-  error.status = 404;*/
   next(httpError(404, 'Path not found'));
 });
 
@@ -49,14 +47,5 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
-
-/**
- * envirement : DONE
- * routes : DONE
- * interfaces : DONE
- * WEBTOKEN : DONE
- *
- * PHASH : TODO
- */

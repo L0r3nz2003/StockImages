@@ -1,9 +1,8 @@
 const userService = require("../services/user_service.js");
 
-const jwtmanager = require("../controllers/jwt_manager");
+const jwtmanager = require("./jwt_manager");
 
 const passwordHash = require("bcrypt");
-const saltRounds = 10;
 
 class UserManagement {
 

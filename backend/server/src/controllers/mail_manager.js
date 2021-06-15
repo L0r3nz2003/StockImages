@@ -6,35 +6,35 @@ const jwtmanager = require("./jwt_manager");
 const userManager = require("./user_manager");
 const userService = require("../services/user_service.js");
 
-const saltRounds = 10;
-
 class MailManager {
 
     // forgot password 
     forgotPassword = async (req, res, next) => {
         try {
+            
             // 0 - create token
             const user = await userService.getUserByEmail(req.query.email);
             const tokenExtencion = user[0].UserId + user[0].Password;
             const token = await jwtmanager.signTokenMail(user, tokenExtencion);
             // 1 - create link
             const link = process.env.URL + `/user/password-restore?id=${user[0].UserId}&token=${token}`;
+            
             // 2 - send mail
-            ejs.renderFile("views/reset-mail.ejs", { username: user[0].UserName, link: link }, async function (err, data) {
+            ejs.renderFile(__dirname + "\\..\\templates\\reset-mail.ejs", { username: user[0].UserName, link: link }, async function (err, data) {
                 if (err) {
-                    console.log(err);
                     return;
                 }
                 // 3 - Create Transporter
                 const transporter = nodemailer.createTransport({
                     host: process.env.MAIL_HOST,
-                    port: process.env.PORT,
+                    port: process.env.MAIL_PORT,
                     secure: false,
                     auth: {
                         user: process.env.MAIL_USER,
                         pass: process.env.MAIL_PASSWORD,
                     },
                 });
+                
                 // 4 - provide transporter with information and send mail
                 const info = await transporter.sendMail({
                     from: process.env.MAIL_USER,
@@ -43,6 +43,8 @@ class MailManager {
                     text: "",
                     html: data,
                 });
+                console.log("Message sent: %s", info.messageId);
+                
             });
             // 5 - send response
             res.json({ message: "Link sended" });
@@ -61,7 +63,7 @@ class MailManager {
                 return;
             }
             // 1 - Create Hash and Update Password
-            const hashedPassword = await passwordHash.hash(password, saltRounds);
+            const hashedPassword = await passwordHash.hash(password, process.env.SALTROUNDS);
             const result = await userManager.updatePasswordById(req.query.id, hashedPassword);
             res.json({ message: result });
         } catch (error) {

@@ -1,15 +1,6 @@
-const e = require("express");
-const express = require("express");
-const router = express.Router();
 const jwt = require("jsonwebtoken");
-const { verify } = require("password-hash");
 
-const userManager = require("../controllers/user_manager");
-
-// jwt secret key
-const secretKey = 'topSecret';
-
-
+const userManager = require("./user_manager");
 
 
 class JwtManager {
@@ -26,11 +17,17 @@ class JwtManager {
         if (typeof bearerHeader !== 'undefined') {
             const bearerToken = bearerHeader.split(' ')[1];
             req.token = bearerToken;
-            jwt.verify(req.token, process.env.PUBLIC_KEY.replace(/\"/g, ""), (err, autoData) => {
-                if (err) res.sendStatus(403);
+            jwt.verify(bearerToken, process.env.PUBLIC_KEY.replace(/\"/g, ""), (err, autoData) => {
+                console.log("verify");
+                if (err){
+                    console.log("ERROR");
+                    console.log(err);
+                    res.sendStatus(403); 
+                } 
             });
             next();
         } else {
+            console.log("else zweig");
             // forbidden
             res.sendStatus(403);
         }

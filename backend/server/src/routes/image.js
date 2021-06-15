@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const fileUpload = require("express-fileupload");
-const phash = require("sharp-phash");
-const dist = require("sharp-phash/distance");
 
 const imageManager = require("../controllers/image_manager");
 const jwtmanager = require("../controllers/jwt_manager");

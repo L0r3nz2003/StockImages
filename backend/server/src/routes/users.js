@@ -8,7 +8,7 @@ const jwtmanager = require("../controllers/jwt_manager");
  * if Error: http status 404 Not found
  * rep.query.id
  */
-router.get("/show", userManager.showUsers);
+router.get("/show", jwtmanager.verifyToken, userManager.showUsers);
 
 /**Return User with this name and email
  * if not unique: 409 (Conflict)
@@ -28,7 +28,7 @@ router.get("/exists", userManager.checkIfUserExists);
  * => Error 404 User already exists
  * req.body
  */
-router.post("/create" /*, jwtmanager.verifyToken*/,);
+router.post("/create", userManager.createUser);
 
 /**Change the User with this ID
  * Needs a complete User object

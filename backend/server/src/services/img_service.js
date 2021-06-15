@@ -1,6 +1,5 @@
 const db = require("../database/mysql.js");
-const imageManager = require("../controllers/image_manager.js");
-const image = require("../classes/image");
+const Image = require("../classes/image");
 
 class ImgService {
   getAllImg = async () => {
@@ -55,7 +54,7 @@ class ImgService {
   };
 
   createImg = async (image = new Image()) => {
-    console.log("test");
+    console.log("HELP: " + image.filename);
     await this.runQuery(
       "insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags, p_hash) values" +
       "(?, ?, ?, ?, ?, ?)",
