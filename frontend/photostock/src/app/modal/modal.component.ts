@@ -6,7 +6,7 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from 
     <div [ngClass]="{'modal' : !allowHeaderInteraction, 'modal-without-header' : allowHeaderInteraction}" [hidden]="currentHidden">
       <div [ngClass]="{'modal-content' : true, 'animate' : animation}">
         <div class="container" *ngIf="imageSource.length > 0">
-          <img [src]="imageSource" width="128px" height="128px">
+          <img [src]="getImage(messageLevel)" width="128px" height="128px">
         </div>
         <div [ngClass]="{'container' : true, 'message' : message}">
           <ng-content>
@@ -37,6 +37,25 @@ export class ModalComponent implements OnInit {
   //Set the current Icon
   setImageSource(messageLevel: number) {
     this.updateImageSource(messageLevel);
+  }
+
+  public getImage(messageLevel: number): string {
+    switch (messageLevel) {
+      case 1:
+        return MessageLevel.CHECK;
+        break;
+      case 2:
+        return MessageLevel.WARNING;
+        break;
+      case 3:
+        return MessageLevel.IN_PROGRESS;
+        break;
+      case 4:
+        return MessageLevel.ERROR;
+        break;
+      default:
+        return MessageLevel.NONE;
+    }
   }
 
   private updateImageSource(messageLevel: number) {

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, of, Subject, BehaviorSubject} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 
 import {User} from '../interfaces/user.js';
@@ -13,6 +13,8 @@ export class UserService {
 
   private url = 'http://localhost:3000/';
   private loggedInUser: User;
+
+  private _isLoggedIn = new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
@@ -60,6 +62,7 @@ export class UserService {
   //set the current user to the session
   setUser(user: User) {
     this.loggedInUser = user;
+    this._isLoggedIn.next(true)
   }
 
   //get the current session user

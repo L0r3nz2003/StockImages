@@ -32,6 +32,10 @@
           <a class="nav-link" routerLink="/upload" href="#">Hochladen</a>
         </li>
 
+        <li class="nav-item" *ngIf="userService.isLoggedIn()">
+          <a class="nav-link" routerLink="/upload" href="#">Profile</a>
+        </li>
+
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Photos durchsuchen" aria-label="Search">

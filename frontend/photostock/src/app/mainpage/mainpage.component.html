@@ -3,9 +3,16 @@
 
 <div>
   <div>
-      <modal [currentHidden]="false" [animation]="false" [allowHeaderInteraction]="true" [button]="false" [message]="true" [messageLevel]="1">
-        Derzeit nicht verfügbar!
-      </modal>
+
+    <modal #waitingModal [currentHidden]="loaded" [animation]="true" [allowHeaderInteraction]="true" [button]="loaded" [message]="true" [messageLevel]="messageLevel">
+      {{message}}
+    </modal>
+  
+
+      <div *ngFor="let img of getImages(); index as i;">
+        <p>{{img}}</p>
+      </div>
+
   </div>
 </div>
 

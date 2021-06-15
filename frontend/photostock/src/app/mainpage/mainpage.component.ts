@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ImagedisplayService} from "../service/imagedisplay.service";
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-mainpage',
@@ -9,12 +10,24 @@ import {ImagedisplayService} from "../service/imagedisplay.service";
 
 
 export class MainpageComponent implements OnInit {
+  static UPDATE_INTERVAL = 30000;
+
 
   time: number;
+  messageLevel: number;
+  message: string;
+  loaded: boolean;
+
+  lastUpdated = 0;
+
   static images: Array<string>
   imageServer: ImagedisplayService;
 
   constructor(imageServer: ImagedisplayService) {
+
+    this.loaded = false;
+    this.messageLevel = 3;
+    this.message = "Bilder werden geladen...."
     this.time = 0;
     this.imageServer = imageServer;
     MainpageComponent.images = new Array<string>();
@@ -25,7 +38,14 @@ export class MainpageComponent implements OnInit {
         MainpageComponent.images.push(json[i]);
         MainpageComponent.images.push(json[i]);
       }
+    }).catch(e => {
+        this.messageLevel = 4;
+        this.message = "Es ist ein Fehler beim holen der Bilder aufgetreten! " + e;
+        return;
+    }).then(() => {
+      this.loaded = true;
     });
+
   }
 
   ngOnInit(): void {

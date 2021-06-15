@@ -13,7 +13,6 @@ import { RegisterComponent } from './register/register.component';
 import { PasswordRestoreComponent } from './password-restore/password-restore.component';
 import { ModalComponent } from './modal/modal.component';
 import { TestComponent } from './test/test.component';
-import {NgxFileDropModule} from "ngx-file-drop";
 
 @NgModule({
   declarations: [
@@ -33,8 +32,7 @@ import {NgxFileDropModule} from "ngx-file-drop";
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    NgxFileDropModule
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

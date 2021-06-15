@@ -23,12 +23,17 @@ export class ImagedisplayService {
   async getImages() {
     let http = new XMLHttpRequest();
 
-    return fetch(this.url + "img/urls?all=true", {
+    return fetch(this.url + "img/urls?all=true&tag=null&userName=null", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     }).then(function (response) {
+        if(response.status != 200) {
+          throw new Error(response.statusText);
+          
+        }
+
         return response.json();
       });
   }
