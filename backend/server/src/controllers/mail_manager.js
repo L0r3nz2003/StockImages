@@ -37,7 +37,7 @@ class MailManager {
                 
                 // 4 - provide transporter with information and send mail
                 const info = await transporter.sendMail({
-                    from: process.env.MAIL_USER,
+                    from: '"StockImages" <'+process.env.MAIL_USER+'>',
                     to: user[0].email,
                     subject: "Password-Reset",
                     text: "",
@@ -70,6 +70,7 @@ class MailManager {
             next(error);
         }
     }
+
 
 }
 
