@@ -1,5 +1,6 @@
 mysql = require("mysql");
 
+
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -12,13 +13,5 @@ connection.connect((error) => {
   if (error) throw error;
 });
 
-runQuery = async (str, replacements) => {
-  return new Promise((resolve) => {
-    db.query(str, replacements, (err, rows) => {
-      if (err) rejects(err.toString());
-      resolve(rows);
-    });
-  });
-};
 
 module.exports = connection;

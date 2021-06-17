@@ -1,4 +1,5 @@
 class Image {
+
     constructor(filename, uploadTime, beschreibung, uid, tags, hashValue) {
         this.filename = filename;
         this.uploadTime = uploadTime;
