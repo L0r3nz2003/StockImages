@@ -9,7 +9,7 @@ class JwtManager {
         return jwt.sign({ user: user }, process.env.PRIVATE_KEY, { expiresIn: '365 days', algorithm: 'RS256' });
     }
 
-    // verify token
+    // verify normal token
     verifyToken = async (req, res, next) => {
         // get auth header value
         const bearerHeader = req.headers['authorization'];
@@ -18,9 +18,7 @@ class JwtManager {
             const bearerToken = bearerHeader.split(' ')[1];
             req.token = bearerToken;
             jwt.verify(bearerToken, process.env.PUBLIC_KEY.replace(/\"/g, ""), (err, autoData) => {
-                if (err){
-                    res.sendStatus(403); 
-                } 
+                if (err) res.sendStatus(403);
             });
             next();
         } else {

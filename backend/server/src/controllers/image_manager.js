@@ -16,7 +16,6 @@ const dbx = new Dropbox({
 class ImageManagement {
 
   // upload image to dropbox and insert given things to database
-  // INTERFACE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   uploadImage = async (req, res, next) => {
     try {
       // 0 - Check if files are provided
@@ -75,7 +74,7 @@ class ImageManagement {
     }
   }
 
-
+  // provide image to the frontend
   downloadImage = async (req, res, next) => {
     try {
       // 0 - Check if id is provided
@@ -84,6 +83,7 @@ class ImageManagement {
         res.status(500).send({ error: "no id provided" });
         return;
       }
+
       // 1 - Check if id is storred / get data
       const sharedLink = await this.getShardLink(id);
       const response = await dbx.sharingGetSharedLinkFile({ url: String(sharedLink) });
@@ -92,6 +92,7 @@ class ImageManagement {
         res.status(500).send("download error");
         return;
       }
+
       // 2 - download / send image to user
       const ending = await this.getFileEnding(id);
       switch (ending) {
@@ -111,6 +112,7 @@ class ImageManagement {
     }
   };
 
+  // delete image from dropbox and data from database
   deleteImage = async (req, res, next) => {
     try {
       // 0 - Check if id is provided
@@ -119,20 +121,24 @@ class ImageManagement {
         res.status(500).send({ error: "no id provided" });
         return;
       }
+
       // 1 - Delete image from dropbox
       const fileEnding = await this.getFileEnding(id);
       const succsess = await dbx.filesDelete({ path: `/dropbox/${id + "." + fileEnding}` });
+
       // 2 - return error case
       if (!succsess) {
         res.status(500).send("delete error");
         return;
       }
-      // 3 - delete image object form database
-      imgService.deleteImgById(id);
-      // 4 - decrease pics from user
+
+      // 3 - decrease pics from user
       const uid = await imgService.getUidFromImgId(id);
-      console.log(uid);
-      await userService.updateDecreaseImages(uid);
+      await userService.updateDecreaseImages(uid[0].userId);
+
+      // 4 - delete image object form database
+      imgService.deleteImgById(id);
+
       // 5 - send responce
       res.sendStatus(200);
     } catch (error) {
@@ -140,8 +146,7 @@ class ImageManagement {
     }
   };
 
-
-
+  // provide image urls 
   getUrls = async (req, res, next) => {
     try {
       // 0 - Check if all data is provided
@@ -152,18 +157,21 @@ class ImageManagement {
         res.status(500).send({ error: "no parameter provided" });
         return;
       }
+
       // 1 - return all images from a user
       if (userName !== 'null') {
         const imgLinks = await this.getImageUrlByName(userName);
         res.status(200).send(imgLinks);
         return;
       }
+
       // 2 - return all images
       if (all == 'true') {
         const imgLinks = await this.getAllImages();
         res.status(200).send(imgLinks);
         return;
       }
+
       // 3 - return all images from tag
       if (tag.toLowerCase() !== 'null') {
         const imgLinks = await this.getImageByTag(tag);
@@ -175,39 +183,31 @@ class ImageManagement {
     }
   };
 
+  // compare two phases -- only for demonstration purpuses
   phashCompare = async (req, res, next) => {
     try {
+      // 0 - check for files
       if (!req.files) {
         res.status(500).send({ error: "no image provided" });
         return;
       }
-
+      // 1 - generate phash from files
       const file1 = req.files.file1;
       const file2 = req.files.file2;
 
       const phashFile1 = await phash(file1.data);
       const phashFile2 = await phash(file2.data);
-
+      // 2 - return hashes for compare
       res.json({
         default: phashFile1,
         mirrow_: phashFile2
       });
 
-
-
     } catch (error) {
       next(error);
     }
 
-
-
-
   };
-
-
-
-
-
 
   // get all imagesurls from a user by his name
   getImageUrlByName = async (userName) => {
@@ -252,7 +252,6 @@ class ImageManagement {
     const filename = await imgService.getImgName(id);
     return filename[0].FileName.split(".")[filename[0].FileName.split(".").length - 1];
   }
-
 
 }
 

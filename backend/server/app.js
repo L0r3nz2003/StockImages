@@ -1,17 +1,13 @@
 //** Imports */
 const express = require("express");
-const path = require("path");
 const logger = require("morgan");
 const httpError = require("http-errors");
 require('dotenv').config()
 
-const angular = require("@angular/cli");
 
 //** Routes */
 
-const _app_folder = 'public/';
 const app = express();
-const env = process.env.NODE_ENV;
 
 app.use(logger('dev'));
 app.use(express.json());                             // for parsing application/json
@@ -38,16 +34,22 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  const message = 'Internal Server Error';
-  if (process.env.DEBUG_MODE){
-    message = err.message;
+  if (!process.env.DEBUG_MODE) {
+    res.status(500);
+    res.json({
+      error: {
+        message: err.message
+      }
+    });
+  } else {
+    res.status(500);
+    res.json({
+      error: {
+        message: 'Internal Server Error'
+      }
+    });
   }
-  res.status(500);
-  res.json({
-    error: {
-      message: message
-    }
-  });
+
 });
 
 const PORT = process.env.PORT;

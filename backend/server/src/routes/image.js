@@ -38,7 +38,11 @@ router.delete("/delete", jwtmanager.verifyToken, imageManager.deleteImage);
  */
 router.get("/urls", imageManager.getUrls);
 
-
+/**
+ * compare tow images with tht phashes
+ * req.query.file1
+ * req.query.file2
+ */
 router.post("/phash", imageManager.phashCompare);
 
 

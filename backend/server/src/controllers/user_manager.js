@@ -16,9 +16,9 @@ class UserManagement {
         if (result) res.send(result);
         return;
       }
+
       // 1 - load user from userid
       const result = await userService.getSingleUser(req.query.id);
-      console.log(Object.keys(result).length);
       if (Object.keys(result).length == 0) res.status(404).send("Not found");
       if (result) res.send(result);
     } catch (error) {
@@ -51,6 +51,7 @@ class UserManagement {
         res.status(404).send("Not found");
         return;
       }
+
       // 1 - create token
       const tokenData = {
         id: result[0].UserId,
@@ -58,6 +59,7 @@ class UserManagement {
         email: result[0].email
       }
       const verifyToken = await jwtmanager.singToken(tokenData);
+
       // 2 - create user object and send it back
       const user = {
         name: result[0].UserName,
@@ -81,6 +83,7 @@ class UserManagement {
         res.status(404).send("User already exists");
         return;
       }
+
       // 1 - create new user
       const result = await userService.createUser(req.body);
       res.json(result);
@@ -98,6 +101,7 @@ class UserManagement {
         res.status(404).send("Not found");
         return;
       }
+
       // 1 - change user
       const result = await userService.updateUser(req.query.id, req.body);
       res.send(result);
@@ -116,6 +120,7 @@ class UserManagement {
         res.status(404).send("Not found");
         return;
       }
+
       // 1 - Change Username
       const result = await userService.updateName(req.query.oldname, req.query.newname);
       res.send(result);
@@ -133,6 +138,7 @@ class UserManagement {
         res.status(404).send("Not found");
         return;
       }
+
       // 1 - Delete User
       const result = await userService.deleteUserById(req.query.id);
       res.send(result);

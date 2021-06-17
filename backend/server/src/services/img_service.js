@@ -1,62 +1,43 @@
-const db = require("../database/mysql.js");
+const db = require("../database/dbRunner.js");
 const Image = require("../classes/image");
 
 class ImgService {
+
   getAllImg = async () => {
-    const rows = await this.runQuery("select * from PsImage");
-    return rows;
+    return await db.runQuery("select * from PsImage");
   };
 
   getSingleImg = async (id) => {
-    const row = await this.runQuery("select * from PsImage where id = ?", [id]);
-    return row;
+    return await db.runQuery("select * from PsImage where id = ?", [id]);
   };
 
   getImgName = async (id) => {
-    const row = await this.runQuery(
-      "select FileName from PsImage where id = ?", [id]
-    );
-    return row;
+    return await db.runQuery("select FileName from PsImage where id = ?", [id]);
   };
 
   getUidFromImgId = async (id) => {
-    const uid = await this.runQuery("select userId from PsImage where id = ?", [id]);
-    return uid;
+    return await this.runQuery("select userId from PsImage where id = ?", [id]);
   }
 
   getUserImg = async (userid) => {
-    const row = await this.runQuery(
-      "select * from PsImage where userId = ?", [userid]
-    );
-    return row;
+    return await db.runQuery("select * from PsImage where userId = ?", [userid]);
   };
   getImgId = async (fileName, userId, timestamp) => {
-    const row = await this.runQuery(
-      "select id from PsImage where FileName = ? and userId = ? and uploadTime = ?",
-      [fileName, userId, timestamp]
-    );
-    return row;
+    return await db.runQuery("select id from PsImage where FileName = ? and userId = ? and uploadTime = ?", [fileName, userId, timestamp]);
   };
 
   getImgByTag = async (tag) => {
-    const row = await this.runQuery(
-      "select * from PsImage where Tags like ?", ["%" + tag + "%"]
-    );
-    return row;
+    return await db.runQuery("select * from PsImage where Tags like ?", ["%" + tag + "%"]);
   };
 
-  //-----------------------
-  // PHASH VERGLEICH
-  //-----------------------
+  // compare the given hash to everyone in de database with hermingsistance lower than 4
+  // with own coded function in mysql
   getImgByPhash = async (phash) => {
-    return await this.runQuery(
-      "select *, hamdist(p_hash, ?) as hamdist from PsImage having hamdist < 4",
-      [phash]
-    );
+    return await db.runQuery("select *, hamdist(p_hash, ?) as hamdist from PsImage having hamdist < 4", [phash]);
   };
 
   createImg = async (image = new Image()) => {
-    await this.runQuery(
+    await db.runQuery(
       "insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags, p_hash) values" +
       "(?, ?, ?, ?, ?, ?)",
       [image.filename, image.uploadTime, image.beschreibung, image.uid, image.tags, image.hashValue]
@@ -65,7 +46,7 @@ class ImgService {
   };
 
   updateImg = async (id, img) => {
-    await this.runQuery(
+    await db.runQuery(
       "update  PsImage set FileName = ?, uplaodTime = ?, beschreibung = ?, userId = ?  where id = ?" +
       "(?, ?, ?, ?)",
       [img.time, img.beschreibung, img.userid, id]
@@ -74,23 +55,16 @@ class ImgService {
   };
 
   deleteImgById = async (id) => {
-    await this.runQuery("delete from PsImage where id = ?", [id]);
+    await db.runQuery("delete from PsImage where id = ?", [id]);
     return "Delete Successfull";
   };
 
   deleteImgByUserId = async (userId) => {
-    await this.runQuery("delete from PsImage where userId = ?", [userId]);
+    await db.runQuery("delete from PsImage where userId = ?", [userId]);
     return "Delete Successfull";
   };
 
-  runQuery = async (str, replacements) => {
-    return new Promise((resolve) => {
-      db.query(str, replacements, (err, rows) => {
-        if (err) rejects(err.toString());
-        resolve(rows);
-      });
-    });
-  };
+
 }
 
 module.exports = new ImgService();
