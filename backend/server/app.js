@@ -38,11 +38,14 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  const message = 'Internal Server Error';
+  if (process.env.DEBUG_MODE){
+    message = err.message;
+  }
   res.status(500);
   res.json({
     error: {
-      //message: 'Internal Server Error'
-      message: err.message
+      message: message
     }
   });
 });

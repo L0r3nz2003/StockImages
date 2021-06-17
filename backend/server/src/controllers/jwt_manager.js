@@ -18,16 +18,12 @@ class JwtManager {
             const bearerToken = bearerHeader.split(' ')[1];
             req.token = bearerToken;
             jwt.verify(bearerToken, process.env.PUBLIC_KEY.replace(/\"/g, ""), (err, autoData) => {
-                console.log("verify");
                 if (err){
-                    console.log("ERROR");
-                    console.log(err);
                     res.sendStatus(403); 
                 } 
             });
             next();
         } else {
-            console.log("else zweig");
             // forbidden
             res.sendStatus(403);
         }

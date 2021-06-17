@@ -8,22 +8,25 @@ class ImgService {
   };
 
   getSingleImg = async (id) => {
-    const row = await this.runQuery("select * from PsImage where id = ?", id);
+    const row = await this.runQuery("select * from PsImage where id = ?", [id]);
     return row;
   };
 
   getImgName = async (id) => {
     const row = await this.runQuery(
-      "select FileName from PsImage where id = ?",
-      id
+      "select FileName from PsImage where id = ?", [id]
     );
     return row;
   };
 
+  getUidFromImgId = async (id) => {
+    const uid = await this.runQuery("select userId from PsImage where id = ?", [id]);
+    return uid;
+  }
+
   getUserImg = async (userid) => {
     const row = await this.runQuery(
-      "select * from PsImage where userId = ?",
-      userid
+      "select * from PsImage where userId = ?", [userid]
     );
     return row;
   };
@@ -37,8 +40,7 @@ class ImgService {
 
   getImgByTag = async (tag) => {
     const row = await this.runQuery(
-      "select * from PsImage where Tags like ?",
-      "%" + tag + "%"
+      "select * from PsImage where Tags like ?", ["%" + tag + "%"]
     );
     return row;
   };
@@ -54,7 +56,6 @@ class ImgService {
   };
 
   createImg = async (image = new Image()) => {
-    console.log("HELP: " + image.filename);
     await this.runQuery(
       "insert into PsImage (FileName, uploadTime, beschreibung, userId, Tags, p_hash) values" +
       "(?, ?, ?, ?, ?, ?)",

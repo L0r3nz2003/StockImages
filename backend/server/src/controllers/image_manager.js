@@ -24,6 +24,7 @@ class ImageManagement {
         res.status(500).send({ error: "no image provided" });
         return;
       }
+
       // 1 - generate pHash and look for dublicates
       const file = req.files.file;
       const hashValue = await phash(file.data);
@@ -32,33 +33,41 @@ class ImageManagement {
         res.status(500).send({ error: "Duplicates are not allowed" });
         return;
       }
+
       // 2 - Check if all data is provided
       const beschreibung = req.query.beschreibung;
       const uid = req.query.uid;
       const tags = req.query.tags.toUpperCase();
-      console.log("TESTTTT");
       if (beschreibung == null || uid == null || tags == null) {
         res.status(500).send({ error: "no text or userId or tags provided" });
         return;
       }
+
       // 3 - get necessary data
       const oldFilename = file.name;
+
       // 3.1 - get upload-time and change it to mysql syntax
       const uploadTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
       // 4 - create image object in database
-      console.log("BEFORE");
       const image = new Image(oldFilename, uploadTime, beschreibung, uid, tags, hashValue);
       await imgService.createImg(image);
+
       // 5 - build new filename
       const id = await imgService.getImgId(oldFilename, uid, uploadTime);
       const newEnding = await this.getFileEnding(id[0].id);
       file.name = id[0].id + '.' + newEnding;
+
       // 6 - upload image to dropbox
       const success = await dbx.filesUpload({
         path: `/dropbox/${file.name}`,
         contents: file.data
       });
-      // 7 - send response
+
+      // 7 - Increase Pics from user
+      await userService.updateIncreaseImages(uid);
+
+      // 8 - send response
       if (!success) res.status(500).send("upload error");
       res.status(200).send("OK");
     } catch (error) {
@@ -120,6 +129,11 @@ class ImageManagement {
       }
       // 3 - delete image object form database
       imgService.deleteImgById(id);
+      // 4 - decrease pics from user
+      const uid = await imgService.getUidFromImgId(id);
+      console.log(uid);
+      await userService.updateDecreaseImages(uid);
+      // 5 - send responce
       res.sendStatus(200);
     } catch (error) {
       next(error);
@@ -189,9 +203,6 @@ class ImageManagement {
 
 
   };
-
-
-
 
 
 

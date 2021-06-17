@@ -37,7 +37,7 @@ class UserService {
     await this.runQuery(
       "insert into PsUser (UserName, email, Password, Pics) values" +
       "(?, ?, ?, ?)",
-      [user.name, user.email, await passwordHash.hash(user.password.trim(), saltRounds), user.pics,]
+      [user.name, user.email, await passwordHash.hash(user.password.trim(), saltRounds), user.pics]
     );
 
     return "INSERT Successfull";
@@ -49,17 +49,17 @@ class UserService {
   };
 
   updatePassword = async (name, password) => {
-    await this.runQuery("update PsUser set Password = ? where UserName = ?", [password, name,]);
+    await this.runQuery("update PsUser set Password = ? where UserName = ?", [password, name]);
     return "Password Update Successfull";
   };
 
   updatePasswordById = async (id, password) => {
-    await this.runQuery("update PsUser set Password = ? where UserId = ?", [password, id,]);
+    await this.runQuery("update PsUser set Password = ? where UserId = ?", [password, id]);
     return "Password Update Successfull";
   };
 
   updateName = async (oldname, newname) => {
-    await this.runQuery("update PsUser set Username = ? where UserName = ?", [newname, oldname,]);
+    await this.runQuery("update PsUser set Username = ? where UserName = ?", [newname, oldname]);
     return "UserName Update Successfull";
   };
 
@@ -68,8 +68,18 @@ class UserService {
     return "AnzBilder Update Successfull";
   };
 
+  updateIncreaseImages = async (uid) => {
+    await this.runQuery("update PsUser set Pics = Pics+1 where UserId = ?", [uid]);
+    return "Increase Pics Successfull";
+  }
+
+  updateDecreaseImages = async (uid) => {
+    await this.runQuery("update PsUser set Pics = Pics-1 where UserId = ?", [uid]);
+    return "Decrease Pics Successfull";
+  }
+
   updateEmail = async (name, email) => {
-    await this.runQuery("update PsUser set = ? email where UserName = ?", [email, name,]);
+    await this.runQuery("update PsUser set = ? email where UserName = ?", [email, name]);
     return "Email Update Successfull";
   };
 
