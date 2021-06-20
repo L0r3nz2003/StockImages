@@ -17,7 +17,7 @@ class MailManager {
             const token = await jwtmanager.signTokenMail(user, tokenExtencion);
 
             // 1 - create link
-            const link = process.env.URL + `/user/password-restore?id=${user[0].UserId}&token=${token}`;
+            const link = process.env.FRONTEND_URL + `/user/password-restore?id=${user[0].UserId}&token=${token}`;
 
             // 2 - send mail
             ejs.renderFile(__dirname + "\\..\\templates\\reset-mail.ejs", { username: user[0].UserName, link: link }, async function (err, data) {

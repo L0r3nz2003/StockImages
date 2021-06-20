@@ -6,7 +6,6 @@ const imgService = require("../services/img_service");
 const userService = require("../services/user_service.js");
 const Image = require("../classes/image.js");
 
-
 const dbx = new Dropbox({
   accessToken: process.env.DROPBOX_ACCESSTOKEN
 });
@@ -197,6 +196,7 @@ class ImageManagement {
 
       const phashFile1 = await phash(file1.data);
       const phashFile2 = await phash(file2.data);
+
       // 2 - return hashes for compare
       res.json({
         default: phashFile1,
@@ -204,7 +204,7 @@ class ImageManagement {
       });
 
     } catch (error) {
-      next(error);
+      console.log(error);
     }
 
   };
