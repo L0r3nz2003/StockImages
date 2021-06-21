@@ -239,8 +239,9 @@ class ImageManagement {
     // 0 - create array with all shared links
     await Promise.all(elements.map(async (elem) => {
       const sharedlink = await this.getShardLink(elem.id);
-      const link = sharedlink.replace('dl=0', 'raw=1');
-      linkArr.push(link);
+      const newLink = sharedlink.url.replace('dl=0', 'raw=1');
+      sharedlink.url = newLink;
+      linkArr.push(sharedlink);
     }));
     return linkArr;
   }
@@ -249,7 +250,7 @@ class ImageManagement {
   getShardLink = async (id) => {
     const fileEnding = await this.getFileEnding(id);
     const response = await dbx.sharingCreateSharedLink({ path: `/dropbox/${id + "." + fileEnding}` });
-    return response.result.url;
+    return { id: id, url: response.result.url };
   }
 
   // get ending of the file (jpg | png | ...)
