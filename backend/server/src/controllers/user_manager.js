@@ -62,6 +62,7 @@ class UserManagement {
 
       // 2 - create user object and send it back
       const user = {
+        id: result[0].UserId,
         name: result[0].UserName,
         email: req.query.email,
         password: req.query.password,
