@@ -1,6 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {ImagedisplayService} from "../service/imagedisplay.service";
-import { ModalComponent } from '../modal/modal.component';
+import {
+  GalleryModule,
+  GridLayout,
+  Image,
+  LineLayout,
+  PlainGalleryConfig,
+  PlainGalleryStrategy
+} from "@ks89/angular-modal-gallery";
+import {ModalGalleryComponent} from "@ks89/angular-modal-gallery/lib/components/modal-gallery/modal-gallery.component";
+
+
 
 @Component({
   selector: 'app-mainpage',
@@ -20,10 +30,79 @@ export class MainpageComponent implements OnInit {
 
   lastUpdated = 0;
 
+  plainGalleryGrid: PlainGalleryConfig = {
+    strategy: PlainGalleryStrategy.GRID,
+    layout: new GridLayout({ width: '500px', height: '500px' }, { length: 3, wrap: true })
+  };
+
+  testimages: Image[] = [
+    new Image(
+    0, {
+      img: 'https://www.dropbox.com/s/hjagfr3h7o4j1tl/56.jpg?raw=1',
+        description: 'LUL'
+    }
+    ),
+    new Image(
+      1, {
+        img: 'https://www.dropbox.com/s/0g8g4zrlz7j0ztm/22.jpg?raw=1',
+        description: 'Peter'
+      }
+    ),
+    new Image(
+      2, {
+        img: 'https://www.dropbox.com/s/a73j817375iixhs/63.jpg?raw=1',
+        description: 'Peter'
+      }
+    ),
+    new Image(
+      3, {
+        img: 'https://www.dropbox.com/s/717e4hp4aedc06u/75.png?raw=1',
+        description: 'Peter'
+      }
+    ),
+    new Image(
+      4, {
+        img: 'https://www.dropbox.com/s/xt91wh9hsvtovi3/69.jpg?raw=1',
+        description: 'Peter'
+      }
+    ),
+    new Image(
+      5, {
+        img: 'https://www.dropbox.com/s/hjagfr3h7o4j1tl/56.jpg?raw=1',
+        description: 'LUL'
+      }
+    ),
+    new Image(
+      6, {
+        img: 'https://www.dropbox.com/s/0g8g4zrlz7j0ztm/22.jpg?raw=1',
+        description: 'Peter'
+      }
+    ),
+    new Image(
+      7, {
+        img: 'https://www.dropbox.com/s/a73j817375iixhs/63.jpg?raw=1',
+        description: 'Peter'
+      }
+    ),
+    new Image(
+      8, {
+        img: 'https://www.dropbox.com/s/717e4hp4aedc06u/75.png?raw=1',
+        description: 'Peter'
+      }
+    ),
+    new Image(
+      9, {
+        img: 'https://www.dropbox.com/s/xt91wh9hsvtovi3/69.jpg?raw=1',
+        description: 'Peter'
+      },
+    ),
+  ]
+
+
   static images: Array<string>
   imageServer: ImagedisplayService;
 
-  constructor(imageServer: ImagedisplayService) {
+  constructor(imageServer: ImagedisplayService, modalGalleryService: GalleryModule) {
 
     this.loaded = false;
     this.messageLevel = 3;
@@ -35,7 +114,6 @@ export class MainpageComponent implements OnInit {
 
     imageServer.getImages().then(function (json) {
       for (let i = 0; i < json.length; i++) {
-        MainpageComponent.images.push(json[i]);
         MainpageComponent.images.push(json[i]);
       }
     }).catch(e => {
@@ -81,4 +159,7 @@ export class MainpageComponent implements OnInit {
     return Array(n);
   }
 
+  imageClickEvent($event: MouseEvent,image: any) {
+
+  }
 }

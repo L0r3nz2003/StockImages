@@ -2,6 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+import 'hammerjs';
+import 'mousetrap';
+import {GalleryModule} from '@ks89/angular-modal-gallery';
+
 import { AppComponent } from './app.component';
 import { UploadComponent } from './upload/upload.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -25,7 +29,7 @@ import { TestComponent } from './test/test.component';
     PasswordRestoreComponent,
     ModalComponent,
     TestComponent,
-    ModalComponent
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

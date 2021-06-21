@@ -4,7 +4,7 @@ dist/
 node_modules
 build
 npm-debug.log
-.env
+backend/server/.env
 .DS_Store
 .idea
 .github
@@ -90,7 +90,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+backend/server/.env
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
