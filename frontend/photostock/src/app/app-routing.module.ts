@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import {RegisterComponent} from "./register/register.component";
 import {PasswordRestoreComponent} from "./password-restore/password-restore.component";
 import {TestComponent} from "./test/test.component";
+import {ImagesComponent} from "./images/images.component";
 
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'user/login', component: LoginComponent },
   { path: 'user/register', component: RegisterComponent },
   { path: 'internal/test', component: TestComponent },
+  {path: 'user/profile', component: ImagesComponent},
   {path: 'user/password-restore', component: PasswordRestoreComponent }
 ];
 

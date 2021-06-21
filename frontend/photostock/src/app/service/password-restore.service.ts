@@ -32,8 +32,7 @@ export class PasswordRestoreService {
   updateOldPassword(token: string, pwd1: string, pwd2: string, id: number) {
 
     let header = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer '+ token
+      'Content-Type': 'application/json'
     });
 
     let data = {
@@ -43,7 +42,7 @@ export class PasswordRestoreService {
     }
 
     //send a post method
-    this.http.post(this.url + "mail/reset-password?id="+id + "&token="+token, data, {headers: header}).subscribe(
+    this.http.post(this.url + "mail/reset-password?id="+id + "&token="+token + "&password=" + pwd1 + "&password2=" + pwd2 , null, {headers: header}).subscribe(
       error => {
         console.log(error);
       }

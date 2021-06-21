@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MessageService} from "./message.service";
 import {User} from "../interfaces/user";
-import {Observable, of} from "rxjs";
+import {Observable, of, throwError} from "rxjs";
 import {FormGroup} from "@angular/forms";
 import {UserService} from "./user.service";
 
@@ -25,24 +25,20 @@ export class FileService {
 
 
   //upload image
-  upload(uploadForm: FormGroup): Observable<boolean> {
+  upload(uploadForm: FormGroup, beschreibung: string,tags: string, user: User): Observable<string> {
     const formData = new FormData();
     formData.append('file', uploadForm.get('profile').value);
 
-    let httpOptions = {
-      headers: new HttpHeaders({'x-access-token': this.userService.getUser().token})
-    };
+    let headers = new HttpHeaders().set('Authorization', "Bearer "+this.userService.getUser().token)
 
-    this.http.post<any>(this.url + "img/upload", formData, httpOptions).subscribe(
+    this.http.post<any>(this.url + "img/upload?beschreibung=" + beschreibung + "&tags="+tags+"&uid="+user.id, formData, {headers}).subscribe(
       data => {
-        console.log('success', data);
-        return of(true);
+        return of("success");
       },
       error => {
-        console.log(error);
-        return of(false);
+        return of("error!");
       }
     );
-    return of(false);
+    return of("error!");
   }
 }

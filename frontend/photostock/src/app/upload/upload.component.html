@@ -11,8 +11,8 @@
 </div>
 
 
-<modal #errorModal>
-  <p style="color: red">{{modalErrorText}}</p>
+<modal #errorModal messageLevel="4" message="true">
+  {{modalErrorText}}
 </modal>
 
 <div id="settings" [hidden]="!modal_show">
@@ -29,7 +29,7 @@
 
         <div class="form-group">
           <label for="imgtitle"><b>Beschreibung</b></label>
-          <textarea class="form-control" id="imgdesc" style="resize: none" rows="5"></textarea>
+          <textarea #imgdesc class="form-control" id="imgdesc" style="resize: none" rows="5"></textarea>
           <small class="form-text text-muted">Mit der Beschreibung kannst du dein Bild optional noch besser beschreiben!</small>
         </div>
 
@@ -38,6 +38,7 @@
             <b>Tags<span style="color: red ">*</span></b><br>
             <small class="form-text text-muted">Mit Tags kannst du kurz beschreiben, was auf deinen Bild zu sehen ist. Andere User die speziell nach <b>ähnlichen oder gleichen Themen</b> suchen, werden deine Bilder vorgeschlagen!<span style="color: red">Der Missbrauch führt unwiederuflich zur Löschung des Kontos.</span></small>
           </label>
+
           <!-- https://angular.io/api/common/NgForOf -->
           <div id="tagscontainer">
             <div *ngFor="let tag of tags; index as i;">
@@ -56,8 +57,8 @@
       <div class="container">
         <input type="checkbox" id="privacy">
         <label for="privacy">Ich bestäige dass ich die<span><a
-          href="http://www.pngmart.com/files/11/Trollface-Meme-PNG-Picture.png" target="_blank">Datenschutzrichtlinien</a> und die <a
-          href="http://www.pngmart.com/files/11/Trollface-Meme-PNG-Picture.png" target="_blank">AGBs</a></span> gelesen und
+          href="" target="_blank">Datenschutzrichtlinien</a> und die <a
+          href="" target="_blank">AGBs</a></span> gelesen und
           einverstanden bin.</label>
       </div>
 
@@ -67,7 +68,7 @@
 
       <div class="container">
         <button type="button" class="btn btn-primary mb-2"
-                (click)="onUpload(uploadModal); modal_show = false">Hochladen
+                (click)="onUpload(uploadModal, imgdesc, errorModal); modal_show = false">Hochladen
         </button>
       </div>
     </div>
@@ -83,6 +84,7 @@
   <input
     style="display: none"
     type="file" (change)="onFileChanged(fileInput.files)"
+    accept="image/x-png,image/jpeg"
     #fileInput>
   <button (click)="fileInput.click()" class="btn btn-primary btn-lg">File auswählen!</button>
 </div>

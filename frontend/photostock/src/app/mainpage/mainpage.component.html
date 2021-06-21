@@ -4,12 +4,20 @@
 <div>
   <div>
 
-    <modal #waitingModal [currentHidden]="loaded" [animation]="true" [allowHeaderInteraction]="true" [button]="loaded" [message]="true" [messageLevel]="messageLevel">
+    <modal #waitingModal [currentHidden]="loaded" [animation]="true" [allowHeaderInteraction]="true" [button]="loaded"
+           [message]="true" [messageLevel]="messageLevel">
       {{message}}
     </modal>
+    <form>
+    <div id="search-div">
+      <input #searchInput type="text" placeholder="Suche">
+      <button #searchButton (click)="search($event, searchButton, searchInput)" type="submit">Suche</button>
+    </div>
+    </form>
 
     <div id="content">
-      <div class="image-container" *ngFor="let img of getImages(); index as i;" [style.background-image]="'url(' + img + ')'" (click)="imageClickEvent($event, img)">
+      <div class="image-container" *ngFor="let img of getImages(); index as i;"
+           [style.background-image]="'url(' + img + ')'">
       </div>
     </div>
   </div>

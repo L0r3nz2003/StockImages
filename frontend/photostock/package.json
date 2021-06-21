@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "File": "ng g component test"
+    "File": "ng g component images"
   },
   "private": true,
   "dependencies": {

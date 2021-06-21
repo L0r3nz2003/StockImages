@@ -19,6 +19,36 @@ export class ImagedisplayService {
     private http: HttpClient) {
   }
 
+  async getImagesByTag(tag: string) {
+    return fetch(this.url + "img/urls?all=false&tag="+tag+"&userName=null", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      if(response.status != 200) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    });
+  }
+
+  async getImagesByUser(user: string) {
+    return fetch(this.url + "img/urls?all=false&tag=null&userName="+user, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (response) {
+      if(response.status != 200) {
+        throw new Error(response.statusText);
+
+      }
+
+      return response.json();
+    });
+  }
+
   //get all images to display on the front page
   async getImages() {
     let http = new XMLHttpRequest();
@@ -31,7 +61,7 @@ export class ImagedisplayService {
     }).then(function (response) {
         if(response.status != 200) {
           throw new Error(response.statusText);
-          
+
         }
 
         return response.json();
@@ -39,7 +69,7 @@ export class ImagedisplayService {
   }
 
   async getImageFromUser(name: string) {
-    return fetch(this.url + "img/urls?userName="+name).then(function (response) {
+    return fetch(this.url + "img/urls?all=false&tag=null&userName="+name).then(function (response) {
       return response.json();
     });
   }

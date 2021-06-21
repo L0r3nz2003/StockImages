@@ -82,16 +82,41 @@ export class UploadComponent {
     this.modal_show = true;
   }
 
-  async onUpload(uploadModal: ModalComponent) {
+  async onUpload(uploadModal: ModalComponent, desc: HTMLTextAreaElement, errorModal: ModalComponent) {
     //upload image
     uploadModal.currentHidden = false;
     this.modal_show = true;
     this.uploadForm.get('profile').setValue(this.file);
-    this.fileService.upload(this.uploadForm);
+    let tags = "";
 
-    uploadModal.setImageSource(1);
-    await this.delay(1000);
+    if(desc.value.length == 0) {
+      return;
+    }
+
+    for(const tag of this.tags) {
+        tags += tag + ";";
+    }
+
+    if(tags.length == 0) {
+      return;
+    }
+
+    tags = tags.substr(0, tags.length -1);
+
+     this.fileService.upload(this.uploadForm, desc.value, tags, this.userService.getUser()).subscribe(data => {
+       console.log(data);
+      if(data === "success") {
+
+        uploadModal.currentHidden = true;
+      } else {
+        this.modalErrorText = "Leider sieht es so aus, als würde dein Bild bereits hochgeladen worden sein!"
+        uploadModal.currentHidden = true;
+        errorModal.currentHidden = false;
+      }
+     })
+
     uploadModal.currentHidden = true;
+    uploadModal.setImageSource(1);
   }
 
   removeTag(tag: number) {

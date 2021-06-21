@@ -8,7 +8,6 @@ import {
   PlainGalleryConfig,
   PlainGalleryStrategy
 } from "@ks89/angular-modal-gallery";
-import {ModalGalleryComponent} from "@ks89/angular-modal-gallery/lib/components/modal-gallery/modal-gallery.component";
 
 
 
@@ -20,89 +19,16 @@ import {ModalGalleryComponent} from "@ks89/angular-modal-gallery/lib/components/
 
 
 export class MainpageComponent implements OnInit {
-  static UPDATE_INTERVAL = 30000;
-
 
   time: number;
   messageLevel: number;
   message: string;
   loaded: boolean;
 
-  lastUpdated = 0;
-
-  plainGalleryGrid: PlainGalleryConfig = {
-    strategy: PlainGalleryStrategy.GRID,
-    layout: new GridLayout({ width: '500px', height: '500px' }, { length: 3, wrap: true })
-  };
-
-  testimages: Image[] = [
-    new Image(
-    0, {
-      img: 'https://www.dropbox.com/s/hjagfr3h7o4j1tl/56.jpg?raw=1',
-        description: 'LUL'
-    }
-    ),
-    new Image(
-      1, {
-        img: 'https://www.dropbox.com/s/0g8g4zrlz7j0ztm/22.jpg?raw=1',
-        description: 'Peter'
-      }
-    ),
-    new Image(
-      2, {
-        img: 'https://www.dropbox.com/s/a73j817375iixhs/63.jpg?raw=1',
-        description: 'Peter'
-      }
-    ),
-    new Image(
-      3, {
-        img: 'https://www.dropbox.com/s/717e4hp4aedc06u/75.png?raw=1',
-        description: 'Peter'
-      }
-    ),
-    new Image(
-      4, {
-        img: 'https://www.dropbox.com/s/xt91wh9hsvtovi3/69.jpg?raw=1',
-        description: 'Peter'
-      }
-    ),
-    new Image(
-      5, {
-        img: 'https://www.dropbox.com/s/hjagfr3h7o4j1tl/56.jpg?raw=1',
-        description: 'LUL'
-      }
-    ),
-    new Image(
-      6, {
-        img: 'https://www.dropbox.com/s/0g8g4zrlz7j0ztm/22.jpg?raw=1',
-        description: 'Peter'
-      }
-    ),
-    new Image(
-      7, {
-        img: 'https://www.dropbox.com/s/a73j817375iixhs/63.jpg?raw=1',
-        description: 'Peter'
-      }
-    ),
-    new Image(
-      8, {
-        img: 'https://www.dropbox.com/s/717e4hp4aedc06u/75.png?raw=1',
-        description: 'Peter'
-      }
-    ),
-    new Image(
-      9, {
-        img: 'https://www.dropbox.com/s/xt91wh9hsvtovi3/69.jpg?raw=1',
-        description: 'Peter'
-      },
-    ),
-  ]
-
-
   static images: Array<string>
   imageServer: ImagedisplayService;
 
-  constructor(imageServer: ImagedisplayService, modalGalleryService: GalleryModule) {
+  constructor(imageServer: ImagedisplayService) {
 
     this.loaded = false;
     this.messageLevel = 3;
@@ -114,7 +40,7 @@ export class MainpageComponent implements OnInit {
 
     imageServer.getImages().then(function (json) {
       for (let i = 0; i < json.length; i++) {
-        MainpageComponent.images.push(json[i]);
+        MainpageComponent.images.push(json[i].url);
       }
     }).catch(e => {
         this.messageLevel = 4;
@@ -123,7 +49,6 @@ export class MainpageComponent implements OnInit {
     }).then(() => {
       this.loaded = true;
     });
-
   }
 
   ngOnInit(): void {
@@ -133,16 +58,7 @@ export class MainpageComponent implements OnInit {
     return MainpageComponent.images;
   }
 
-  /**
-   *  <div *ngFor='let i of getImages();'>
-   <img src='{{i}}' class="tile-image">
-   </div>
-   */
-
   getRowsCount(): Array<number> {
-
-    console.log(this.imageServer.getImageCount());
-
     return Array(Math.ceil(8/ 5));
   }
 
@@ -151,7 +67,6 @@ export class MainpageComponent implements OnInit {
     for(let i = 0; i < 5; i++) {
       section[i] = MainpageComponent.images[i + (row*5)];
     }
-
     return section;
 }
 
@@ -159,7 +74,19 @@ export class MainpageComponent implements OnInit {
     return Array(n);
   }
 
-  imageClickEvent($event: MouseEvent,image: any) {
-
+  search($event: MouseEvent, button: HTMLButtonElement, input: HTMLInputElement) {
+    this.loaded = false;
+    this.imageServer.getImagesByTag(input.value).then(function (json) {
+      MainpageComponent.images = new Array<string>();
+      for (let i = 0; i < json.length; i++) {
+        MainpageComponent.images.push(json[i].url);
+      }
+    }).catch(e => {
+      this.messageLevel = 4;
+      this.message = "Es ist ein Fehler beim holen der Bilder aufgetreten! " + e;
+      return;
+    }).then(() => {
+      this.loaded = true;
+    });
   }
 }
