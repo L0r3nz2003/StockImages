@@ -190,6 +190,7 @@ class ImageManagement {
         res.status(500).send({ error: "no image provided" });
         return;
       }
+
       // 1 - generate phash from files
       const file1 = req.files.file1;
       const file2 = req.files.file2;
@@ -197,10 +198,14 @@ class ImageManagement {
       const phashFile1 = await phash(file1.data);
       const phashFile2 = await phash(file2.data);
 
+      const hamDist = dist(phashFile1, phashFile2);
+
       // 2 - return hashes for compare
       res.json({
         default: phashFile1,
-        mirrow_: phashFile2
+        changed: phashFile2,
+        harmingDist: hamDist,
+        equal: hamDist < 4
       });
 
     } catch (error) {

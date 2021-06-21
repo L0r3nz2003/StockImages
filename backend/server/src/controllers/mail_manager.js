@@ -20,7 +20,7 @@ class MailManager {
             const link = process.env.FRONTEND_URL + `/user/password-restore?id=${user[0].UserId}&token=${token}`;
 
             // 2 - send mail
-            ejs.renderFile(__dirname + "\\..\\templates\\reset-mail.ejs", { username: user[0].UserName, link: link }, async function (err, data) {
+            ejs.renderFile(__dirname + "\\..\\templates\\reset-mail.ejs", { username: user[0].UserName, link: link }, async (err, data) => {
                 if (err) return;
 
                 // 3 - Create Transporter
@@ -55,7 +55,7 @@ class MailManager {
     // reset password
     resetPassword = async (req, res, next) => {
         try {
-            const { password, password2 } = req.body;
+            const { password, password2 } = req.query;
 
             // 0 - Compare passwords
             if (password.trim() !== password2.trim()) {
@@ -64,8 +64,8 @@ class MailManager {
             }
 
             // 1 - Create Hash and Update Password
-            const hashedPassword = await passwordHash.hash(password, process.env.SALTROUNDS);
-            const result = await userManager.updatePasswordById(req.query.id, hashedPassword);
+            const hashedPassword = await passwordHash.hash(password, parseInt(process.env.SALTROUNDS));
+            const result = await userService.updatePasswordById(req.query.id, hashedPassword);
             res.json({ message: result });
         } catch (error) {
             next(error);
