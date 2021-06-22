@@ -18,6 +18,12 @@ export class LoginComponent implements OnInit {
   name;
   user;
 
+  emailMessage: string;
+  emailBorderColor: string;
+
+  passwordMessage: string;
+  passwordBorderColor: string;
+
   constructor(public userService: UserService, private passwordRestoreService: PasswordRestoreService, public router: Router) {}
 
   ngOnInit(): void {
@@ -28,8 +34,8 @@ export class LoginComponent implements OnInit {
 
     //forgot password?
     if (isNullOrUndefined(email.value) || !email.validity.valid) {
-      email.style.borderColor = "red";
-      document.getElementById("error_username").innerHTML = "Gebe einen gültige E-Mail Adresse an!";
+      this.emailBorderColor = "red";
+      this.emailMessage = "Gebe einen gültige E-Mail Adresse an!";
       return;
     }
 
@@ -39,29 +45,29 @@ export class LoginComponent implements OnInit {
 
   login(email: HTMLInputElement, password: HTMLInputElement, modal: ModalComponent) {
 
-    email.style.borderColor = "";
-    password.style.borderColor = "";
-    document.getElementById("error_username").innerHTML = "";
-    document.getElementById("error_password").innerHTML = "";
+    this.emailBorderColor = "";
+    this.emailMessage = "";
+    this.passwordBorderColor = "";
+    this.passwordMessage = "";
 
     //is email valid?
     if (isNullOrUndefined(email.value) || !email.validity.valid) {
-      email.style.borderColor = "red";
-      document.getElementById("error_username").innerHTML = "Gebe einen gültige E-Mail Adresse an!";
+      this.emailBorderColor = "red";
+      this.emailMessage = "Gebe einen gültige E-Mail Adresse an!";
       return;
     }
 
     //if contains spaces
     if(email.value.indexOf(' ') >= 0) {
-      email.style.borderColor = "red";
-      document.getElementById("error_username").innerHTML = "Deine E-Mail enthält ungültige Zeichen!";
+      this.emailBorderColor = "red";
+      this.emailMessage = "Die E-Mail enthält ungültige Zeichen!";
       return;
     }
 
     //is password valid
     if (isNullOrUndefined(password.value) || !password.validity.valid) {
-      password.style.borderColor = "red";
-      document.getElementById("error_password").innerHTML = "Gebe ein 8 Stelliges Passwort ein!";
+      this.passwordBorderColor = "red";
+      this.passwordMessage = "Gebe ein 8 stelliges Passwort an!";
       return;
     }
 
@@ -71,10 +77,11 @@ export class LoginComponent implements OnInit {
       if(exist) {
         modal.currentHidden = false;
       } else {
-        email.style.borderColor = "red";
-        document.getElementById("error_username").innerHTML = "E-Mail/Passwort falsch!";
-        document.getElementById("error_password").innerHTML = "E-Mail/Passwort falsch!";
-        password.style.borderColor = "red";
+        this.passwordBorderColor = "red";
+        this.passwordMessage = "E-Mail/Passwort falsch";
+
+        this.emailBorderColor = "red";
+        this.emailMessage = "E-Mail/Passwort falsch";
       }
     });
   }

@@ -12,7 +12,13 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from 
           <ng-content>
           </ng-content>
         </div>
-        <button *ngIf="button" type="button" (click)="currentHidden = true; closeAction.emit(null)" id="cancelbutton">Okay</button>
+        <button *ngIf="button && type === 'ok'" type="button" (click)="currentHidden = true; closeAction.emit(null)" id="cancelbutton">Okay</button>
+        <ng-container *ngIf="type === 'cancel'">
+        <div id="buttonGroup">
+        <button (click)="acceptAction.emit(null)" id="ok">Ok</button>
+        <button (click)="cancelAction.emit(null)" id="cancel">Abbrechen</button>
+        </div>
+        </ng-container>
       </div>
     </div>
   `,
@@ -26,8 +32,10 @@ export class ModalComponent implements OnInit {
   @Input() button: boolean = true;
   @Input() message: boolean = false;
   @Input() messageLevel: number = 0;
+  @Input() type: string = "ok";
   @Output() closeAction: EventEmitter<any> = new EventEmitter();
-
+  @Output() acceptAction: EventEmitter<any> = new EventEmitter();
+  @Output() cancelAction: EventEmitter<any> = new EventEmitter();
 
   public imageSource: string;
 

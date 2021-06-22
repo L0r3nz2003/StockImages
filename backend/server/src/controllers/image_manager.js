@@ -113,6 +113,7 @@ class ImageManagement {
 
   // delete image from dropbox and data from database
   deleteImage = async (req, res, next) => {
+    console.log("AA");
     try {
       // 0 - Check if id is provided
       const id = req.query.id;
@@ -127,6 +128,7 @@ class ImageManagement {
 
       // 2 - return error case
       if (!succsess) {
+        console.log("ööh");
         res.status(500).send("delete error");
         return;
       }
@@ -141,6 +143,7 @@ class ImageManagement {
       // 5 - send responce
       res.sendStatus(200);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   };

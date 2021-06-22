@@ -108,7 +108,7 @@ export class UploadComponent {
       uploadModal.currentHidden = true;
      }, error => {
        if(error.error.error === "Duplicates are not allowed") {
-      this.modalErrorText = "Leider sieht es so aus, als würde dein Bild bereits hochgeladen worden sein!"
+      this.modalErrorText = "Leider sieht es so aus, als würde dein Bild bereits hochgeladen worden sein!";
       uploadModal.currentHidden = true;
       errorModal.currentHidden = false;
        }
@@ -116,6 +116,8 @@ export class UploadComponent {
 
     uploadModal.currentHidden = true;
     uploadModal.setImageSource(1);
+    this.modalErrorText = "Das Bild wurde erfolgreich hochgeladen!";
+    errorModal.currentHidden = false;
   }
 
   removeTag(tag: number) {

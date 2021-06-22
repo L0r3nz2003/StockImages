@@ -17,18 +17,38 @@ export class RegisterComponent implements OnInit {
   hide: boolean = true;
   err_message_mail: string = "";
 
+  passwordBorderColor: string;
+  passwordRepeatBorderColor: string;
+  nameBorderColor: string;
+  emailBorderColor: string;
+
   constructor(public userService: UserService, public router: Router) {
    }
 
   ngOnInit(): void {
   }
 
+  /**
+   * The register method is to add a new User.
+   * @param name The name of the user
+   * @param email  The email of the user
+   * @param password  The password of the user
+   * @param password_repeat The repeated password
+   * @param modal The modal to announce if the action was successfull or not
+   */
   register(name: any, email: any, password: any, password_repeat: any, modal: ModalComponent) {
 
     name.style.borderColor = "";
     password.style.borderColor = "";
     email.style.borderColor = "";
     password_repeat.style.borderColor = "";
+
+    this.passwordBorderColor = "";
+    this.passwordRepeatBorderColor = "";
+    this.nameBorderColor = "";
+    this.emailBorderColor = "";
+  
+
 
     this.err_message_username = "";
     this.err_message_password = "";
@@ -37,42 +57,42 @@ export class RegisterComponent implements OnInit {
 
     //is name valid
     if (!name.validity.valid) {
-      name.style.borderColor = "red";
+      this.nameBorderColor = "red";
       this.err_message_username = "Der Name muss 8 Zeichen oder länger sein!";
       return;
     }
 
     //is email valid
     if (!email.validity.valid) {
-      name.style.borderColor = "red";
-      this.err_message_mail = "Gebe eine gültige E-Mail Adresse an!"
+      this.emailBorderColor = "red";
+      this.err_message_mail = "Gebe eine gültige E-Mail Adresse an!";
       return;
     }
 
     //has name invalid chars
     if(name.value.indexOf(' ') >= 0) {
-      name.style.borderColor = "red";
+      this.nameBorderColor = "red";
       this.err_message_username = "Der Name enthält ungültige Zeichen!";
       return;
     }
 
     //is password valid
     if (!password.validity.valid) {
-      password.style.borderColor = "red";
+      this.passwordBorderColor = "red";
       this.err_message_password = "Gebe ein 8 Stelliges Passwort ein!";
       return;
     }
 
     //is password repeat valid
     if (!password_repeat.validity.valid) {
-      password_repeat.style.borderColor = "red";
+      this.passwordRepeatBorderColor = "red";
       this.err_message_password_repeat = "Gebe das Passowort erneut ein!";
       return;
     }
 
     //is password similar to password repeat
     if(password_repeat.value !== password.value) {
-      password_repeat.style.borderColor = "red";
+      this.passwordRepeatBorderColor = "red";
       this.err_message_password_repeat = "Das Passwort stimmt nicht überein!";
       return;
     }
@@ -82,8 +102,9 @@ export class RegisterComponent implements OnInit {
 
       //if not unique
       if(!r) {
-        name.style.borderColor = "red";
-        email.style.borderColor = "red";
+        this.emailBorderColor = "red";
+        this.nameBorderColor = "red";
+
         this.err_message_username = "Der Name/Email ist bereits belegt!";
         this.err_message_mail = "Der Name/Email ist bereits belegt!";
         return;

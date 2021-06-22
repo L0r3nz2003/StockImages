@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {MessageService} from "./message.service";
 import {User} from "../interfaces/user";
 import {Observable} from "rxjs";
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +11,15 @@ import {Observable} from "rxjs";
 export class ImagedisplayService {
 
   private url = 'http://localhost:3000/';
+  private userService;
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
 
   constructor(
-    private http: HttpClient) {
+    private http: HttpClient, private user: UserService) {
+      this.userService = user;
   }
 
   async getImagesByTag(tag: string) {
@@ -31,6 +34,12 @@ export class ImagedisplayService {
       }
       return response.json();
     });
+  }
+
+  async deleteImage(id: number) {
+  
+    let headers = new HttpHeaders().set('Authorization', "Bearer "+this.userService.getUser().token)
+    return this.http.delete(this.url + "img/delete?id="+id, {headers}).subscribe(() => console.log("deleted!"));
   }
 
   async getImagesByUser(user: string) {

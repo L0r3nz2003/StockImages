@@ -7,5 +7,11 @@
     <div id="content">
         <div class="image-container" *ngFor="let img of getImages(); index as i;"
              [style.background-image]="'url(' + img + ')'">
+             <button (click)="deleteImage(img)">Löschen</button>
         </div>
       </div>
+
+    <modal [currentHidden]="!performDelete" [animation]="true" [allowHeaderInteraction]="false" [button]="true"
+      [message]="true" [messageLevel]="4" type="cancel" (acceptAction)="performDeleteImage()" (cancelAction)="cancelDelete()" >
+    {{modalMessage}}
+    </modal>

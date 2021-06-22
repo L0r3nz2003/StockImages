@@ -16,7 +16,7 @@ class ImgService {
   };
 
   getUidFromImgId = async (id) => {
-    return await this.runQuery("select userId from PsImage where id = ?", [id]);
+    return await db.runQuery("select userId from PsImage where id = ?", [id]);
   }
 
   getUserImg = async (userid) => {

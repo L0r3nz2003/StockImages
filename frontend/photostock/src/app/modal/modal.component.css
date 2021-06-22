@@ -22,7 +22,6 @@
   display: block;
   position: fixed;
   left: 0;
-  button: 0;
   margin: auto;
   width: 100%;
   height: 100%;
@@ -64,6 +63,35 @@
   align-items: center;
   justify-content: center;
   width: 100px;
+}
+
+#buttonGroup {
+  width: 100%;
+  display: flex;
+  float: left;
+}
+
+#ok {
+  background-color: #4CAF50;
+  padding: 14px 20px;
+  float:left;
+  width: 100px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+}
+
+#cancel {
+  background-color: red;
+  text-align: center;
+  width: 100px;
+  float:left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 8px 0;
+  margin-left: 10px;
+  border: none;
+  cursor: pointer;
 }
 
 @-webkit-keyframes animatezoom {
