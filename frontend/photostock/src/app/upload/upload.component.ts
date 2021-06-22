@@ -104,15 +104,14 @@ export class UploadComponent {
     tags = tags.substr(0, tags.length -1);
 
      this.fileService.upload(this.uploadForm, desc.value, tags, this.userService.getUser()).subscribe(data => {
-       console.log(data);
-      if(data === "success") {
 
-        uploadModal.currentHidden = true;
-      } else {
-        this.modalErrorText = "Leider sieht es so aus, als würde dein Bild bereits hochgeladen worden sein!"
-        uploadModal.currentHidden = true;
-        errorModal.currentHidden = false;
-      }
+      uploadModal.currentHidden = true;
+     }, error => {
+       if(error.error.error === "Duplicates are not allowed") {
+      this.modalErrorText = "Leider sieht es so aus, als würde dein Bild bereits hochgeladen worden sein!"
+      uploadModal.currentHidden = true;
+      errorModal.currentHidden = false;
+       }
      })
 
     uploadModal.currentHidden = true;

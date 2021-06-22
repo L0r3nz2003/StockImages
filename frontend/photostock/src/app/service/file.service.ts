@@ -31,14 +31,6 @@ export class FileService {
 
     let headers = new HttpHeaders().set('Authorization', "Bearer "+this.userService.getUser().token)
 
-    this.http.post<any>(this.url + "img/upload?beschreibung=" + beschreibung + "&tags="+tags+"&uid="+user.id, formData, {headers}).subscribe(
-      data => {
-        return of("success");
-      },
-      error => {
-        return of("error!");
-      }
-    );
-    return of("error!");
+    return this.http.post<any>(this.url + "img/upload?beschreibung=" + beschreibung + "&tags="+tags+"&uid="+user.id, formData, {headers});
   }
 }

@@ -1,0 +1,11 @@
+
+<modal #waitingModal [currentHidden]="loaded" [animation]="true" [allowHeaderInteraction]="true" [button]="loaded"
+    [message]="true" [messageLevel]="messageLevel">
+{{message}}
+</modal>
+
+    <div id="content">
+        <div class="image-container" *ngFor="let img of getImages(); index as i;"
+             [style.background-image]="'url(' + img + ')'">
+        </div>
+      </div>

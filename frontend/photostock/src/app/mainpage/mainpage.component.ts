@@ -1,13 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {ImagedisplayService} from "../service/imagedisplay.service";
-import {
-  GalleryModule,
-  GridLayout,
-  Image,
-  LineLayout,
-  PlainGalleryConfig,
-  PlainGalleryStrategy
-} from "@ks89/angular-modal-gallery";
 
 
 
